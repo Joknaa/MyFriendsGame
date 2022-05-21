@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 430812703017998804, guid: c25bb7d644b01b34681352768f861064, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 430812703017998804, guid: c25bb7d644b01b34681352768f861064, type: 3}
       propertyPath: m_LocalPosition.x
@@ -537,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1404498266203915153, guid: af0ed9b9dd2f4d346be263ec7962d8e0, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1404498266203915153, guid: af0ed9b9dd2f4d346be263ec7962d8e0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -603,7 +603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4135583041724016892, guid: 7a8eeaa083d94324d913eeeb0b251a71, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4135583041724016892, guid: 7a8eeaa083d94324d913eeeb0b251a71, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1111,6 +1111,10 @@ PrefabInstance:
       value: NEW_StartingArea
       objectReference: {fileID: 0}
     - target: {fileID: 5065156072655751209, guid: 28cf62398c29c4e4f88d840d0d87e7d3, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5065156072655751209, guid: 28cf62398c29c4e4f88d840d0d87e7d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10
       objectReference: {fileID: 0}
@@ -1418,8 +1422,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 1423488030}
     m_Modifications:
     - target: {fileID: 571611309891263074, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
-      propertyPath: moveSpeed
-      value: 200
+      propertyPath: pushDownForce
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 571611309891263075, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
       propertyPath: m_Size.x
