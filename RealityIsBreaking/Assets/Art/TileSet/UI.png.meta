@@ -525,7 +525,7 @@ TextureImporter:
         serializedVersion: 2
         x: 113
         y: 80
-        width: 12
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -565,9 +565,9 @@ TextureImporter:
       name: UI_19
       rect:
         serializedVersion: 2
-        x: 98
+        x: 97
         y: 80
-        width: 12
+        width: 13
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
