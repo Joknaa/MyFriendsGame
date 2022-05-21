@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="23">
+<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="23">
  <tileset firstgid="1" source="../Art/TileSet/Dow_TileSet.tsx"/>
  <layer id="1" name="BG" width="30" height="40">
   <data encoding="csv">
@@ -137,16 +137,19 @@
   <object id="20" x="192" y="409.706" width="32" height="6.29438">
    <properties>
     <property name="unity:istrigger" value="true"/>
+    <property name="unity:tag" value="Spike"/>
    </properties>
   </object>
   <object id="21" x="256.228" y="377.734" width="32" height="6.29438">
    <properties>
     <property name="unity:istrigger" value="true"/>
+    <property name="unity:tag" value="Spike"/>
    </properties>
   </object>
   <object id="22" x="319.315" y="345.192" width="32" height="6.29438">
    <properties>
     <property name="unity:istrigger" value="true"/>
+    <property name="unity:tag" value="Spike"/>
    </properties>
   </object>
  </objectgroup>

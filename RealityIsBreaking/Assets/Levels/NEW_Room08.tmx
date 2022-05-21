@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="28">
+<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="30" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="44">
  <tileset firstgid="1" source="../Art/TileSet/Dow_TileSet.tsx"/>
  <layer id="1" name="BG" width="30" height="40">
   <data encoding="csv">
@@ -55,28 +55,28 @@
 270,269,271,269,269,270,270,270,271,269,269,269,271,269,270,270,271,269,270,270,271,271,190,269,270,269,271,269,269,270,
 269,269,269,271,270,271,269,270,269,270,269,269,271,250,269,269,270,271,269,271,269,271,269,270,269,271,269,270,190,270,
 270,270,269,271,271,269,271,270,270,269,269,271,269,270,271,269,270,270,269,269,271,269,271,270,270,270,269,270,271,270,
-269,250,270,190,269,271,270,269,269,271,269,270,168,171,252,248,169,172,269,270,269,269,270,269,269,270,269,270,190,269,
-270,271,269,270,270,269,269,269,250,269,271,269,268,0,251,249,0,272,270,270,189,269,270,271,271,270,271,250,270,271,
+269,227,270,190,269,271,270,269,269,271,269,270,168,171,252,248,169,172,269,270,269,269,270,269,269,270,269,270,190,269,
+270,271,269,270,270,269,269,269,227,227,271,269,268,0,251,249,0,272,270,270,227,269,270,271,271,270,271,227,270,271,
 269,271,271,270,271,269,271,270,270,248,170,169,249,0,0,0,0,251,170,169,172,270,269,269,270,271,270,269,271,269,
-270,269,269,190,271,271,271,271,270,268,0,0,0,0,0,0,0,0,0,0,192,270,269,269,271,271,271,270,270,269,
-271,190,270,269,269,271,270,168,171,249,0,0,0,0,0,0,0,0,0,0,251,171,172,270,271,271,270,269,270,270,
-191,270,269,271,269,269,248,249,0,0,0,0,0,0,0,0,0,0,0,0,0,0,251,172,271,270,190,271,269,269,
-270,271,271,269,269,248,249,0,0,0,0,0,0,299,0,299,0,299,0,0,0,0,233,251,172,191,269,269,270,269,
-269,271,271,270,271,188,0,0,0,0,300,0,0,239,0,0,0,0,0,0,0,0,0,0,192,270,269,270,269,271,
-269,271,270,270,168,249,0,0,0,219,0,0,0,298,0,298,0,298,0,0,0,0,0,0,251,172,270,270,270,271,
-269,270,270,189,229,0,0,0,340,0,0,0,0,0,0,0,0,0,0,0,319,0,0,0,0,192,271,250,270,271,
-250,269,270,269,229,0,233,0,0,0,0,0,0,0,0,0,0,0,259,0,0,0,219,0,0,192,271,271,271,269,
+227,227,269,190,271,271,271,271,270,268,0,0,0,0,0,0,0,0,0,0,192,270,269,269,271,271,227,270,270,269,
+227,190,270,269,269,271,270,168,171,249,0,0,0,0,0,0,0,0,0,0,251,171,172,270,271,271,227,269,270,270,
+227,270,269,271,269,269,248,249,0,0,0,0,0,0,0,0,0,0,0,0,0,0,251,172,271,227,227,271,269,269,
+227,271,271,269,269,248,249,0,0,0,0,0,0,299,0,299,0,299,0,0,0,0,233,251,172,227,269,269,270,269,
+227,271,271,270,271,188,0,0,0,0,300,0,0,239,0,0,0,0,0,0,0,0,0,0,192,270,269,270,269,271,
+227,271,270,270,168,249,0,0,0,219,0,0,0,298,0,298,0,298,0,0,0,0,0,0,251,172,270,227,270,271,
+227,270,270,189,229,0,0,0,340,0,0,0,0,0,0,0,0,0,0,0,319,0,0,0,0,192,271,227,270,271,
+227,269,270,269,229,0,233,0,0,0,0,0,0,0,0,0,0,0,259,0,0,0,219,0,0,192,271,271,271,269,
 190,269,269,271,188,0,0,319,0,0,233,233,0,379,159,160,0,0,0,0,0,0,0,0,0,231,270,269,270,270,
 269,271,271,168,249,0,0,0,0,0,0,0,0,211,289,289,209,0,0,0,0,0,0,0,0,251,172,269,271,270,
 171,171,171,249,0,0,0,0,0,0,0,0,211,212,269,271,208,209,0,0,0,0,0,0,0,0,272,271,269,270,
-0,0,0,0,0,0,0,0,233,0,0,211,212,270,269,269,250,288,209,0,0,0,0,0,0,0,231,190,271,271,
-0,0,0,0,0,0,0,0,0,0,211,292,271,269,270,271,271,269,208,209,0,0,0,0,0,0,272,270,271,271,
-0,0,0,0,0,398,399,0,211,290,292,271,270,271,271,270,271,269,271,208,291,209,0,0,0,0,272,189,270,271,
-289,291,289,289,291,289,290,289,292,271,269,271,269,250,270,190,270,270,270,190,269,208,291,289,291,290,292,271,270,271,
-250,270,271,250,271,271,271,269,190,270,270,271,271,270,271,270,269,271,270,270,271,271,270,271,269,269,270,270,269,271,
-250,271,270,270,269,269,271,269,271,269,271,271,270,269,271,269,271,250,270,270,269,269,271,269,269,269,271,270,271,270,
+0,0,0,0,0,0,0,0,233,0,0,211,212,270,269,269,227,288,209,0,0,0,0,0,0,0,231,190,271,271,
+0,0,0,0,0,0,0,0,0,0,211,292,271,269,270,227,227,269,208,209,0,0,0,0,0,0,272,270,271,271,
+0,0,0,0,0,398,399,0,211,290,292,271,270,271,227,227,271,269,271,208,291,209,0,0,0,0,272,189,270,271,
+289,291,289,289,291,289,290,289,292,271,269,271,269,250,227,190,270,270,270,190,269,208,291,289,291,290,292,271,270,271,
+227,227,227,227,227,271,271,269,190,270,270,271,271,270,271,270,269,271,270,270,271,271,270,271,269,269,270,270,269,271,
+250,271,270,270,269,269,271,269,271,269,271,271,270,269,271,269,271,227,227,270,269,269,271,269,269,269,271,270,271,270,
 271,270,270,270,270,270,271,269,270,270,271,271,271,271,269,269,271,269,269,270,269,271,269,269,271,270,271,269,270,269,
-270,270,269,271,270,271,271,269,250,271,269,270,269,269,271,270,269,269,271,271,269,271,270,271,271,269,270,269,271,271,
+270,270,269,271,270,271,271,269,227,271,269,270,269,269,271,270,269,269,271,271,269,271,270,271,271,269,270,269,271,271,
 269,269,269,271,271,270,271,270,271,269,190,270,271,269,269,269,269,269,271,269,190,271,269,270,271,271,270,270,269,270,
 271,271,271,269,271,271,270,271,270,271,271,269,270,271,271,190,269,269,269,271,270,270,270,270,270,190,250,269,269,271,
 269,190,271,271,271,270,270,269,271,271,271,270,271,271,190,270,269,269,269,271,269,270,271,270,271,271,190,270,271,271,
@@ -140,48 +140,68 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Walls_Collision" visible="0">
+ <objectgroup id="3" name="Walls_Collision">
   <object id="3" x="0" y="400" width="128" height="48">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="5" x="32" y="192" width="416" height="48">
+  <object id="5" x="144" y="144" width="64" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="6" x="32" y="288" width="64" height="16">
+  <object id="31" x="272" y="144" width="64" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="7" x="32" y="304" width="48" height="32">
+  <object id="32" x="192" y="112" width="96" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="8" x="159.538" y="368" width="48" height="176">
+  <object id="6" x="80" y="240" width="16" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="9" x="32" y="256" width="96" height="16">
+  <object id="7" x="32" y="272" width="48" height="64">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="10" x="32" y="240" width="112" height="16">
+  <object id="8" x="208" y="320" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="11" x="384" y="240" width="64" height="48">
+  <object id="9" x="79.5" y="208" width="48.5" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="12" x="352" y="240" width="32" height="16">
+  <object id="10" x="80" y="176" width="80" height="32">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="11" x="400" y="272" width="16" height="64">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="12" x="368" y="224" width="16" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="28" x="352" y="208" width="16" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="29" x="320" y="176" width="32" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
@@ -201,17 +221,7 @@
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="14" x="272" y="416" width="176" height="64">
-   <properties>
-    <property name="unity:layer" value="Ground"/>
-   </properties>
-  </object>
-  <object id="27" x="256" y="480" width="48" height="112">
-   <properties>
-    <property name="unity:layer" value="Ground"/>
-   </properties>
-  </object>
-  <object id="15" x="416" y="288" width="64" height="48">
+  <object id="15" x="416" y="288" width="64" height="128">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
@@ -221,17 +231,52 @@
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="19" x="32" y="272" width="80" height="16">
+  <object id="19" x="80" y="224" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="23" x="416" y="384" width="64" height="32">
+  <object id="30" x="224" y="144" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>
   </object>
-  <object id="24" x="400" y="400" width="16" height="16">
+  <object id="24" x="352" y="400" width="64" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="37" x="288" y="384" width="64" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="38" x="288" y="368" width="32" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="39" x="272" y="352" width="32" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="40" x="176" y="352" width="32" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="41" x="160" y="368" width="32" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="42" x="272" y="336" width="16" height="16">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+   </properties>
+  </object>
+  <object id="43" x="192" y="336" width="16" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
    </properties>

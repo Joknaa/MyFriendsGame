@@ -10,7 +10,7 @@ namespace Transitions {
         private CameraController CameraScript;
 
         private void Start() {
-            CameraScript = UnityEngine.Camera.main.GetComponent<CameraController>();
+            CameraScript = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         }
 
         private void OnTriggerEnter2D(Collider2D other) {

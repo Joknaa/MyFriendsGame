@@ -1,9 +1,13 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "NEW_Room08.tmx",
     "expandedProjectPaths": [
+        ".",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art",
-        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet",
-        "."
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -141,76 +145,88 @@
             "scaleInDock": 2,
             "scaleInEditor": 3
         },
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Enemies.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 5.5
+        },
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/untitled.tmx": {
+            "scale": 0.28025,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1586.0838537020518,
+                "y": 1602.1409455842997
+            }
+        },
         "NEW_Room00.tmx": {
             "scale": 1.40125,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 319.35771632471005,
-                "y": 319.35771632471005
+                "y": 319.71454058876003
             }
         },
         "NEW_Room01.tmx": {
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 239.66666666666666,
-                "y": 319.66666666666663
+                "x": 239.66666666666663,
+                "y": 318
             }
         },
         "NEW_Room02.tmx": {
-            "scale": 2.165208333333333,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 239.93072260175117,
-                "y": 319.8306552487251
+                "x": 274.75,
+                "y": 277.5
             }
         },
         "NEW_Room03.tmx": {
-            "scale": 2.165208333333333,
-            "selectedLayer": 1,
+            "scale": 3,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.93072260175117,
-                "y": 319.8306552487251
+                "x": 272.1666666666667,
+                "y": 410.66666666666663
             }
         },
         "NEW_Room04.tmx": {
-            "scale": 2.165208333333333,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.93072260175117,
-                "y": 319.8306552487251
+                "x": 246.75,
+                "y": 390
             }
         },
         "NEW_Room05.tmx": {
             "scale": 2.165208333333333,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 239.93072260175117,
-                "y": 319.8306552487251
+                "x": 239.9307226017512,
+                "y": 319.59973058789575
             }
         },
         "NEW_Room06.tmx": {
-            "scale": 2.165208333333333,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 239.93072260175117,
-                "y": 319.8306552487251
+                "x": 219.75,
+                "y": 260
             }
         },
         "NEW_Room07.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 239.66666666666666,
-                "y": 319.66666666666663
+                "x": 214.75,
+                "y": 367
             }
         },
         "NEW_Room08.tmx": {
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 261.25,
-                "y": 292
+                "x": 217.25,
+                "y": 316.5
             }
         },
         "NEW_StartingArea.tmx": {
@@ -223,6 +239,8 @@
         }
     },
     "last.externalTilesetPath": "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/IngDow/IngDow/Assets/Art/TileSet",
+    "last.imagePath": "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet",
+    "map.lastUsedFormat": "tmx",
     "openFiles": [
         "NEW_Room00.tmx",
         "NEW_Room01.tmx",
@@ -237,6 +255,8 @@
     ],
     "project": "RealityIsBroking.tiled-project",
     "recentFiles": [
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Enemies.tsx",
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/untitled.tmx",
         "NEW_Room00.tmx",
         "NEW_Room01.tmx",
         "NEW_Room02.tmx",
@@ -246,9 +266,12 @@
         "NEW_Room06.tmx",
         "NEW_Room07.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Dow_TileSet.tsx",
-        "NEW_Room08.tmx",
-        "NEW_StartingArea.tmx",
-        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/IngDow/IngDow/Assets/Art/TileSet/Dow_TileSet.tsx"
+        "NEW_Room08.tmx"
     ],
-    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }

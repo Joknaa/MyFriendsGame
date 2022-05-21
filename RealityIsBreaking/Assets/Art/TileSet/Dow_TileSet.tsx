@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.5" name="Dow_TileMap" tilewidth="16" tileheight="16" tilecount="400" columns="20">
+<tileset version="1.5" tiledversion="1.7.1" name="Dow_TileMap" tilewidth="16" tileheight="16" tilecount="400" columns="20">
  <image source="Dow_TileSet.png" width="320" height="320"/>
  <tile id="188" probability="0.01"/>
  <tile id="189" probability="0.1"/>
