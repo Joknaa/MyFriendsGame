@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour {
     private float queueTimer;
 
     private bool grounded = false;
+
     
     private void Start() {
         playerSpriteRenderer = GetComponent<SpriteRenderer>();

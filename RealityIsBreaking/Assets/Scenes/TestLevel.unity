@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2100678067}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1417,9 +1417,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1423488030}
     m_Modifications:
+    - target: {fileID: 571611309891263072, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 571611309891263072, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 571611309891263072, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
+      propertyPath: m_GravityScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 571611309891263074, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
+      propertyPath: jumpForce
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 571611309891263074, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
       propertyPath: moveSpeed
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 571611309891263074, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
+      propertyPath: pushDownForce
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 571611309891263075, guid: 429716d776a96b9429c87500fa15ebdb, type: 3}
       propertyPath: m_Size.x
