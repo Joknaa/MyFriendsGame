@@ -9,6 +9,7 @@ TagManager:
   - Spike
   - Bullet
   - EnemyBullet
+  - Enemy
   layers:
   - Default
   - TransparentFX

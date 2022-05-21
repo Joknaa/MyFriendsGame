@@ -5,13 +5,23 @@ namespace Reality {
     public class Bullet : MonoBehaviour {
 
         private GameObject bulletInstance;
+        public bool isPlayerBullet;
         
         private void OnTriggerEnter2D(Collider2D col) {
             if (col.CompareTag("Ground")) {
-                print("Bullet hit ground");
+                //print("Bullet hit ground");
                 Destroy(bulletInstance);
             }
-            // If collided with enemy, kill it
+
+
+            if (isPlayerBullet && col.CompareTag("Enemy"))
+            {
+                //print("Bullet hit Enemy");
+                Destroy(this.gameObject);
+
+                col.gameObject.GetComponent<Enemy_5>().takeDamage();
+            }
+            
         }
         
         public void SetInstance(GameObject instance) => this.bulletInstance = instance;

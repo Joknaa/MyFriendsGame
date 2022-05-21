@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5174894574674380405}
   m_Layer: 0
   m_Name: Enemy_5
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61,9 +61,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7433a28ffaed3c4690d991ed386a643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenEachBullet: 1
+  timeBetweenEachBullet: 0.3
   bulletPrefab: {fileID: 4433793071731921355, guid: dddb23689153409449cfd52b89c0edd0, type: 3}
   bulletForce: 5
+  MaxHealth: 3
 --- !u!1 &8648572376989901605
 GameObject:
   m_ObjectHideFlags: 0
