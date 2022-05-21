@@ -1,5 +1,7 @@
 using UnityEngine;
 
+namespace Reality {
+    
 public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float moveSpeed = 5;
     [SerializeField] private float jumpForce = 5;
@@ -100,4 +102,5 @@ public class PlayerMovement : MonoBehaviour {
 
     public float GetHorizontalMovement() => horizontalMovement;
     public bool isGrounded() => grounded;
+}
 }

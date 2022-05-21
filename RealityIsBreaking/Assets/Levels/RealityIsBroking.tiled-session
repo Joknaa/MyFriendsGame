@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "NEW_Room08.tmx",
+    "activeFile": "NEW_Room07.tmx",
     "expandedProjectPaths": [
         ".",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art",
@@ -143,7 +143,7 @@
         },
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Dow_TileSet.tsx": {
             "scaleInDock": 2,
-            "scaleInEditor": 3
+            "scaleInEditor": 16
         },
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Enemies.tsx": {
             "scaleInDock": 2,
@@ -217,8 +217,8 @@
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 214.75,
-                "y": 367
+                "x": 261.25,
+                "y": 393
             }
         },
         "NEW_Room08.tmx": {
@@ -255,8 +255,6 @@
     ],
     "project": "RealityIsBroking.tiled-project",
     "recentFiles": [
-        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Enemies.tsx",
-        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/untitled.tmx",
         "NEW_Room00.tmx",
         "NEW_Room01.tmx",
         "NEW_Room02.tmx",
@@ -264,9 +262,11 @@
         "NEW_Room04.tmx",
         "NEW_Room05.tmx",
         "NEW_Room06.tmx",
-        "NEW_Room07.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Dow_TileSet.tsx",
-        "NEW_Room08.tmx"
+        "NEW_Room08.tmx",
+        "NEW_Room07.tmx",
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Enemies.tsx",
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/untitled.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

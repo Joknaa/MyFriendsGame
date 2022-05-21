@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Camera {
+namespace Reality {
     public class CameraController : MonoBehaviour {
         [SerializeField] private float transitionSmoothing = 0.1f;
         private float cameraNewPosition = 15;

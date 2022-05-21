@@ -1,7 +1,6 @@
-﻿using Camera;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Transitions {
+namespace Reality {
     public class RoomTransitions : MonoBehaviour {
         [Header("Camera & Position Variables: ")]
         public float CameraTranslation;
