@@ -159,7 +159,7 @@
         },
         "NEW_Room00.tmx": {
             "scale": 1.40125,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 319.35771632471005,
                 "y": 319.71454058876003
@@ -167,7 +167,7 @@
         },
         "NEW_Room01.tmx": {
             "scale": 1.5,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 239.66666666666663,
                 "y": 318
@@ -183,15 +183,15 @@
         },
         "NEW_Room03.tmx": {
             "scale": 3,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 272.1666666666667,
-                "y": 410.66666666666663
+                "x": 271.8333333333333,
+                "y": 364.33333333333337
             }
         },
         "NEW_Room04.tmx": {
             "scale": 2,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
                 "x": 246.75,
                 "y": 390
@@ -199,7 +199,7 @@
         },
         "NEW_Room05.tmx": {
             "scale": 2.165208333333333,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
                 "x": 239.9307226017512,
                 "y": 319.59973058789575
@@ -223,7 +223,7 @@
         },
         "NEW_Room08.tmx": {
             "scale": 2,
-            "selectedLayer": 1,
+            "selectedLayer": 4,
             "viewCenter": {
                 "x": 217.25,
                 "y": 316.5

@@ -13,8 +13,7 @@ ScriptedImporter:
   warnings: []
   missingSortingLayers: []
   missingLayers: []
-  missingTags:
-  - Spike
+  missingTags: []
   importerVersion: 24
   pixelsPerUnit: 16
   edgesPerEllipse: 16

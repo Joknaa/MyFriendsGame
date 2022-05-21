@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="9">
+<map version="1.5" tiledversion="1.7.1" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="11">
  <tileset firstgid="1" source="../Art/TileSet/Dow_TileSet.tsx"/>
  <layer id="1" name="BG" width="40" height="40">
   <data encoding="csv">
@@ -137,26 +137,43 @@
   <object id="1" x="240" y="192" width="368" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="2" x="576" y="224" width="64" height="144">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="3" x="256" y="416" width="384" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="4" x="224" y="288" width="32" height="160">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="8" x="192" y="272" width="32" height="176">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
+   </properties>
+  </object>
+  <object id="9" x="112" y="240" width="80" height="32">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
+   </properties>
+  </object>
+  <object id="10" x="0" y="128" width="111.286" height="112">
+   <properties>
+    <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
  </objectgroup>

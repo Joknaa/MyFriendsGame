@@ -144,141 +144,169 @@
   <object id="3" x="0" y="400" width="128" height="48">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="5" x="144" y="144" width="64" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="31" x="272" y="144" width="64" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="32" x="192" y="112" width="96" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="6" x="80" y="240" width="16" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="7" x="32" y="272" width="48" height="64">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="8" x="208" y="320" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="9" x="79.5" y="208" width="48.5" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="10" x="80" y="176" width="80" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="11" x="400" y="272" width="16" height="64">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="12" x="368" y="224" width="16" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="28" x="352" y="208" width="16" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="29" x="320" y="176" width="32" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="13" x="128" y="384" width="32" height="64">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="25" x="160" y="544" width="32" height="48">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="26" x="192" y="592" width="64" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="15" x="416" y="288" width="64" height="128">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="18" x="0" y="336" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="19" x="80" y="224" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="30" x="224" y="144" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="24" x="352" y="400" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="37" x="288" y="384" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="38" x="288" y="368" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="39" x="272" y="352" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="40" x="176" y="352" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="41" x="160" y="368" width="32" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="42" x="272" y="336" width="16" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="43" x="192" y="336" width="16" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
  </objectgroup>

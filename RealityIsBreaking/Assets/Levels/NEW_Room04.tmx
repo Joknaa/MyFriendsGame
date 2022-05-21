@@ -145,61 +145,73 @@
   <object id="3" x="0" y="400" width="480" height="80">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="5" x="32" y="192" width="416" height="64">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="6" x="32" y="256" width="96" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="7" x="32" y="288" width="80" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="8" x="32" y="320" width="48" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="9" x="144" y="256" width="112" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="10" x="0" y="336" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="11" x="352" y="256" width="96" height="32">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="13" x="368" y="288" width="80" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="14" x="384" y="304" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="15" x="400" y="320" width="48" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
   <object id="18" x="416" y="336" width="64" height="16">
    <properties>
     <property name="unity:layer" value="Ground"/>
+    <property name="unity:tag" value="Ground"/>
    </properties>
   </object>
  </objectgroup>

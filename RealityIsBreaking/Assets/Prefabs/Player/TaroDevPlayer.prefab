@@ -19702,7 +19702,7 @@ GameObject:
   - component: {fileID: 6432609860406773170}
   - component: {fileID: 6432609860406773168}
   m_Layer: 0
-  m_Name: OriginalPlayer
+  m_Name: TaroDevPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
