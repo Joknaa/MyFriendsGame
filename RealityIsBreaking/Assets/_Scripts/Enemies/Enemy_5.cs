@@ -10,7 +10,8 @@ namespace Reality
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private float bulletForce = 40f;
 
-
+        [SerializeField] private int MaxHealth = 1;
+        private int currentHealth;
         private GameObject player;
         private float Timer = 0;
 
@@ -18,6 +19,7 @@ namespace Reality
         void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player");
+            currentHealth = MaxHealth;
         }
 
         // Update is called once per frame
@@ -29,6 +31,7 @@ namespace Reality
                 FireBullet();
                 Timer = 0;
             }
+
         }
 
 
@@ -48,11 +51,24 @@ namespace Reality
             
         }
 
+        private void CommitSudoku()
+        {
+            Destroy(this.gameObject);
+        }
+
         private float getShootingDirection()
         {
             Vector2 lookDir = (Vector2)player.transform.position - (Vector2)transform.position ;
             return Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         }
 
+        public void takeDamage()
+        {
+            this.currentHealth--;
+            if(currentHealth <= 0)
+            {
+                CommitSudoku();
+            }
+        }
     }
 }
