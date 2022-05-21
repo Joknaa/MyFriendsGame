@@ -41,6 +41,7 @@ namespace Reality {
 
         void MoveGun() {
             gun.rotation = getShootingDirection();
+            //gun.position = (transform.position - player.transform.position).normalized;
         }
 
         private void FireBullet() {
@@ -55,12 +56,12 @@ namespace Reality {
                 
                 Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
                 bulletRb.rotation = angle;
-                bulletRb.AddForce((transform.position - player.transform.position).normalized * bulletForce, ForceMode2D.Impulse);
+                bulletRb.AddForce(((Vector2)transform.position - (Vector2)player.transform.position).normalized * bulletForce, ForceMode2D.Impulse);
             }
         }
 
         private float getShootingDirection() {
-            Vector2 lookDir = transform.position - player.transform.position;
+            Vector2 lookDir = (Vector2)transform.position - (Vector2)player.transform.position;
             return Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         }
     }
