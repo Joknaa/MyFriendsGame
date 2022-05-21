@@ -134,6 +134,14 @@
                 "y": 128.01510502714186
             }
         },
+        "NEW_Room00.tmx": {
+            "scale": 1.40125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 320.07136485281,
+                "y": 320.42818911686
+            }
+        },
         "NEW_Room01.tmx": {
             "expandedObjectLayers": [
                 3
@@ -141,8 +149,8 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 226.33333333333331,
-                "y": 281.3333333333333
+                "x": 158.99999999999997,
+                "y": 381.3333333333333
             }
         },
         "NEW_Room02.tmx": {
@@ -153,15 +161,18 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 220.99490041374003,
-                "y": 398.575964591552
+                "y": 462.31117098046764
             }
         },
         "NEW_Room03.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
             "scale": 2.165208333333333,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 256.09544885980944,
-                "y": 476.1666506302319
+                "y": 348.23438853074185
             }
         },
         "NEW_Room04.tmx": {
@@ -169,7 +180,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 257.0191475031271,
-                "y": 349.15808717405946
+                "y": 285.42288078514383
             }
         },
         "NEW_Room05.tmx": {
@@ -185,23 +196,35 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 257.0191475031271,
-                "y": 413.3551428846339
+                "y": 284.961031463485
             }
         },
         "NEW_Room07.tmx": {
-            "scale": 2.165208333333333,
-            "selectedLayer": 4,
+            "expandedObjectLayers": [
+                7,
+                3
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 257.0191475031271,
-                "y": 412.8932935629751
+                "x": 268.33333333333337,
+                "y": 300
+            }
+        },
+        "NEW_Room08.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240.33333333333331,
+                "y": 298
             }
         },
         "NEW_StartingArea.tmx": {
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 352.25,
-                "y": 305
+                "x": 287.25,
+                "y": 205.5
             }
         }
     },
@@ -210,6 +233,7 @@
     ],
     "project": "RealityIsBroking.tiled-project",
     "recentFiles": [
+        "NEW_StartingArea.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/IngDow/IngDow/Assets/Art/TileSet/Dow_TileSet.tsx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/IngDow/IngDow/Assets/Levels/NEW_Room06.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/IngDow/IngDow/Assets/Levels/NEW_Room05.tmx",
@@ -220,8 +244,7 @@
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/IngDow/IngDow/Assets/Levels/Room 07.tmx",
         "C:/Users/Oknaa/Desktop/square-surfer-2d-release-master-Assets-SquareGame-Levels-Worlds 10 Desert/Assets/SquareGame/Levels/Worlds 10 Desert/Level 02.tmx",
         "C:/Users/Oknaa/Desktop/square-surfer-2d-release-master-Assets-SquareGame-Levels-Worlds 10 Desert/Assets/SquareGame/Levels/Worlds 10 Desert/Level 01.tmx",
-        "C:/Users/Oknaa/Desktop/square-surfer-2d-release-master-Assets-SquareGame-Levels-Worlds 10 Desert/Assets/SquareGame/Levels/Worlds 10 Desert/Level 06.tmx",
-        "C:/Users/Oknaa/Desktop/square-surfer-2d-release-master-Assets-SquareGame-Levels-Worlds 10 Desert/Assets/SquareGame/Levels/Worlds 10 Desert/Level 05.tmx"
+        "C:/Users/Oknaa/Desktop/square-surfer-2d-release-master-Assets-SquareGame-Levels-Worlds 10 Desert/Assets/SquareGame/Levels/Worlds 10 Desert/Level 06.tmx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
 }
