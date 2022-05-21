@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 626314590}
   - component: {fileID: 626314592}
+  - component: {fileID: 7250070841882298734}
   m_Layer: 0
   m_Name: HPBar
   m_TagString: Untagged
@@ -46,6 +47,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626314589}
   m_CullTransparentMesh: 1
+--- !u!114 &7250070841882298734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626314589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6b9332247fc554aa6e60c870c822b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints:
+  - {fileID: 7094247141088977331}
+  - {fileID: 4445023722672437330}
+  - {fileID: 9038898576674925646}
+  - {fileID: 5719907234550298109}
 --- !u!1 &1228147492
 GameObject:
   m_ObjectHideFlags: 0

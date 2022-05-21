@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerBullet: 1
+  damage: 1
 --- !u!1 &4680217080384774483
 GameObject:
   m_ObjectHideFlags: 0

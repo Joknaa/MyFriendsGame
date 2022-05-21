@@ -19,10 +19,7 @@ namespace Reality {
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
 
-        public int MaxHealth = 6;
-        private int currentHealth;
-        private bool isImmune = false;
-        public float imunityTimer = 0.5f;
+ 
         public bool Grounded => _colDown;
 
         private Vector3 _lastPosition;
@@ -31,14 +28,14 @@ namespace Reality {
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
         void Awake() => Invoke(nameof(Activate), 0.5f);
-        void Activate() =>  _active = true;
+        void Activate() => _active = true;
 
-        private void Start()
-        {
-            currentHealth = MaxHealth;
-        }
+     
+
         private void Update() {
-            if(!_active) return;
+            if (!_active) return;
+            if (!GameStateController.Instance.IsPlaying()) return;
+
             // Calculate velocity
             Velocity = (transform.position - _lastPosition) / Time.deltaTime;
             _lastPosition = transform.position;
@@ -54,35 +51,12 @@ namespace Reality {
             MoveCharacter(); // Actually perform the axis movement
         }
 
-        public void takeDamage()
-        {
-            if (!isImmune)
-            {
-                this.currentHealth--;
-                StartCoroutine(waitForImunity());
-            }
-            
-            if (currentHealth <= 0)
-            {
-                //YOU DIE
-                Debug.Log("You die");
-            }
-        }
-
-        private IEnumerator  waitForImunity()
-        {
-            isImmune = true;
-            yield return new WaitForSeconds(imunityTimer);
-            isImmune = false;
-        }
-        
+       
 
 
+        #region Gather Input
 
-
-            #region Gather Input
-
-            private void GatherInput() {
+        private void GatherInput() {
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
@@ -147,7 +121,7 @@ namespace Reality {
 
         private IEnumerable<Vector2> EvaluateRayPositions(RayRange range) {
             for (var i = 0; i < _detectorCount; i++) {
-                var t = (float)i / (_detectorCount - 1);
+                var t = (float) i / (_detectorCount - 1);
                 yield return Vector2.Lerp(range.Start, range.End, t);
             }
         }
@@ -161,7 +135,7 @@ namespace Reality {
             if (!Application.isPlaying) {
                 CalculateRayRanged();
                 Gizmos.color = Color.blue;
-                foreach (var range in new List<RayRange> { _raysUp, _raysRight, _raysDown, _raysLeft }) {
+                foreach (var range in new List<RayRange> {_raysUp, _raysRight, _raysDown, _raysLeft}) {
                     foreach (var point in EvaluateRayPositions(range)) {
                         Gizmos.DrawRay(point, range.Dir * _detectionRayLength);
                     }
@@ -311,7 +285,7 @@ namespace Reality {
             var positionToMoveTo = transform.position;
             for (int i = 1; i < _freeColliderIterations; i++) {
                 // increment to check all but furthestPoint - we did that already
-                var t = (float)i / _freeColliderIterations;
+                var t = (float) i / _freeColliderIterations;
                 var posToTry = Vector2.Lerp(pos, furthestPoint, t);
 
                 if (Physics2D.OverlapBox(posToTry, _characterBounds.size, 0, _groundLayer)) {

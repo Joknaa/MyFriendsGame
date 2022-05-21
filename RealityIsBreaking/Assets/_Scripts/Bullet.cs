@@ -3,35 +3,26 @@ using UnityEngine;
 
 namespace Reality {
     public class Bullet : MonoBehaviour {
-
         private GameObject bulletInstance;
         public bool isPlayerBullet;
-        
-        private void OnTriggerEnter2D(Collider2D col) {
-            if (col.CompareTag("Ground")) {
-                //print("Bullet hit ground");
+        public float damage = 1f;
+
+        private void OnTriggerEnter2D(Collider2D collidedWith) {
+            if (collidedWith.CompareTag("Ground")) {
                 Destroy(bulletInstance);
             }
 
-
-            if (isPlayerBullet && col.CompareTag("Enemy"))
-            {
-                //print("Bullet hit Enemy");
-                Destroy(this.gameObject);
-
-                col.gameObject.GetComponent<Enemy_5>().takeDamage();
+            if (isPlayerBullet && collidedWith.CompareTag("Enemy")) {
+                collidedWith.gameObject.GetComponent<Enemy>().takeDamage(damage);
+                Destroy(gameObject);
             }
 
-            if (!isPlayerBullet && col.CompareTag("Player"))
-            {
-                print("Bullet hit Player");
-                Destroy(this.gameObject);
-
-                col.gameObject.GetComponent<PlayerController>().takeDamage();
+            if (!isPlayerBullet && collidedWith.CompareTag("Player")) {
+                collidedWith.gameObject.GetComponent<PlayerHealth>().takeDamage(damage);
+                Destroy(gameObject);
             }
         }
-        
-        public void SetInstance(GameObject instance) => this.bulletInstance = instance;
 
+        public void SetInstance(GameObject instance) => this.bulletInstance = instance;
     }
 }

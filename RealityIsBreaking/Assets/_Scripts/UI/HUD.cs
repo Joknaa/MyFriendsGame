@@ -1,5 +1,4 @@
 using System;
-using _Scripts;
 using UnityEngine;
 
 namespace Reality {
@@ -13,12 +12,12 @@ namespace Reality {
                     HPBar.SetActive(true);
                     break;
                 case GameStateController.GameState.Paused:
-                    HPBar.SetActive(false);
-                    break;
                 case GameStateController.GameState.CutScene:
+                case GameStateController.GameState.GameOver:
+                case GameStateController.GameState.GameWon:
                     HPBar.SetActive(false);
-
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
