@@ -1,7 +1,5 @@
-﻿namespace SuperTiled2Unity.Editor
-{
-    public enum LayerIgnoreMode
-    {
+﻿namespace SuperTiled2Unity.Editor {
+    public enum LayerIgnoreMode {
         // Ingores nothing (layer is fully enabled)
         False,
 
@@ -12,6 +10,6 @@
         Collision,
 
         // Ignores visuals on the layers (colliders still imported)
-        Visual,
+        Visual
     }
 }

@@ -1,13 +1,10 @@
-﻿namespace SuperTiled2Unity.Editor
-{
-    public class TmxAssetImportedArgs
-    {
+﻿namespace SuperTiled2Unity.Editor {
+    public class TmxAssetImportedArgs {
         public TmxAssetImporter AssetImporter { get; set; }
         public SuperMap ImportedSuperMap { get; set; }
-    };
+    }
 
-    public abstract class CustomTmxImporter
-    {
+    public abstract class CustomTmxImporter {
         // Invoked when a Tmx asset import is completed (the prefab and all other objects associated with the asset have been constructed)
         public abstract void TmxAssetImported(TmxAssetImportedArgs args);
     }

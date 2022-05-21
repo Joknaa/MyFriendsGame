@@ -36,21 +36,18 @@
 
 using System;
 using System.Diagnostics;
-
 //#if DOUBLE
 //using Real = System.Double;
 //namespace LibTessDotNet.Double
 //#else
 using Real = System.Single;
+
 namespace SuperTiled2Unity.Editor.LibTessDotNet
 //#endif
 {
-    internal static class Geom
-    {
-        public static bool IsWindingInside(WindingRule rule, int n)
-        {
-            switch (rule)
-            {
+    internal static class Geom {
+        public static bool IsWindingInside(WindingRule rule, int n) {
+            switch (rule) {
                 case WindingRule.EvenOdd:
                     return (n & 1) == 1;
                 case WindingRule.NonZero:
@@ -62,167 +59,134 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
                 case WindingRule.AbsGeqTwo:
                     return n >= 2 || n <= -2;
             }
+
             throw new Exception("Wrong winding rule");
         }
 
-        public static bool VertCCW(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
-        {
-            return (u._s * (v._t - w._t) + v._s * (w._t - u._t) + w._s * (u._t - v._t)) >= 0.0f;
+        public static bool VertCCW(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w) {
+            return u._s * (v._t - w._t) + v._s * (w._t - u._t) + w._s * (u._t - v._t) >= 0.0f;
         }
-        public static bool VertEq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs)
-        {
+
+        public static bool VertEq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs) {
             return lhs._s == rhs._s && lhs._t == rhs._t;
         }
-        public static bool VertLeq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs)
-        {
-            return (lhs._s < rhs._s) || (lhs._s == rhs._s && lhs._t <= rhs._t);
+
+        public static bool VertLeq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs) {
+            return lhs._s < rhs._s || lhs._s == rhs._s && lhs._t <= rhs._t;
         }
 
         /// <summary>
-        /// Given three vertices u,v,w such that VertLeq(u,v) && VertLeq(v,w),
-        /// evaluates the t-coord of the edge uw at the s-coord of the vertex v.
-        /// Returns v->t - (uw)(v->s), ie. the signed distance from uw to v.
-        /// If uw is vertical (and thus passes thru v), the result is zero.
-        /// 
-        /// The calculation is extremely accurate and stable, even when v
-        /// is very close to u or w.  In particular if we set v->t = 0 and
-        /// let r be the negated result (this evaluates (uw)(v->s)), then
-        /// r is guaranteed to satisfy MIN(u->t,w->t) <= r <= MAX(u->t,w->t).
+        ///     Given three vertices u,v,w such that VertLeq(u,v) && VertLeq(v,w),
+        ///     evaluates the t-coord of the edge uw at the s-coord of the vertex v.
+        ///     Returns v->t - (uw)(v->s), ie. the signed distance from uw to v.
+        ///     If uw is vertical (and thus passes thru v), the result is zero.
+        ///     The calculation is extremely accurate and stable, even when v
+        ///     is very close to u or w.  In particular if we set v->t = 0 and
+        ///     let r be the negated result (this evaluates (uw)(v->s)), then
+        ///     r is guaranteed to satisfy MIN(u->t,w->t) <= r <= MAX(u->t,w->t).
         /// </summary>
-        public static Real EdgeEval(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
-        {
+        public static float EdgeEval(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w) {
             Debug.Assert(VertLeq(u, v) && VertLeq(v, w));
 
             var gapL = v._s - u._s;
             var gapR = w._s - v._s;
 
-            if (gapL + gapR > 0.0f)
-            {
+            if (gapL + gapR > 0.0f) {
                 if (gapL < gapR)
-                {
-                    return (v._t - u._t) + (u._t - w._t) * (gapL / (gapL + gapR));
-                }
-                else
-                {
-                    return (v._t - w._t) + (w._t - u._t) * (gapR / (gapL + gapR));
-                }
+                    return v._t - u._t + (u._t - w._t) * (gapL / (gapL + gapR));
+                return v._t - w._t + (w._t - u._t) * (gapR / (gapL + gapR));
             }
+
             /* vertical line */
             return 0;
         }
 
         /// <summary>
-        /// Returns a number whose sign matches EdgeEval(u,v,w) but which
-        /// is cheaper to evaluate. Returns > 0, == 0 , or < 0
-        /// as v is above, on, or below the edge uw.
+        ///     Returns a number whose sign matches EdgeEval(u,v,w) but which
+        ///     is cheaper to evaluate. Returns > 0, == 0 , or
+        ///     < 0
+        ///         as v is above, on, or below the edge uw.
         /// </summary>
-        public static Real EdgeSign(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
-        {
+        public static float EdgeSign(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w) {
             Debug.Assert(VertLeq(u, v) && VertLeq(v, w));
 
             var gapL = v._s - u._s;
             var gapR = w._s - v._s;
 
-            if (gapL + gapR > 0.0f)
-            {
-                return (v._t - w._t) * gapL + (v._t - u._t) * gapR;
-            }
+            if (gapL + gapR > 0.0f) return (v._t - w._t) * gapL + (v._t - u._t) * gapR;
             /* vertical line */
             return 0;
         }
 
-        public static bool TransLeq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs)
-        {
-            return (lhs._t < rhs._t) || (lhs._t == rhs._t && lhs._s <= rhs._s);
+        public static bool TransLeq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs) {
+            return lhs._t < rhs._t || lhs._t == rhs._t && lhs._s <= rhs._s;
         }
 
-        public static Real TransEval(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
-        {
+        public static float TransEval(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w) {
             Debug.Assert(TransLeq(u, v) && TransLeq(v, w));
 
             var gapL = v._t - u._t;
             var gapR = w._t - v._t;
 
-            if (gapL + gapR > 0.0f)
-            {
+            if (gapL + gapR > 0.0f) {
                 if (gapL < gapR)
-                {
-                    return (v._s - u._s) + (u._s - w._s) * (gapL / (gapL + gapR));
-                }
-                else
-                {
-                    return (v._s - w._s) + (w._s - u._s) * (gapR / (gapL + gapR));
-                }
+                    return v._s - u._s + (u._s - w._s) * (gapL / (gapL + gapR));
+                return v._s - w._s + (w._s - u._s) * (gapR / (gapL + gapR));
             }
+
             /* vertical line */
             return 0;
         }
 
-        public static Real TransSign(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
-        {
+        public static float TransSign(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w) {
             Debug.Assert(TransLeq(u, v) && TransLeq(v, w));
 
             var gapL = v._t - u._t;
             var gapR = w._t - v._t;
 
-            if (gapL + gapR > 0.0f)
-            {
-                return (v._s - w._s) * gapL + (v._s - u._s) * gapR;
-            }
+            if (gapL + gapR > 0.0f) return (v._s - w._s) * gapL + (v._s - u._s) * gapR;
             /* vertical line */
             return 0;
         }
 
-        public static bool EdgeGoesLeft(MeshUtils.Edge e)
-        {
+        public static bool EdgeGoesLeft(MeshUtils.Edge e) {
             return VertLeq(e._Dst, e._Org);
         }
 
-        public static bool EdgeGoesRight(MeshUtils.Edge e)
-        {
+        public static bool EdgeGoesRight(MeshUtils.Edge e) {
             return VertLeq(e._Org, e._Dst);
         }
 
-        public static Real VertL1dist(MeshUtils.Vertex u, MeshUtils.Vertex v)
-        {
+        public static float VertL1dist(MeshUtils.Vertex u, MeshUtils.Vertex v) {
             return Math.Abs(u._s - v._s) + Math.Abs(u._t - v._t);
         }
 
-        public static void AddWinding(MeshUtils.Edge eDst, MeshUtils.Edge eSrc)
-        {
+        public static void AddWinding(MeshUtils.Edge eDst, MeshUtils.Edge eSrc) {
             eDst._winding += eSrc._winding;
             eDst._Sym._winding += eSrc._Sym._winding;
         }
 
-        public static Real Interpolate(Real a, Real x, Real b, Real y)
-        {
-            if (a < 0.0f)
-            {
-                a = 0.0f;
-            }
-            if (b < 0.0f)
-            {
-                b = 0.0f;
-            }
-            return ((a <= b) ? ((b == 0.0f) ? ((x+y) / 2.0f)
-                    : (x + (y-x) * (a/(a+b))))
-                    : (y + (x-y) * (b/(a+b))));
+        public static float Interpolate(float a, float x, float b, float y) {
+            if (a < 0.0f) a = 0.0f;
+            if (b < 0.0f) b = 0.0f;
+            return a <= b
+                ? b == 0.0f ? (x + y) / 2.0f
+                : x + (y - x) * (a / (a + b))
+                : y + (x - y) * (b / (a + b));
         }
 
-        static void Swap(ref MeshUtils.Vertex a, ref MeshUtils.Vertex b)
-        {
+        private static void Swap(ref MeshUtils.Vertex a, ref MeshUtils.Vertex b) {
             var tmp = a;
             a = b;
             b = tmp;
         }
 
         /// <summary>
-        /// Given edges (o1,d1) and (o2,d2), compute their point of intersection.
-        /// The computed point is guaranteed to lie in the intersection of the
-        /// bounding rectangles defined by each edge.
+        ///     Given edges (o1,d1) and (o2,d2), compute their point of intersection.
+        ///     The computed point is guaranteed to lie in the intersection of the
+        ///     bounding rectangles defined by each edge.
         /// </summary>
-        public static void EdgeIntersect(MeshUtils.Vertex o1, MeshUtils.Vertex d1, MeshUtils.Vertex o2, MeshUtils.Vertex d2, MeshUtils.Vertex v)
-        {
+        public static void EdgeIntersect(MeshUtils.Vertex o1, MeshUtils.Vertex d1, MeshUtils.Vertex o2, MeshUtils.Vertex d2, MeshUtils.Vertex v) {
             // This is certainly not the most efficient way to find the intersection
             // of two line segments, but it is very numerically stable.
             // 
@@ -230,73 +194,73 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             // and interpolate the intersection s-value from these.  Then repeat
             // using the TransLeq ordering to find the intersection t-value.
 
-            if (!VertLeq(o1, d1)) { Swap(ref o1, ref d1); }
-            if (!VertLeq(o2, d2)) { Swap(ref o2, ref d2); }
-            if (!VertLeq(o1, o2)) { Swap(ref o1, ref o2); Swap(ref d1, ref d2); }
+            if (!VertLeq(o1, d1)) Swap(ref o1, ref d1);
+            if (!VertLeq(o2, d2)) Swap(ref o2, ref d2);
+            if (!VertLeq(o1, o2)) {
+                Swap(ref o1, ref o2);
+                Swap(ref d1, ref d2);
+            }
 
-            if (!VertLeq(o2, d1))
-            {
+            if (!VertLeq(o2, d1)) {
                 // Technically, no intersection -- do our best
                 v._s = (o2._s + d1._s) / 2.0f;
             }
-            else if (VertLeq(d1, d2))
-            {
+            else if (VertLeq(d1, d2)) {
                 // Interpolate between o2 and d1
                 var z1 = EdgeEval(o1, o2, d1);
                 var z2 = EdgeEval(o2, d1, d2);
-                if (z1 + z2 < 0.0f)
-                {
+                if (z1 + z2 < 0.0f) {
                     z1 = -z1;
                     z2 = -z2;
                 }
+
                 v._s = Interpolate(z1, o2._s, z2, d1._s);
             }
-            else
-            {
+            else {
                 // Interpolate between o2 and d2
                 var z1 = EdgeSign(o1, o2, d1);
                 var z2 = -EdgeSign(o1, d2, d1);
-                if (z1 + z2 < 0.0f)
-                {
+                if (z1 + z2 < 0.0f) {
                     z1 = -z1;
                     z2 = -z2;
                 }
+
                 v._s = Interpolate(z1, o2._s, z2, d2._s);
             }
 
             // Now repeat the process for t
 
-            if (!TransLeq(o1, d1)) { Swap(ref o1, ref d1); }
-            if (!TransLeq(o2, d2)) { Swap(ref o2, ref d2); }
-            if (!TransLeq(o1, o2)) { Swap(ref o1, ref o2); Swap(ref d1, ref d2); }
+            if (!TransLeq(o1, d1)) Swap(ref o1, ref d1);
+            if (!TransLeq(o2, d2)) Swap(ref o2, ref d2);
+            if (!TransLeq(o1, o2)) {
+                Swap(ref o1, ref o2);
+                Swap(ref d1, ref d2);
+            }
 
-            if (!TransLeq(o2, d1))
-            {
+            if (!TransLeq(o2, d1)) {
                 // Technically, no intersection -- do our best
                 v._t = (o2._t + d1._t) / 2.0f;
             }
-            else if (TransLeq(d1, d2))
-            {
+            else if (TransLeq(d1, d2)) {
                 // Interpolate between o2 and d1
                 var z1 = TransEval(o1, o2, d1);
                 var z2 = TransEval(o2, d1, d2);
-                if (z1 + z2 < 0.0f)
-                {
+                if (z1 + z2 < 0.0f) {
                     z1 = -z1;
                     z2 = -z2;
                 }
+
                 v._t = Interpolate(z1, o2._t, z2, d1._t);
             }
-            else
-            {
+            else {
                 // Interpolate between o2 and d2
                 var z1 = TransSign(o1, o2, d1);
                 var z2 = -TransSign(o1, d2, d1);
-                if (z1 + z2 < 0.0f)
-                {
+                if (z1 + z2 < 0.0f) {
                     z1 = -z1;
                     z2 = -z2;
                 }
+
                 v._t = Interpolate(z1, o2._t, z2, d2._t);
             }
         }

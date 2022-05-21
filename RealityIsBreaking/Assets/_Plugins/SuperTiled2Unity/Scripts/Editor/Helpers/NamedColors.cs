@@ -1,10 +1,9 @@
 ﻿// This file was code generated. Do not modify by hand.
+
 using UnityEngine;
 
-namespace SuperTiled2Unity.Editor
-{
-    public static class NamedColors
-    {
+namespace SuperTiled2Unity.Editor {
+    public static class NamedColors {
         public static readonly Color32 Transparent = new Color32(255, 255, 255, 0);
         public static readonly Color32 AliceBlue = new Color32(240, 248, 255, 255);
         public static readonly Color32 AntiqueWhite = new Color32(250, 235, 215, 255);

@@ -1,8 +1,6 @@
-﻿namespace SuperTiled2Unity.Editor
-{
-    public enum DrawOrder
-    {
+﻿namespace SuperTiled2Unity.Editor {
+    public enum DrawOrder {
         TopDown,
-        Index,
+        Index
     }
 }

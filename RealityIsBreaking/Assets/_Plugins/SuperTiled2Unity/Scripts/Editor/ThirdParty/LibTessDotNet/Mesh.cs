@@ -42,14 +42,12 @@ using System.Diagnostics;
 namespace SuperTiled2Unity.Editor.LibTessDotNet
 //#endif
 {
-    internal class Mesh : Pooled<Mesh>
-    {
-        internal MeshUtils.Vertex _vHead;
-        internal MeshUtils.Face _fHead;
+    internal class Mesh : Pooled<Mesh> {
         internal MeshUtils.Edge _eHead, _eHeadSym;
+        internal MeshUtils.Face _fHead;
+        internal MeshUtils.Vertex _vHead;
 
-        public void Init(IPool pool)
-        {
+        public void Init(IPool pool) {
             var v = _vHead = pool.Get<MeshUtils.Vertex>();
             var f = _fHead = pool.Get<MeshUtils.Face>();
 
@@ -85,20 +83,18 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             eSym._activeRegion = null;
         }
 
-        public void Reset(IPool pool)
-        {
-            for (MeshUtils.Face f = _fHead, fNext = _fHead; f._next != null; f = fNext)
-            {
+        public void Reset(IPool pool) {
+            for (MeshUtils.Face f = _fHead, fNext = _fHead; f._next != null; f = fNext) {
                 fNext = f._next;
                 pool.Return(f);
             }
-            for (MeshUtils.Vertex v = _vHead, vNext = _vHead; v._next != null; v = vNext)
-            {
+
+            for (MeshUtils.Vertex v = _vHead, vNext = _vHead; v._next != null; v = vNext) {
                 vNext = v._next;
                 pool.Return(v);
             }
-            for (MeshUtils.Edge e = _eHead, eNext = _eHead; e._next != null; e = eNext)
-            {
+
+            for (MeshUtils.Edge e = _eHead, eNext = _eHead; e._next != null; e = eNext) {
                 eNext = e._next;
                 pool.Return(e._Sym);
                 pool.Return(e);
@@ -110,11 +106,10 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         /// <summary>
-        /// Creates one edge, two vertices and a loop (face).
-        /// The loop consists of the two new half-edges.
+        ///     Creates one edge, two vertices and a loop (face).
+        ///     The loop consists of the two new half-edges.
         /// </summary>
-        public MeshUtils.Edge MakeEdge(IPool pool)
-        {
+        public MeshUtils.Edge MakeEdge(IPool pool) {
             var e = MeshUtils.MakeEdge(pool, _eHead);
 
             MeshUtils.MakeVertex(pool, e, _vHead);
@@ -125,46 +120,38 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         /// <summary>
-        /// Splice is the basic operation for changing the
-        /// mesh connectivity and topology.  It changes the mesh so that
+        ///     Splice is the basic operation for changing the
+        ///     mesh connectivity and topology.  It changes the mesh so that
         ///     eOrg->Onext = OLD( eDst->Onext )
         ///     eDst->Onext = OLD( eOrg->Onext )
-        /// where OLD(...) means the value before the meshSplice operation.
-        /// 
-        /// This can have two effects on the vertex structure:
-        ///  - if eOrg->Org != eDst->Org, the two vertices are merged together
-        ///  - if eOrg->Org == eDst->Org, the origin is split into two vertices
-        /// In both cases, eDst->Org is changed and eOrg->Org is untouched.
-        /// 
-        /// Similarly (and independently) for the face structure,
-        ///  - if eOrg->Lface == eDst->Lface, one loop is split into two
-        ///  - if eOrg->Lface != eDst->Lface, two distinct loops are joined into one
-        /// In both cases, eDst->Lface is changed and eOrg->Lface is unaffected.
-        /// 
-        /// Some special cases:
-        /// If eDst == eOrg, the operation has no effect.
-        /// If eDst == eOrg->Lnext, the new face will have a single edge.
-        /// If eDst == eOrg->Lprev, the old face will have a single edge.
-        /// If eDst == eOrg->Onext, the new vertex will have a single edge.
-        /// If eDst == eOrg->Oprev, the old vertex will have a single edge.
+        ///     where OLD(...) means the value before the meshSplice operation.
+        ///     This can have two effects on the vertex structure:
+        ///     - if eOrg->Org != eDst->Org, the two vertices are merged together
+        ///     - if eOrg->Org == eDst->Org, the origin is split into two vertices
+        ///     In both cases, eDst->Org is changed and eOrg->Org is untouched.
+        ///     Similarly (and independently) for the face structure,
+        ///     - if eOrg->Lface == eDst->Lface, one loop is split into two
+        ///     - if eOrg->Lface != eDst->Lface, two distinct loops are joined into one
+        ///     In both cases, eDst->Lface is changed and eOrg->Lface is unaffected.
+        ///     Some special cases:
+        ///     If eDst == eOrg, the operation has no effect.
+        ///     If eDst == eOrg->Lnext, the new face will have a single edge.
+        ///     If eDst == eOrg->Lprev, the old face will have a single edge.
+        ///     If eDst == eOrg->Onext, the new vertex will have a single edge.
+        ///     If eDst == eOrg->Oprev, the old vertex will have a single edge.
         /// </summary>
-        public void Splice(IPool pool, MeshUtils.Edge eOrg, MeshUtils.Edge eDst)
-        {
-            if (eOrg == eDst)
-            {
-                return;
-            }
+        public void Splice(IPool pool, MeshUtils.Edge eOrg, MeshUtils.Edge eDst) {
+            if (eOrg == eDst) return;
 
-            bool joiningVertices = false;
-            if (eDst._Org != eOrg._Org)
-            {
+            var joiningVertices = false;
+            if (eDst._Org != eOrg._Org) {
                 // We are merging two disjoint vertices -- destroy eDst->Org
                 joiningVertices = true;
                 MeshUtils.KillVertex(pool, eDst._Org, eOrg._Org);
             }
-            bool joiningLoops = false;
-            if (eDst._Lface != eOrg._Lface)
-            {
+
+            var joiningLoops = false;
+            if (eDst._Lface != eOrg._Lface) {
                 // We are connecting two disjoint loops -- destroy eDst->Lface
                 joiningLoops = true;
                 MeshUtils.KillFace(pool, eDst._Lface, eOrg._Lface);
@@ -173,15 +160,14 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             // Change the edge structure
             MeshUtils.Splice(eDst, eOrg);
 
-            if (!joiningVertices)
-            {
+            if (!joiningVertices) {
                 // We split one vertex into two -- the new vertex is eDst->Org.
                 // Make sure the old vertex points to a valid half-edge.
                 MeshUtils.MakeVertex(pool, eDst, eOrg._Org);
                 eOrg._Org._anEdge = eOrg;
             }
-            if (!joiningLoops)
-            {
+
+            if (!joiningLoops) {
                 // We split one loop into two -- the new loop is eDst->Lface.
                 // Make sure the old face points to a valid half-edge.
                 MeshUtils.MakeFace(pool, eDst, eOrg._Lface);
@@ -190,33 +176,29 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         /// <summary>
-        /// Removes the edge eDel. There are several cases:
-        /// if (eDel->Lface != eDel->Rface), we join two loops into one; the loop
-        /// eDel->Lface is deleted. Otherwise, we are splitting one loop into two;
-        /// the newly created loop will contain eDel->Dst. If the deletion of eDel
-        /// would create isolated vertices, those are deleted as well.
+        ///     Removes the edge eDel. There are several cases:
+        ///     if (eDel->Lface != eDel->Rface), we join two loops into one; the loop
+        ///     eDel->Lface is deleted. Otherwise, we are splitting one loop into two;
+        ///     the newly created loop will contain eDel->Dst. If the deletion of eDel
+        ///     would create isolated vertices, those are deleted as well.
         /// </summary>
-        public void Delete(IPool pool, MeshUtils.Edge eDel)
-        {
+        public void Delete(IPool pool, MeshUtils.Edge eDel) {
             var eDelSym = eDel._Sym;
 
             // First step: disconnect the origin vertex eDel->Org.  We make all
             // changes to get a consistent mesh in this "intermediate" state.
 
-            bool joiningLoops = false;
-            if (eDel._Lface != eDel._Rface)
-            {
+            var joiningLoops = false;
+            if (eDel._Lface != eDel._Rface) {
                 // We are joining two loops into one -- remove the left face
                 joiningLoops = true;
                 MeshUtils.KillFace(pool, eDel._Lface, eDel._Rface);
             }
 
-            if (eDel._Onext == eDel)
-            {
+            if (eDel._Onext == eDel) {
                 MeshUtils.KillVertex(pool, eDel._Org, null);
             }
-            else
-            {
+            else {
                 // Make sure that eDel->Org and eDel->Rface point to valid half-edges
                 eDel._Rface._anEdge = eDel._Oprev;
                 eDel._Org._anEdge = eDel._Onext;
@@ -224,22 +206,18 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
                 MeshUtils.Splice(eDel, eDel._Oprev);
 
                 if (!joiningLoops)
-                {
                     // We are splitting one loop into two -- create a new loop for eDel.
                     MeshUtils.MakeFace(pool, eDel, eDel._Lface);
-                }
             }
 
             // Claim: the mesh is now in a consistent state, except that eDel->Org
             // may have been deleted.  Now we disconnect eDel->Dst.
 
-            if (eDelSym._Onext == eDelSym)
-            {
+            if (eDelSym._Onext == eDelSym) {
                 MeshUtils.KillVertex(pool, eDelSym._Org, null);
                 MeshUtils.KillFace(pool, eDelSym._Lface, null);
             }
-            else
-            {
+            else {
                 // Make sure that eDel->Dst and eDel->Lface point to valid half-edges
                 eDel._Lface._anEdge = eDelSym._Oprev;
                 eDelSym._Org._anEdge = eDelSym._Onext;
@@ -251,11 +229,10 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         /// <summary>
-        /// Creates a new edge such that eNew == eOrg.Lnext and eNew.Dst is a newly created vertex.
-        /// eOrg and eNew will have the same left face.
+        ///     Creates a new edge such that eNew == eOrg.Lnext and eNew.Dst is a newly created vertex.
+        ///     eOrg and eNew will have the same left face.
         /// </summary>
-        public MeshUtils.Edge AddEdgeVertex(IPool pool, MeshUtils.Edge eOrg)
-        {
+        public MeshUtils.Edge AddEdgeVertex(IPool pool, MeshUtils.Edge eOrg) {
             var eNew = MeshUtils.MakeEdge(pool, eOrg);
             var eNewSym = eNew._Sym;
 
@@ -271,12 +248,11 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         /// <summary>
-        /// Splits eOrg into two edges eOrg and eNew such that eNew == eOrg.Lnext.
-        /// The new vertex is eOrg.Dst == eNew.Org.
-        /// eOrg and eNew will have the same left face.
+        ///     Splits eOrg into two edges eOrg and eNew such that eNew == eOrg.Lnext.
+        ///     The new vertex is eOrg.Dst == eNew.Org.
+        ///     eOrg and eNew will have the same left face.
         /// </summary>
-        public MeshUtils.Edge SplitEdge(IPool pool, MeshUtils.Edge eOrg)
-        {
+        public MeshUtils.Edge SplitEdge(IPool pool, MeshUtils.Edge eOrg) {
             var eTmp = AddEdgeVertex(pool, eOrg);
             var eNew = eTmp._Sym;
 
@@ -295,23 +271,20 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         /// <summary>
-        /// Creates a new edge from eOrg->Dst to eDst->Org, and returns the corresponding half-edge eNew.
-        /// If eOrg->Lface == eDst->Lface, this splits one loop into two,
-        /// and the newly created loop is eNew->Lface.  Otherwise, two disjoint
-        /// loops are merged into one, and the loop eDst->Lface is destroyed.
-        /// 
-        /// If (eOrg == eDst), the new face will have only two edges.
-        /// If (eOrg->Lnext == eDst), the old face is reduced to a single edge.
-        /// If (eOrg->Lnext->Lnext == eDst), the old face is reduced to two edges.
+        ///     Creates a new edge from eOrg->Dst to eDst->Org, and returns the corresponding half-edge eNew.
+        ///     If eOrg->Lface == eDst->Lface, this splits one loop into two,
+        ///     and the newly created loop is eNew->Lface.  Otherwise, two disjoint
+        ///     loops are merged into one, and the loop eDst->Lface is destroyed.
+        ///     If (eOrg == eDst), the new face will have only two edges.
+        ///     If (eOrg->Lnext == eDst), the old face is reduced to a single edge.
+        ///     If (eOrg->Lnext->Lnext == eDst), the old face is reduced to two edges.
         /// </summary>
-        public MeshUtils.Edge Connect(IPool pool, MeshUtils.Edge eOrg, MeshUtils.Edge eDst)
-        {
+        public MeshUtils.Edge Connect(IPool pool, MeshUtils.Edge eOrg, MeshUtils.Edge eDst) {
             var eNew = MeshUtils.MakeEdge(pool, eOrg);
             var eNewSym = eNew._Sym;
 
-            bool joiningLoops = false;
-            if (eDst._Lface != eOrg._Lface)
-            {
+            var joiningLoops = false;
+            if (eDst._Lface != eOrg._Lface) {
                 // We are connecting two disjoint loops -- destroy eDst->Lface
                 joiningLoops = true;
                 MeshUtils.KillFace(pool, eDst._Lface, eOrg._Lface);
@@ -329,24 +302,20 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             // Make sure the old face points to a valid half-edge
             eOrg._Lface._anEdge = eNewSym;
 
-            if (!joiningLoops)
-            {
-                MeshUtils.MakeFace(pool, eNew, eOrg._Lface);
-            }
+            if (!joiningLoops) MeshUtils.MakeFace(pool, eNew, eOrg._Lface);
 
             return eNew;
         }
 
         /// <summary>
-        /// Destroys a face and removes it from the global face list. All edges of
-        /// fZap will have a NULL pointer as their left face. Any edges which
-        /// also have a NULL pointer as their right face are deleted entirely
-        /// (along with any isolated vertices this produces).
-        /// An entire mesh can be deleted by zapping its faces, one at a time,
-        /// in any order. Zapped faces cannot be used in further mesh operations!
+        ///     Destroys a face and removes it from the global face list. All edges of
+        ///     fZap will have a NULL pointer as their left face. Any edges which
+        ///     also have a NULL pointer as their right face are deleted entirely
+        ///     (along with any isolated vertices this produces).
+        ///     An entire mesh can be deleted by zapping its faces, one at a time,
+        ///     in any order. Zapped faces cannot be used in further mesh operations!
         /// </summary>
-        public void ZapFace(IPool pool, MeshUtils.Face fZap)
-        {
+        public void ZapFace(IPool pool, MeshUtils.Face fZap) {
             var eStart = fZap._anEdge;
 
             // walk around face, deleting edges whose right face is also NULL
@@ -357,31 +326,28 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
                 eNext = e._Lnext;
 
                 e._Lface = null;
-                if (e._Rface == null)
-                {
+                if (e._Rface == null) {
                     // delete the edge -- see TESSmeshDelete above
 
-                    if (e._Onext == e)
-                    {
+                    if (e._Onext == e) {
                         MeshUtils.KillVertex(pool, e._Org, null);
                     }
-                    else
-                    {
+                    else {
                         // Make sure that e._Org points to a valid half-edge
                         e._Org._anEdge = e._Onext;
                         MeshUtils.Splice(e, e._Oprev);
                     }
+
                     eSym = e._Sym;
-                    if (eSym._Onext == eSym)
-                    {
+                    if (eSym._Onext == eSym) {
                         MeshUtils.KillVertex(pool, eSym._Org, null);
                     }
-                    else
-                    {
+                    else {
                         // Make sure that eSym._Org points to a valid half-edge
                         eSym._Org._anEdge = eSym._Onext;
                         MeshUtils.Splice(eSym, eSym._Oprev);
                     }
+
                     MeshUtils.KillEdge(pool, e);
                 }
             } while (e != eStart);
@@ -395,41 +361,31 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             pool.Return(fZap);
         }
 
-        public void MergeConvexFaces(IPool pool, int maxVertsPerFace)
-        {
-            for (var f = _fHead._next; f != _fHead; f = f._next)
-            {
+        public void MergeConvexFaces(IPool pool, int maxVertsPerFace) {
+            for (var f = _fHead._next; f != _fHead; f = f._next) {
                 // Skip faces which are outside the result
-                if (!f._inside)
-                {
-                    continue;
-                }
+                if (!f._inside) continue;
 
                 var eCur = f._anEdge;
                 var vStart = eCur._Org;
 
-                while (true)
-                {
+                while (true) {
                     var eNext = eCur._Lnext;
                     var eSym = eCur._Sym;
 
-                    if (eSym != null && eSym._Lface != null && eSym._Lface._inside)
-                    {
+                    if (eSym != null && eSym._Lface != null && eSym._Lface._inside) {
                         // Try to merge the neighbour faces if the resulting polygons
                         // does not exceed maximum number of vertices.
-                        int curNv = f.VertsCount;
-                        int symNv = eSym._Lface.VertsCount;
-                        if ((curNv + symNv - 2) <= maxVertsPerFace)
-                        {
+                        var curNv = f.VertsCount;
+                        var symNv = eSym._Lface.VertsCount;
+                        if (curNv + symNv - 2 <= maxVertsPerFace)
                             // Merge if the resulting poly is convex.
                             if (Geom.VertCCW(eCur._Lprev._Org, eCur._Org, eSym._Lnext._Lnext._Org) &&
-                                Geom.VertCCW(eSym._Lprev._Org, eSym._Org, eCur._Lnext._Lnext._Org))
-                            {
+                                Geom.VertCCW(eSym._Lprev._Org, eSym._Org, eCur._Lnext._Lnext._Org)) {
                                 eNext = eSym._Lnext;
                                 Delete(pool, eSym);
                                 eCur = null;
                             }
-                        }
                     }
 
                     if (eCur != null && eCur._Lnext._Org == vStart)
@@ -442,13 +398,11 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
         }
 
         [Conditional("DEBUG")]
-        public void Check()
-        {
+        public void Check() {
             MeshUtils.Edge e;
 
             MeshUtils.Face fPrev = _fHead, f;
-            for (fPrev = _fHead; (f = fPrev._next) != _fHead; fPrev = f)
-            {
+            for (fPrev = _fHead; (f = fPrev._next) != _fHead; fPrev = f) {
                 e = f._anEdge;
                 do {
                     Debug.Assert(e._Sym != e);
@@ -459,15 +413,14 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
                     e = e._Lnext;
                 } while (e != f._anEdge);
             }
+
             Debug.Assert(f._prev == fPrev && f._anEdge == null);
 
             MeshUtils.Vertex vPrev = _vHead, v;
-            for (vPrev = _vHead; (v = vPrev._next) != _vHead; vPrev = v)
-            {
+            for (vPrev = _vHead; (v = vPrev._next) != _vHead; vPrev = v) {
                 Debug.Assert(v._prev == vPrev);
                 e = v._anEdge;
-                do
-                {
+                do {
                     Debug.Assert(e._Sym != e);
                     Debug.Assert(e._Sym._Sym == e);
                     Debug.Assert(e._Lnext._Onext._Sym == e);
@@ -476,11 +429,11 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
                     e = e._Onext;
                 } while (e != v._anEdge);
             }
+
             Debug.Assert(v._prev == vPrev && v._anEdge == null);
 
-            MeshUtils.Edge ePrev = _eHead;
-            for (ePrev = _eHead; (e = ePrev._next) != _eHead; ePrev = e)
-            {
+            var ePrev = _eHead;
+            for (ePrev = _eHead; (e = ePrev._next) != _eHead; ePrev = e) {
                 Debug.Assert(e._Sym._next == ePrev._Sym);
                 Debug.Assert(e._Sym != e);
                 Debug.Assert(e._Sym._Sym == e);
@@ -489,11 +442,12 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
                 Debug.Assert(e._Lnext._Onext._Sym == e);
                 Debug.Assert(e._Onext._Sym._Lnext == e);
             }
+
             Debug.Assert(e._Sym._next == ePrev._Sym
-                && e._Sym == _eHeadSym
-                && e._Sym._Sym == e
-                && e._Org == null && e._Dst == null
-                && e._Lface == null && e._Rface == null);
+                         && e._Sym == _eHeadSym
+                         && e._Sym._Sym == e
+                         && e._Org == null && e._Dst == null
+                         && e._Lface == null && e._Rface == null);
         }
     }
 }

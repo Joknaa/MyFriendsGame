@@ -2,61 +2,45 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace SuperTiled2Unity.Editor
-{
-    public class TiledAssetDependencies
-    {
+namespace SuperTiled2Unity.Editor {
+    public class TiledAssetDependencies {
         private static TiledAssetDependencies m_Instance;
 
-        private Dictionary<string, AssetDependencies> m_AssetDependencies = new Dictionary<string, AssetDependencies>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, AssetDependencies> m_AssetDependencies = new Dictionary<string, AssetDependencies>(StringComparer.OrdinalIgnoreCase);
 
-        public static TiledAssetDependencies Instance
-        {
-            get
-            {
-                if (m_Instance == null)
-                {
-                    m_Instance = CreateInstance();
-                }
+        public static TiledAssetDependencies Instance {
+            get {
+                if (m_Instance == null) m_Instance = CreateInstance();
 
                 return m_Instance;
             }
         }
 
-        public void TrackDependencies(string assetPath)
-        {
-            SuperAsset super = AssetDatabase.LoadAssetAtPath<SuperAsset>(assetPath);
-            if (super != null)
-            {
+        public void TrackDependencies(string assetPath) {
+            var super = AssetDatabase.LoadAssetAtPath<SuperAsset>(assetPath);
+            if (super != null) {
                 // Keep track of our dependencies
-                AssetDependencies depends = AcquireAssetDependencies(assetPath);
+                var depends = AcquireAssetDependencies(assetPath);
                 depends.AssignDependencies(super.AssetDependencies);
 
                 // Remove our reference from all other assets
-                foreach (var dep in m_AssetDependencies.Values)
-                {
-                    dep.RemoveReference(assetPath);
-                }
+                foreach (var dep in m_AssetDependencies.Values) dep.RemoveReference(assetPath);
 
                 // Add our reference to assets we are now dependent on
-                foreach (var path in super.AssetDependencies)
-                {
-                    AssetDependencies reference = AcquireAssetDependencies(path);
+                foreach (var path in super.AssetDependencies) {
+                    var reference = AcquireAssetDependencies(path);
                     reference.AddReference(assetPath);
                 }
             }
         }
 
-        public bool GetAssetDependencies(string assetPath, out AssetDependencies depends)
-        {
+        public bool GetAssetDependencies(string assetPath, out AssetDependencies depends) {
             return m_AssetDependencies.TryGetValue(assetPath, out depends);
         }
 
-        private AssetDependencies AcquireAssetDependencies(string assetPath)
-        {
+        private AssetDependencies AcquireAssetDependencies(string assetPath) {
             AssetDependencies depends;
-            if (!m_AssetDependencies.TryGetValue(assetPath, out depends))
-            {
+            if (!m_AssetDependencies.TryGetValue(assetPath, out depends)) {
                 depends = new AssetDependencies(assetPath);
                 m_AssetDependencies.Add(assetPath, depends);
             }
@@ -65,13 +49,11 @@ namespace SuperTiled2Unity.Editor
         }
 
         // Seed our dependency tracking. Further imports should keep it updated.
-        private static TiledAssetDependencies CreateInstance()
-        {
+        private static TiledAssetDependencies CreateInstance() {
             var instance = new TiledAssetDependencies();
 
             // Load all super assets and build up their dictionaries of dependencies
-            foreach (var assetGuid in AssetDatabase.FindAssets("t:SuperAsset"))
-            {
+            foreach (var assetGuid in AssetDatabase.FindAssets("t:SuperAsset")) {
                 var assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
                 instance.TrackDependencies(assetPath);
             }

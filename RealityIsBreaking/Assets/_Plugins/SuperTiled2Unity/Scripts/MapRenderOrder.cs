@@ -1,22 +1,17 @@
 ﻿using UnityEngine.Tilemaps;
 
-namespace SuperTiled2Unity
-{
-    public enum MapRenderOrder
-    {
+namespace SuperTiled2Unity {
+    public enum MapRenderOrder {
         Right_Down,
         Right_Up,
         Left_Down,
-        Left_Up,
+        Left_Up
     }
 
-    public static class MapRenderConverter
-    {
-        public static TilemapRenderer.SortOrder Tiled2Unity(MapRenderOrder order)
-        {
+    public static class MapRenderConverter {
+        public static TilemapRenderer.SortOrder Tiled2Unity(MapRenderOrder order) {
             // Swap top/bottom and right/left when going from Tiled data to Unity
-            switch (order)
-            {
+            switch (order) {
                 case MapRenderOrder.Left_Down:
                     return TilemapRenderer.SortOrder.TopRight;
 

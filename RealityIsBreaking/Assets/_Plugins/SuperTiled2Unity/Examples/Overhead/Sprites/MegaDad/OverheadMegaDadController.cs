@@ -1,38 +1,29 @@
 ﻿using System.Collections;
 using System.Linq;
+using SuperTiled2Unity;
 using UnityEngine;
 
-namespace MegaDad
-{
-    public class OverheadMegaDadController : MonoBehaviour
-    {
-        private enum State
-        {
-            WaitingForInput,
-            Moving,
-            Drowning
-        }
-
-        private State m_State;
-
+namespace MegaDad {
+    public class OverheadMegaDadController : MonoBehaviour {
         private const float MovementBlockSize = 8.0f;
         private const float MovingSpeedPPS = 64.0f;
         private const float TimeToMoveOneBlock = MovementBlockSize / MovingSpeedPPS;
 
         public GameObject m_SplashPrefab;
+        private Animator m_Animator;
 
         private Vector2 m_Facing = Vector2.down;
-        private Animator m_Animator;
 
         private float m_MoveTimer;
         private Vector2 m_MovingFrom;
         private Vector2 m_MovingTo;
-        private Vector2 m_SpawnPoint;
 
         private SpriteRenderer m_Renderer;
+        private Vector2 m_SpawnPoint;
 
-        private void Awake()
-        {
+        private State m_State;
+
+        private void Awake() {
             m_Animator = gameObject.GetComponentInChildren<Animator>();
             m_Animator.SetFloat("Dir_x", m_Facing.x);
             m_Animator.SetFloat("Dir_y", m_Facing.y);
@@ -40,16 +31,12 @@ namespace MegaDad
             m_Renderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         }
 
-        private void Start()
-        {
+        private void Start() {
             SetOverheadCamera();
 
             // Find the position on the game map we're supposed to spawn at
-            var spawner = FindObjectsOfType<SuperTiled2Unity.SuperObject>().FirstOrDefault(s => s.m_TiledName == "Spawn");
-            if (spawner != null)
-            {
-                m_SpawnPoint = spawner.transform.position;
-            }
+            var spawner = FindObjectsOfType<SuperObject>().FirstOrDefault(s => s.m_TiledName == "Spawn");
+            if (spawner != null) m_SpawnPoint = spawner.transform.position;
 
             // Make sure the player starts off aligned to the (imaginary) grid
             m_SpawnPoint.x = RoundToGrid(m_SpawnPoint.x);
@@ -60,35 +47,22 @@ namespace MegaDad
             m_State = State.WaitingForInput;
         }
 
-        private void Update()
-        {
-            if (m_State == State.Moving)
-            {
-                MoveUpdate();
-            }
+        private void Update() {
+            if (m_State == State.Moving) MoveUpdate();
 
-            if (m_State == State.WaitingForInput)
-            {
-                InputUpdate();
-            }
+            if (m_State == State.WaitingForInput) InputUpdate();
         }
 
-        private void LateUpdate()
-        {
+        private void LateUpdate() {
             m_Animator.SetFloat("Dir_x", m_Facing.x);
             m_Animator.SetFloat("Dir_y", m_Facing.y);
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-            {
-                StartCoroutine(Drowned());
-            }
+        private void OnTriggerEnter2D(Collider2D collision) {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) StartCoroutine(Drowned());
         }
 
-        private void MoveUpdate()
-        {
+        private void MoveUpdate() {
             // Move towards our target position
             m_MoveTimer += Time.deltaTime;
 
@@ -97,27 +71,23 @@ namespace MegaDad
             var pos = Vector2.Lerp(m_MovingFrom, m_MovingTo, ratio);
             gameObject.transform.position = pos;
 
-            if (ratio >= 1.0f)
-            {
+            if (ratio >= 1.0f) {
                 m_State = State.WaitingForInput;
                 m_MoveTimer = Mathf.Repeat(m_MoveTimer, TimeToMoveOneBlock);
             }
         }
 
-        private void InputUpdate()
-        {
-            Vector2 dv = Vector2.zero;
+        private void InputUpdate() {
+            var dv = Vector2.zero;
             dv.x = Input.GetAxisRaw("Horizontal");
             dv.y = Input.GetAxisRaw("Vertical");
 
             // Favor horizontal movement over vertical
-            if (dv.x != 0)
-            {
+            if (dv.x != 0) {
                 m_Facing.x = dv.x;
                 m_Facing.y = 0;
             }
-            else if (dv.y != 0)
-            {
+            else if (dv.y != 0) {
                 m_Facing.x = 0;
                 m_Facing.y = dv.y;
             }
@@ -125,8 +95,7 @@ namespace MegaDad
             m_Facing.Normalize();
             m_MovingFrom = gameObject.transform.position;
 
-            if (dv.SqrMagnitude() > 0 && !Input.GetKey(KeyCode.LeftControl))
-            {
+            if (dv.SqrMagnitude() > 0 && !Input.GetKey(KeyCode.LeftControl)) {
                 // We are attempting to move so we want to animate
                 m_Animator.SetBool("Moving", true);
 
@@ -134,37 +103,29 @@ namespace MegaDad
                 var pos = gameObject.transform.position;
                 var hit = Physics2D.Raycast(pos, m_Facing, MovementBlockSize, 1 << LayerMask.NameToLayer("Default"));
 
-                if (hit)
-                {
+                if (hit) {
                     m_State = State.WaitingForInput;
                     m_MoveTimer = 0.0f;
                 }
-                else
-                {
+                else {
                     m_State = State.Moving;
                     m_MovingTo = m_MovingFrom + m_Facing * MovementBlockSize;
                 }
             }
-            else
-            {
+            else {
                 // No input means we aren't even trying to move
                 m_MoveTimer = 0.0f;
                 m_Animator.SetBool("Moving", false);
             }
         }
 
-        private int RoundToGrid(float value)
-        {
-            if (value < 0)
-            {
-                return (int)(((value - MovementBlockSize * 0.5f) / MovementBlockSize)) * (int)MovementBlockSize;
-            }
+        private int RoundToGrid(float value) {
+            if (value < 0) return (int) ((value - MovementBlockSize * 0.5f) / MovementBlockSize) * (int) MovementBlockSize;
 
-            return (int)(((value + MovementBlockSize * 0.5f) / MovementBlockSize)) * (int)MovementBlockSize;
+            return (int) ((value + MovementBlockSize * 0.5f) / MovementBlockSize) * (int) MovementBlockSize;
         }
 
-        private IEnumerator Drowned()
-        {
+        private IEnumerator Drowned() {
             m_State = State.Drowning;
 
             // Place the player in the water
@@ -187,8 +148,7 @@ namespace MegaDad
 
             yield return new WaitForSeconds(0.125f);
 
-            for (int i = 0; i < 8; i++)
-            {
+            for (var i = 0; i < 8; i++) {
                 m_Renderer.enabled = !m_Renderer.enabled;
                 yield return new WaitForSeconds(0.125f);
             }
@@ -198,13 +158,18 @@ namespace MegaDad
             m_State = State.WaitingForInput;
         }
 
-        private void SetOverheadCamera()
-        {
+        private void SetOverheadCamera() {
             // This example requires a sort axis for sorting
             // (This could be set globablly for all cameras in the project settings)
             var camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             camera.transparencySortMode = TransparencySortMode.CustomAxis;
             camera.transparencySortAxis = Vector3.up;
+        }
+
+        private enum State {
+            WaitingForInput,
+            Moving,
+            Drowning
         }
     }
 }

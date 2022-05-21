@@ -1,110 +1,74 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
-
+public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float moveSpeed = 5;
     [SerializeField] private float jumpForce = 5;
-
-
-    [Header("Collision Detection")]
+    
+    [Header("Collision Detection")] 
     [SerializeField] private float GroundCollisionRange;
     [SerializeField] private LayerMask GroundLayer;
-
-    private BoxCollider2D playerCollider;
-
-    private float horizontalVelocity = 0f;
-    private Rigidbody2D body;
-    private bool canJump = false;
-    private bool queueJump = true;
-    private float queueTimer = 0f;
-    private float queueJumpLimit = 0.2f;
-
     
+    private SpriteRenderer playerSpriteRenderer;
+    private BoxCollider2D playerCollider;
+    private Rigidbody2D body;
+    
+    private float horizontalMovement;
 
+    private bool queueJump = false;
+    private readonly float queueJumpLimit = 0.2f;
+    private float queueTimer;
 
-
-   
-
-    // Start is called before the first frame update
-    void Start()
-    {
+    private bool grounded = false;
+    
+    private void Start() {
+        playerSpriteRenderer = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<BoxCollider2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        horizontalVelocity = 0f;
-
+    private void Update() {
         updateVelocity();
-
     }
 
-    void FixedUpdate()
-    {
-        body.velocity = new Vector2(horizontalVelocity, body.velocity.y);
-
+    private void FixedUpdate() {
+        body.velocity = new Vector2(moveSpeed * Time.deltaTime * horizontalMovement, body.velocity.y);
     }
 
-    void updateVelocity()
-    {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            horizontalVelocity = moveSpeed;
-        }
+    private void updateVelocity() {
+        horizontalMovement = Input.GetAxisRaw("Horizontal");
+        grounded = detectGround();
 
-        if(Input.GetKey(KeyCode.LeftArrow))
-        {
-            horizontalVelocity += -moveSpeed;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             queueJump = true;
-            canJump = detectGround();
-            if (canJump)
-            {
-                //Debug.Log("jumping");
-                body.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-                queueJump = false;
-                queueTimer = 0f;
-            }
+            Jump();
         }
         
-
         // This is used to queue up the next jump if the player presses jump right before landing
-        if (queueJump)
-        {
-            if (queueTimer < queueJumpLimit)
-            {
-                canJump = detectGround();
-                if (canJump)
-                {
-                    //Debug.Log("jumping");
-                    body.velocity = new Vector2(body.velocity.x, 0f) ;
-                    body.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
-                    queueTimer = 0f;
-                    queueJump = false;
-                }
-                Debug.Log(queueTimer);
+        if (queueJump) {
+            if (queueTimer < queueJumpLimit) {
+                Jump();
                 queueTimer += Time.deltaTime;
             }
         }
-
     }
-    
-    private bool detectGround()
-    {
-        Bounds SquareBounds = playerCollider.bounds;
-        float Distance = SquareBounds.extents.y + GroundCollisionRange;
 
-        RaycastHit2D GroundRaycast = Physics2D.Raycast(SquareBounds.center, Vector2.down, Distance, GroundLayer);
-        Debug.DrawRay(SquareBounds.center, Vector2.down * Distance);
-        return GroundRaycast;
+    private void Jump() {
+        grounded = detectGround();
+        if (!grounded) return;
+        
+        body.velocity = new Vector2(body.velocity.x, 0f);
+        body.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        queueTimer = 0f;
+        queueJump = false;
+        grounded = false;
     }
+
+    private bool detectGround() {
+        var SquareBounds = playerCollider.bounds;
+        var Distance = SquareBounds.extents.y + GroundCollisionRange;
+        return Physics2D.Raycast(SquareBounds.center, Vector2.down, Distance, GroundLayer);
+    }
+
+    public float GetHorizontalMovement() => horizontalMovement;
+    public bool isGrounded() => grounded;
 }

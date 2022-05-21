@@ -1,22 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace SuperTiled2Unity.Editor
-{
-    public static class PolygonUtils
-    {
+namespace SuperTiled2Unity.Editor {
+    public static class PolygonUtils {
         // Group convex polygons into a composite collider
-        public static void AddCompositePolygonCollider(GameObject go, List<Vector2[]> convexPolygons, SuperImportContext context)
-        {
+        public static void AddCompositePolygonCollider(GameObject go, List<Vector2[]> convexPolygons, SuperImportContext context) {
             // If there is only one convex polygon then don't use a composite
-            if (convexPolygons.Count == 1)
-            {
+            if (convexPolygons.Count == 1) {
                 var polyCollider = go.AddComponent<PolygonCollider2D>();
                 polyCollider.SetPath(0, convexPolygons[0]);
                 polyCollider.gameObject.AddComponent<SuperColliderComponent>();
             }
-            else
-            {
+            else {
                 // Rigid body is needed for composite collider
                 var rigid = go.AddComponent<Rigidbody2D>();
                 rigid.bodyType = RigidbodyType2D.Static;
@@ -30,8 +25,7 @@ namespace SuperTiled2Unity.Editor
                 composite.generationType = CompositeCollider2D.GenerationType.Manual;
 
                 // Add polygon colliders
-                foreach (var path in convexPolygons)
-                {
+                foreach (var path in convexPolygons) {
                     var goPolygon = new GameObject("ConvexPolygon");
                     go.AddChildWithUniqueName(goPolygon);
 
@@ -47,15 +41,13 @@ namespace SuperTiled2Unity.Editor
         }
 
         // Postive value == CW, negative == CCW
-        public static float SumOverEdges(Vector2[] points)
-        {
+        public static float SumOverEdges(Vector2[] points) {
             float sum = 0;
 
-            for (int i = 0; i < points.Length; i++)
-            {
-                int j = (i + 1) % points.Length;
-                float dx = points[j].x - points[i].x;
-                float dy = points[j].y + points[i].y;
+            for (var i = 0; i < points.Length; i++) {
+                var j = (i + 1) % points.Length;
+                var dx = points[j].x - points[i].x;
+                var dy = points[j].y + points[i].y;
 
                 sum += dx * dy;
             }

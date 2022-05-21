@@ -1,6 +1,3 @@
-﻿namespace SuperTiled2Unity.Editor
-{
-    public class SuperAssetMap : SuperAsset
-    {
-    }
+﻿namespace SuperTiled2Unity.Editor {
+    public class SuperAssetMap : SuperAsset { }
 }

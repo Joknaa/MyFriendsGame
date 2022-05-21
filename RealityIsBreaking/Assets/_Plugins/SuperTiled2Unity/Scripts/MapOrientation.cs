@@ -1,10 +1,8 @@
-﻿namespace SuperTiled2Unity
-{
-    public enum MapOrientation
-    {
+﻿namespace SuperTiled2Unity {
+    public enum MapOrientation {
         Orthogonal,
         Isometric,
         Staggered,
-        Hexagonal,
+        Hexagonal
     }
 }

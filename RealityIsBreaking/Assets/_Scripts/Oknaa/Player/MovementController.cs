@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player {
+namespace Old {
     public class MovementController : MonoBehaviour {
         [SerializeField] private float Speed;
         [SerializeField] private float JumpForce = 400f;

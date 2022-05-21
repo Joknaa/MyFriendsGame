@@ -1,8 +1,5 @@
 ﻿using System;
 
-namespace SuperTiled2Unity.Editor
-{
-    class TiledException : Exception
-    {
-    }
+namespace SuperTiled2Unity.Editor {
+    internal class TiledException : Exception { }
 }

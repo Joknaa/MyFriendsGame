@@ -2,41 +2,34 @@
 using System.Linq;
 using UnityEngine;
 
-namespace SuperTiled2Unity.Editor
-{
+namespace SuperTiled2Unity.Editor {
     // Tile Layer importer uses CollisionBuilder to combine all like-minded collision objects together
-    public class CollisionBuilder
-    {
-        private GameObject m_TilemapGameObject;
-        private Dictionary<uint, TilePolygonCollection> m_TilePolygonDatabase;
-        private Dictionary<CollisionClipperKey, CollisionClipper> m_CollisionClippers = new Dictionary<CollisionClipperKey, CollisionClipper>();
-        private SuperImportContext m_ImportContext;
+    public class CollisionBuilder {
+        private readonly Dictionary<CollisionClipperKey, CollisionClipper> m_CollisionClippers = new Dictionary<CollisionClipperKey, CollisionClipper>();
+        private readonly SuperImportContext m_ImportContext;
+        private readonly GameObject m_TilemapGameObject;
+        private readonly Dictionary<uint, TilePolygonCollection> m_TilePolygonDatabase;
 
-        public CollisionBuilder(GameObject goTilemap, Dictionary<uint, TilePolygonCollection> tilePolygonDatabase, SuperImportContext importContext)
-        {
+        public CollisionBuilder(GameObject goTilemap, Dictionary<uint, TilePolygonCollection> tilePolygonDatabase, SuperImportContext importContext) {
             m_TilemapGameObject = goTilemap;
             m_TilePolygonDatabase = tilePolygonDatabase;
             m_ImportContext = importContext;
         }
 
-        public void PlaceTileColliders(SuperMap map, SuperTile tile, TileIdMath tileId, Vector3Int pos)
-        {
+        public void PlaceTileColliders(SuperMap map, SuperTile tile, TileIdMath tileId, Vector3Int pos) {
             // Do we have any collider objects defined for this tile?
-            if (!tile.m_CollisionObjects.IsEmpty())
-            {
+            if (!tile.m_CollisionObjects.IsEmpty()) {
                 var polygons = AcquireTilePolygonCollection(tile, tileId, map.m_Orientation);
 
-                foreach (var poly in polygons.Polygons)
-                {
+                foreach (var poly in polygons.Polygons) {
                     // Offset the polygon so that it is in the location of the tile
                     var offset = map.CellPositionToLocalPosition(pos.x, pos.y, m_ImportContext);
 
                     var points = poly.Points.Select(pt => pt + offset).ToArray();
 
-                    CollisionClipperKey key = poly.MakeKey();
+                    var key = poly.MakeKey();
                     CollisionClipper clipper;
-                    if (!m_CollisionClippers.TryGetValue(key, out clipper))
-                    {
+                    if (!m_CollisionClippers.TryGetValue(key, out clipper)) {
                         // Add a new clipper for the layer
                         clipper = new CollisionClipper();
                         m_CollisionClippers.Add(key, clipper);
@@ -44,41 +37,29 @@ namespace SuperTiled2Unity.Editor
 
                     // Add the path to our clipper
                     if (poly.IsClosed)
-                    {
                         clipper.AddClosedPath(points);
-                    }
                     else
-                    {
                         clipper.AddOpenPath(points);
-                    }
                 }
             }
         }
 
-        public void Build(SuperImporter importer)
-        {
+        public void Build(SuperImporter importer) {
             // Excute our clippers and add game objects with their solution polygons
-            foreach (var pair in m_CollisionClippers)
-            {
+            foreach (var pair in m_CollisionClippers) {
                 var key = pair.Key;
                 var clipper = pair.Value;
 
                 clipper.Execute();
 
-                if (clipper.ClosedPaths.Any() || clipper.OpenPaths.Any())
-                {
+                if (clipper.ClosedPaths.Any() || clipper.OpenPaths.Any()) {
                     var layerId = key.LayerId;
 
-                    if (!importer.CheckLayerName(key.LayerName))
-                    {
-                        layerId = 0;
-                    }
+                    if (!importer.CheckLayerName(key.LayerName)) layerId = 0;
 
                     if (layerId == 0)
-                    {
                         // In this context, default means inherit from tilemap layer
                         layerId = m_TilemapGameObject.layer;
-                    }
 
                     var layerName = LayerMask.LayerToName(layerId);
                     var goCollider = new GameObject("Collision_" + layerName);
@@ -99,8 +80,7 @@ namespace SuperTiled2Unity.Editor
                     composite.generationType = CompositeCollider2D.GenerationType.Manual;
 
                     // Add polygon colliders
-                    foreach (var path in clipper.ClosedPaths)
-                    {
+                    foreach (var path in clipper.ClosedPaths) {
                         var goPolygon = new GameObject("Polygon");
                         goPolygon.layer = layerId;
                         goCollider.AddChildWithUniqueName(goPolygon);
@@ -114,8 +94,7 @@ namespace SuperTiled2Unity.Editor
                     composite.ST2UGeneratePolygonGeometry();
 
                     // Add Edge colliders
-                    foreach (var path in clipper.OpenPaths)
-                    {
+                    foreach (var path in clipper.OpenPaths) {
                         var goPolyline = new GameObject("Polyline");
                         goPolyline.layer = layerId;
                         goCollider.AddChildWithUniqueName(goPolyline);
@@ -128,13 +107,9 @@ namespace SuperTiled2Unity.Editor
             }
         }
 
-        private TilePolygonCollection AcquireTilePolygonCollection(SuperTile tile, TileIdMath tileId, MapOrientation orientation)
-        {
+        private TilePolygonCollection AcquireTilePolygonCollection(SuperTile tile, TileIdMath tileId, MapOrientation orientation) {
             TilePolygonCollection polygons;
-            if (m_TilePolygonDatabase.TryGetValue(tileId.ImportedlTileId, out polygons))
-            {
-                return polygons;
-            }
+            if (m_TilePolygonDatabase.TryGetValue(tileId.ImportedlTileId, out polygons)) return polygons;
 
             // If we're here then we don't have a polygon collection for this tile yet
             polygons = new TilePolygonCollection(tile, tileId, m_ImportContext, orientation);

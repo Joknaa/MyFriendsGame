@@ -2,59 +2,28 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-
 using Packer = SuperTiled2Unity.Editor.ThirdParty.MaxRectsBinPack;
 
 
-namespace SuperTiled2Unity.Editor
-{
+namespace SuperTiled2Unity.Editor {
     // Creates a group of texture atlases for tiles
     // This is our best defense against visual artifacts for maps built on tiles
     // Users can decide in the TSX import settings to forgo atlases or use their own
-    public class AtlasBuilder
-    {
-        private class AtlasTile
-        {
-            public int Index;
-            public Texture2D SourceTexture;
-            public Rect SourceRectangle;
+    public class AtlasBuilder {
+        private readonly int m_AtlasHeight;
+        private readonly List<Texture2D> m_AtlasTextures = new List<Texture2D>();
 
-            public Texture2D AtlasTexture;
-            public Rect AtlasRectangle;
+        private readonly List<AtlasTile> m_AtlasTiles = new List<AtlasTile>();
+        private readonly int m_AtlasWidth;
+        private Texture2D m_CurrentAtlas;
+        private Packer m_CurrentPacker;
 
-            public Texture2D PreferredTexture2D
-            {
-                get
-                {
-                    if (AtlasTexture != null)
-                    {
-                        return AtlasTexture;
-                    }
-
-                    return SourceTexture; 
-                }
-            }
-
-            public Rect PreferredRectangle
-            {
-                get { return AtlasTexture != null ? AtlasRectangle : SourceRectangle; }
-            }
-        }
-
-        private TiledAssetImporter m_TiledAssetImporter;
-        private bool m_UseSpriteAtlas;
-        private int m_AtlasWidth;
-        private int m_AtlasHeight;
-        private SuperTileset m_TilesetScript;
-
-        private List<AtlasTile> m_AtlasTiles = new List<AtlasTile>();
-        private List<Texture2D> m_AtlasTextures = new List<Texture2D>();
-        private Texture2D m_CurrentAtlas = null;
-        private Packer m_CurrentPacker = null;
+        private readonly TiledAssetImporter m_TiledAssetImporter;
+        private readonly SuperTileset m_TilesetScript;
+        private readonly bool m_UseSpriteAtlas;
 
 
-        public AtlasBuilder(TiledAssetImporter importer, bool useSpriteAtlas, int atlasWidth, int atlasHeight, SuperTileset tilesetScript)
-        {
+        public AtlasBuilder(TiledAssetImporter importer, bool useSpriteAtlas, int atlasWidth, int atlasHeight, SuperTileset tilesetScript) {
             m_TiledAssetImporter = importer;
             m_UseSpriteAtlas = useSpriteAtlas;
             m_AtlasWidth = atlasWidth;
@@ -62,23 +31,15 @@ namespace SuperTiled2Unity.Editor
             m_TilesetScript = tilesetScript;
         }
 
-        public void AddTile(int index, Texture2D texSource, Rect rcSource)
-        {
-            var atlasTile = new AtlasTile() { Index = index, SourceTexture = texSource, SourceRectangle = rcSource };
+        public void AddTile(int index, Texture2D texSource, Rect rcSource) {
+            var atlasTile = new AtlasTile {Index = index, SourceTexture = texSource, SourceRectangle = rcSource};
             m_AtlasTiles.Add(atlasTile);
         }
 
-        public void Build()
-        {
-            if (!m_AtlasTiles.Any())
-            {
-                return;
-            }
+        public void Build() {
+            if (!m_AtlasTiles.Any()) return;
 
-            if (m_UseSpriteAtlas)
-            {
-                MakeAtlasTiles();
-            }
+            if (m_UseSpriteAtlas) MakeAtlasTiles();
 
             // We have everything we need to create our sprites and tiles, including their texture dependencies. Commit.
             Commit();
@@ -89,16 +50,15 @@ namespace SuperTiled2Unity.Editor
             m_CurrentAtlas = null;
         }
 
-        private void MakeAtlasTiles()
-        {
+        private void MakeAtlasTiles() {
             // Order by area then Id
             var orderedTiles = m_AtlasTiles.OrderByDescending(t => t.SourceRectangle.width * t.SourceRectangle.height).ThenBy(t => t.Index).ToList();
 
             // Make sure the first tile even fits
-            if (orderedTiles[0].SourceRectangle.width + 2 > m_AtlasWidth || orderedTiles[0].SourceRectangle.height + 2 > m_AtlasHeight)
-            {
+            if (orderedTiles[0].SourceRectangle.width + 2 > m_AtlasWidth || orderedTiles[0].SourceRectangle.height + 2 > m_AtlasHeight) {
                 m_TiledAssetImporter.ReportError("Atlas is not big enough to fit first tile. Try a larger atlas setting.");
-                m_TiledAssetImporter.ReportError("Atlas size is ({0}, {1}) but we need at least ({2}, {3}).", m_AtlasWidth, m_AtlasHeight, orderedTiles[0].SourceRectangle.width + 2, orderedTiles[0].SourceRectangle.height + 2);
+                m_TiledAssetImporter.ReportError("Atlas size is ({0}, {1}) but we need at least ({2}, {3}).", m_AtlasWidth, m_AtlasHeight,
+                    orderedTiles[0].SourceRectangle.width + 2, orderedTiles[0].SourceRectangle.height + 2);
 
                 // By default we'll be using regular non-atlased tiles
                 return;
@@ -107,18 +67,16 @@ namespace SuperTiled2Unity.Editor
             // Create the first atlas and start feeding tiles into it
             PushAtlasTexture();
 
-            foreach (var tile in orderedTiles)
-            {
-                int w = (int)tile.SourceRectangle.width;
-                int h = (int)tile.SourceRectangle.height;
-                int x = 0;
-                int y = 0;
+            foreach (var tile in orderedTiles) {
+                var w = (int) tile.SourceRectangle.width;
+                var h = (int) tile.SourceRectangle.height;
+                var x = 0;
+                var y = 0;
 
                 // Figure out where we're going to pack the tile
                 var atlasTexture = PackAtlasWithSize(w + 4, h + 4, out x, out y);
 
-                if (atlasTexture != null)
-                {
+                if (atlasTexture != null) {
                     var rect = new Rect(x + 2, y + 2, w, h);
 
                     tile.AtlasRectangle = rect;
@@ -161,20 +119,17 @@ namespace SuperTiled2Unity.Editor
             }
         }
 
-        private Texture2D PackAtlasWithSize(int width, int height, out int x, out int y)
-        {
+        private Texture2D PackAtlasWithSize(int width, int height, out int x, out int y) {
             Assert.IsNotNull(m_CurrentAtlas);
             Assert.IsNotNull(m_CurrentPacker);
 
             // Can we fit in the current texture atlas?
-            if (!m_CurrentPacker.TryAreaFit(width, height, out x, out y))
-            {
+            if (!m_CurrentPacker.TryAreaFit(width, height, out x, out y)) {
                 // We didn't fit in the current packer. Start a new one and try again
                 PushAtlasTexture();
 
                 // This should always succeed
-                if (!m_CurrentPacker.TryAreaFit(width, height, out x, out y))
-                {
+                if (!m_CurrentPacker.TryAreaFit(width, height, out x, out y)) {
                     // This should never happen. If the tile is too big to fit then we failed to check it before we got here.
                     Debug.LogErrorFormat("Error: Failed to pack size ({0}, {1}) into secondary atlas. This should not have happend.", width, height);
                     return null;
@@ -184,9 +139,8 @@ namespace SuperTiled2Unity.Editor
             return m_CurrentAtlas;
         }
 
-        private void PushAtlasTexture()
-        {
-            string textureName = string.Format("Atlas_{0}_{1}", m_TilesetScript.name,  m_AtlasTextures.Count + 1);
+        private void PushAtlasTexture() {
+            var textureName = string.Format("Atlas_{0}_{1}", m_TilesetScript.name, m_AtlasTextures.Count + 1);
 
             // Create the texture with a starter color that stands out
             m_CurrentAtlas = new Texture2D(m_AtlasWidth, m_AtlasHeight, TextureFormat.ARGB32, false);
@@ -204,18 +158,16 @@ namespace SuperTiled2Unity.Editor
             m_CurrentPacker = new Packer(m_AtlasWidth, m_AtlasHeight, false);
         }
 
-        private void Commit()
-        {
+        private void Commit() {
             // Done manipulating our atlas textures. Update all changes. No mipmaps and no more reading.
             m_AtlasTextures.ForEach(t => t.Apply(false, true));
 
             // Order tiles by Id
             var ordered = m_AtlasTiles.OrderBy(t => t.Index);
 
-            foreach (var t in ordered)
-            {
-                string spriteName = string.Format("Sprite_{0}_{1}", m_TilesetScript.name, t.Index + 1);
-                string tileName = string.Format("Tile_{0}_{1}", m_TilesetScript.name, t.Index + 1);
+            foreach (var t in ordered) {
+                var spriteName = string.Format("Sprite_{0}_{1}", m_TilesetScript.name, t.Index + 1);
+                var tileName = string.Format("Tile_{0}_{1}", m_TilesetScript.name, t.Index + 1);
 
                 // Create the sprite with the anchor at (0, 0)
                 var sprite = Sprite.Create(t.PreferredTexture2D, t.PreferredRectangle, Vector2.zero, m_TiledAssetImporter.SuperImportContext.Settings.PixelsPerUnit);
@@ -239,6 +191,25 @@ namespace SuperTiled2Unity.Editor
                 m_TilesetScript.m_Tiles.Add(tile);
                 m_TiledAssetImporter.SuperImportContext.AddObjectToAsset(tileName, tile);
             }
+        }
+
+        private class AtlasTile {
+            public Rect AtlasRectangle;
+
+            public Texture2D AtlasTexture;
+            public int Index;
+            public Rect SourceRectangle;
+            public Texture2D SourceTexture;
+
+            public Texture2D PreferredTexture2D {
+                get {
+                    if (AtlasTexture != null) return AtlasTexture;
+
+                    return SourceTexture;
+                }
+            }
+
+            public Rect PreferredRectangle => AtlasTexture != null ? AtlasRectangle : SourceRectangle;
         }
     }
 }

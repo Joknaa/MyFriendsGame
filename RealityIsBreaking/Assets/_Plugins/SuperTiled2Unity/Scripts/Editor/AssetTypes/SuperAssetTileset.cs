@@ -1,6 +1,3 @@
-﻿namespace SuperTiled2Unity.Editor
-{
-    public class SuperAssetTileset : SuperAsset
-    {
-    }
+﻿namespace SuperTiled2Unity.Editor {
+    public class SuperAssetTileset : SuperAsset { }
 }

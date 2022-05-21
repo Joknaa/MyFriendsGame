@@ -1,7 +1,4 @@
-﻿namespace SuperTiled2Unity.Editor
-{
+﻿namespace SuperTiled2Unity.Editor {
     // Used to tag assets specific to SuperTiled2Unity
-    public class SuperAssetSettings : SuperAsset
-    {
-    }
+    public class SuperAssetSettings : SuperAsset { }
 }

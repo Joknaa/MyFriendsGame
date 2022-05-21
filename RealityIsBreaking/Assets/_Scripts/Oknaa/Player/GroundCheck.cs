@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Player {
+namespace Old {
     public class GroundCheck : MonoBehaviour {
         private GameObject Player;
 

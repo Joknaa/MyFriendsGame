@@ -3,32 +3,25 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-
 #if UNITY_2020_2_OR_NEWER
 using ScriptedImporterEditor = UnityEditor.AssetImporters.ScriptedImporterEditor;
+
 #else
 using ScriptedImporterEditor = UnityEditor.Experimental.AssetImporters.ScriptedImporterEditor;
 #endif
 
-namespace SuperTiled2Unity.Editor
-{
-    public abstract class SuperImporterEditor<T> : ScriptedImporterEditor where T : SuperImporter
-    {
+namespace SuperTiled2Unity.Editor {
+    public abstract class SuperImporterEditor<T> : ScriptedImporterEditor where T : SuperImporter {
         private bool m_ShowDependencies;
         private bool m_ShowReferences;
 
-        public T TargetAssetImporter
-        {
-            get { return serializedObject.targetObject as T; }
-        }
+        public T TargetAssetImporter => serializedObject.targetObject as T;
 
         protected abstract string EditorLabel { get; }
         protected abstract string EditorDefinition { get; }
 
-        public override sealed void OnInspectorGUI()
-        {
-            if (assetTarget != null)
-            {
+        public sealed override void OnInspectorGUI() {
+            if (assetTarget != null) {
                 // If we have importer errors then they should be front and center
                 DisplayMissingFileErrors();
                 DisplayErrorsAndWarnings();
@@ -44,53 +37,37 @@ namespace SuperTiled2Unity.Editor
                 InternalOnInspectorGUI();
                 DisplayDependencies();
             }
-            else
-            {
+            else {
                 ForceDeselectAndExit();
             }
         }
 
-        protected override void OnHeaderGUI()
-        {
+        protected override void OnHeaderGUI() {
             if (assetTarget != null)
-            {
                 base.OnHeaderGUI();
-            }
             else
-            {
                 ForceDeselectAndExit();
-            }
         }
 
-        protected U GetAssetTarget<U>() where U : UnityEngine.Object
-        {
-            foreach (var target in assetTargets)
-            {
-                U u = target as U;
-                if (u != null)
-                {
-                    return u;
-                }
+        protected U GetAssetTarget<U>() where U : Object {
+            foreach (var target in assetTargets) {
+                var u = target as U;
+                if (u != null) return u;
             }
 
             return null;
         }
 
 
-        protected void ToggleFromInt(SerializedProperty property, GUIContent label)
-        {
+        protected void ToggleFromInt(SerializedProperty property, GUIContent label) {
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
-            int intValue = EditorGUILayout.Toggle(label, property.intValue > 0) ? 1 : 0;
+            var intValue = EditorGUILayout.Toggle(label, property.intValue > 0) ? 1 : 0;
             EditorGUI.showMixedValue = false;
-            if (EditorGUI.EndChangeCheck())
-            {
-                property.intValue = intValue;
-            }
+            if (EditorGUI.EndChangeCheck()) property.intValue = intValue;
         }
 
-        protected void InternalApplyRevertGUI()
-        {
+        protected void InternalApplyRevertGUI() {
 #if UNITY_2019_2_OR_NEWER
             serializedObject.ApplyModifiedProperties();
 #endif
@@ -99,12 +76,9 @@ namespace SuperTiled2Unity.Editor
 
         protected abstract void InternalOnInspectorGUI();
 
-        private void DisplayMissingFileErrors()
-        {
-            using (new GuiScopedBackgroundColor(Color.magenta))
-            {
-                if (TargetAssetImporter.MissingFiles.Any())
-                {
+        private void DisplayMissingFileErrors() {
+            using (new GuiScopedBackgroundColor(Color.magenta)) {
+                if (TargetAssetImporter.MissingFiles.Any()) {
                     var asset = Path.GetFileName(TargetAssetImporter.assetPath);
                     EditorGUILayout.LabelField("Missing or misplaced assets!", EditorStyles.boldLabel);
 
@@ -120,17 +94,10 @@ namespace SuperTiled2Unity.Editor
 
                     EditorGUILayout.HelpBox(msg.ToString(), MessageType.Error);
 
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        if (GUILayout.Button("Copy Message to Clipboard"))
-                        {
-                            msg.ToString().CopyToClipboard();
-                        }
+                    using (new GUILayout.HorizontalScope()) {
+                        if (GUILayout.Button("Copy Message to Clipboard")) msg.ToString().CopyToClipboard();
 
-                        if (GUILayout.Button("Reimport"))
-                        {
-                            ApplyAndImport();
-                        }
+                        if (GUILayout.Button("Reimport")) ApplyAndImport();
                     }
 
                     EditorGUILayout.Separator();
@@ -138,14 +105,11 @@ namespace SuperTiled2Unity.Editor
             }
         }
 
-        private void DisplayErrorsAndWarnings()
-        {
+        private void DisplayErrorsAndWarnings() {
             var asset = Path.GetFileName(TargetAssetImporter.assetPath);
 
-            using (new GuiScopedBackgroundColor(Color.red))
-            {
-                if (TargetAssetImporter.Errors.Any())
-                {
+            using (new GuiScopedBackgroundColor(Color.red)) {
+                if (TargetAssetImporter.Errors.Any()) {
                     EditorGUILayout.LabelField("There were errors importing " + asset, EditorStyles.boldLabel);
 
                     var msg = new StringBuilder();
@@ -154,163 +118,119 @@ namespace SuperTiled2Unity.Editor
 
                     EditorGUILayout.HelpBox(msg.ToString(), MessageType.Error);
 
-                    if (GUILayout.Button("Copy Error Message to Clipboard"))
-                    {
-                        msg.ToString().CopyToClipboard();
-                    }
+                    if (GUILayout.Button("Copy Error Message to Clipboard")) msg.ToString().CopyToClipboard();
 
                     EditorGUILayout.Separator();
                 }
             }
 
-            using (new GuiScopedBackgroundColor(Color.yellow))
-            {
-                if (TargetAssetImporter.Warnings.Any())
-                {
+            using (new GuiScopedBackgroundColor(Color.yellow)) {
+                if (TargetAssetImporter.Warnings.Any()) {
                     EditorGUILayout.LabelField("There were warnings importing " + asset, EditorStyles.boldLabel);
                     var msg = string.Join("\n\n", TargetAssetImporter.Warnings.Take(10).ToArray());
                     EditorGUILayout.HelpBox(msg, MessageType.Warning);
 
-                    if (GUILayout.Button("Copy Warning Message to Clipboard"))
-                    {
-                        msg.ToString().CopyToClipboard();
-                    }
+                    if (GUILayout.Button("Copy Warning Message to Clipboard")) msg.CopyToClipboard();
 
                     EditorGUILayout.Separator();
                 }
             }
         }
 
-        private void DisplayTagManagerErrors()
-        {
-            bool missingSortingLayers = TargetAssetImporter.MissingSortingLayers.Any();
-            bool missingLayers = TargetAssetImporter.MissingLayers.Any();
-            bool missingTags = TargetAssetImporter.MissingTags.Any();
+        private void DisplayTagManagerErrors() {
+            var missingSortingLayers = TargetAssetImporter.MissingSortingLayers.Any();
+            var missingLayers = TargetAssetImporter.MissingLayers.Any();
+            var missingTags = TargetAssetImporter.MissingTags.Any();
 
-            if (!missingSortingLayers && !missingLayers && !missingTags)
-            {
-                return;
-            }
+            if (!missingSortingLayers && !missingLayers && !missingTags) return;
 
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
 
-            using (new GuiScopedBackgroundColor(Color.yellow))
-            {
-                if (missingSortingLayers)
-                {
+            using (new GuiScopedBackgroundColor(Color.yellow)) {
+                if (missingSortingLayers) {
                     EditorGUILayout.LabelField("Missing Sorting Layers!", EditorStyles.boldLabel);
 
-                    using (new GuiScopedIndent())
-                    {
-                        StringBuilder message = new StringBuilder("Sorting Layers are missing in your project settings. Open the Tag Manager, add these missing sorting layers, and reimport:");
+                    using (new GuiScopedIndent()) {
+                        var message = new StringBuilder(
+                            "Sorting Layers are missing in your project settings. Open the Tag Manager, add these missing sorting layers, and reimport:");
                         message.AppendLine();
                         message.AppendLine();
 
-                        foreach (var layer in TargetAssetImporter.MissingSortingLayers)
-                        {
-                            message.AppendFormat("    {0}\n", layer);
-                        }
+                        foreach (var layer in TargetAssetImporter.MissingSortingLayers) message.AppendFormat("    {0}\n", layer);
 
                         EditorGUILayout.HelpBox(message.ToString(), MessageType.Warning);
                     }
                 }
 
-                if (missingLayers)
-                {
+                if (missingLayers) {
                     EditorGUILayout.LabelField("Missing Layers!", EditorStyles.boldLabel);
 
-                    using (new GuiScopedIndent())
-                    {
-                        StringBuilder message = new StringBuilder("Layers are missing in your project settings. Open the Tag Manager, add these missing layers, and reimport:");
+                    using (new GuiScopedIndent()) {
+                        var message = new StringBuilder("Layers are missing in your project settings. Open the Tag Manager, add these missing layers, and reimport:");
                         message.AppendLine();
                         message.AppendLine();
 
-                        foreach (var layer in TargetAssetImporter.MissingLayers)
-                        {
-                            message.AppendFormat("    {0}\n", layer);
-                        }
+                        foreach (var layer in TargetAssetImporter.MissingLayers) message.AppendFormat("    {0}\n", layer);
 
                         EditorGUILayout.HelpBox(message.ToString(), MessageType.Warning);
                     }
                 }
 
-                if (missingTags)
-                {
+                if (missingTags) {
                     EditorGUILayout.LabelField("Missing Tags!", EditorStyles.boldLabel);
 
-                    using (new GuiScopedIndent())
-                    {
-                        StringBuilder message = new StringBuilder("Tags are missing in your project settings. Open the Tag Manager, add these missing tags, and reimport:");
+                    using (new GuiScopedIndent()) {
+                        var message = new StringBuilder("Tags are missing in your project settings. Open the Tag Manager, add these missing tags, and reimport:");
                         message.AppendLine();
                         message.AppendLine();
 
-                        foreach (var tag in TargetAssetImporter.MissingTags)
-                        {
-                            message.AppendFormat("    {0}\n", tag);
-                        }
+                        foreach (var tag in TargetAssetImporter.MissingTags) message.AppendFormat("    {0}\n", tag);
 
                         EditorGUILayout.HelpBox(message.ToString(), MessageType.Warning);
                     }
                 }
             }
 
-            using (new GUILayout.HorizontalScope())
-            {
+            using (new GUILayout.HorizontalScope()) {
 #if UNITY_2018_3_OR_NEWER
-                if (GUILayout.Button("Open Tag Manager"))
-                {
-                    SettingsService.OpenProjectSettings("Project/Tags and Layers");
-                }
+                if (GUILayout.Button("Open Tag Manager")) SettingsService.OpenProjectSettings("Project/Tags and Layers");
 #endif
-                if (GUILayout.Button("Reimport"))
-                {
-                    ApplyAndImport();
-                }
+                if (GUILayout.Button("Reimport")) ApplyAndImport();
             }
 
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
         }
 
-        private void DisplayDependencies()
-        {
-            if (EditorApplication.isPlaying)
-            {
+        private void DisplayDependencies() {
+            if (EditorApplication.isPlaying) {
                 EditorGUILayout.LabelField("[Dependencies are not diplayed while Editor is in Play Mode]", EditorStyles.boldLabel);
                 return;
             }
 
             AssetDependencies depends;
-            if (!TiledAssetDependencies.Instance.GetAssetDependencies(TargetAssetImporter.assetPath, out depends))
-            {
-                return;
-            }
+            if (!TiledAssetDependencies.Instance.GetAssetDependencies(TargetAssetImporter.assetPath, out depends)) return;
 
             EditorGUILayout.TextArea("", GUI.skin.horizontalSlider);
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Additional Tiled Asset Information", EditorStyles.boldLabel);
 
-            using (new GuiScopedIndent())
-            {
+            using (new GuiScopedIndent()) {
                 DisplayObjectCount();
 
-                using (new GuiScopedIndent())
-                {
+                using (new GuiScopedIndent()) {
                     var title = string.Format("Dependencies ({0})", depends.Dependencies.Count());
                     var tip = "This asset will be automatically reimported when any of these other assets are updated.";
                     var content = new GUIContent(title, tip);
                     m_ShowDependencies = EditorGUILayout.Foldout(m_ShowDependencies, content);
 
                     if (m_ShowDependencies)
-                    {
-                        foreach (var asset in depends.Dependencies)
-                        {
+                        foreach (var asset in depends.Dependencies) {
                             EditorGUILayout.LabelField(asset);
 
                             // Context menu items for dependencies
                             var clickArea = GUILayoutUtility.GetLastRect();
                             var current = Event.current;
-                            if (clickArea.Contains(current.mousePosition) && current.type == EventType.ContextClick)
-                            {
+                            if (clickArea.Contains(current.mousePosition) && current.type == EventType.ContextClick) {
                                 var assetName = Path.GetFileName(asset);
                                 var selectText = string.Format("Select '{0}'", assetName);
                                 var reimportText = string.Format("Reimport '{0}'", assetName);
@@ -322,27 +242,22 @@ namespace SuperTiled2Unity.Editor
                                 current.Use();
                             }
                         }
-                    }
                 }
 
-                using (new GuiScopedIndent())
-                {
+                using (new GuiScopedIndent()) {
                     var title = string.Format("References ({0})", depends.References.Count());
                     var tip = "This asset is used by this list of other assets.";
                     var content = new GUIContent(title, tip);
                     m_ShowReferences = EditorGUILayout.Foldout(m_ShowReferences, content);
 
                     if (m_ShowReferences)
-                    {
-                        foreach (var asset in depends.References)
-                        {
+                        foreach (var asset in depends.References) {
                             EditorGUILayout.LabelField(asset);
 
                             // Context menu items for dependencies
                             var clickArea = GUILayoutUtility.GetLastRect();
                             var current = Event.current;
-                            if (clickArea.Contains(current.mousePosition) && current.type == EventType.ContextClick)
-                            {
+                            if (clickArea.Contains(current.mousePosition) && current.type == EventType.ContextClick) {
                                 var assetName = Path.GetFileName(asset);
                                 var selectText = string.Format("Select '{0}'", assetName);
 
@@ -352,16 +267,13 @@ namespace SuperTiled2Unity.Editor
                                 current.Use();
                             }
                         }
-                    }
                 }
             }
         }
 
-        private void DisplayObjectCount()
-        {
+        private void DisplayObjectCount() {
             var numberOfObjectsProperty = serializedObject.FindProperty("m_NumberOfObjectsImported");
-            if (numberOfObjectsProperty != null)
-            {
+            if (numberOfObjectsProperty != null) {
                 var title = string.Format("Object Count: {0}", numberOfObjectsProperty.intValue);
                 var tip = "The number of objects imported into this asset.";
                 var content = new GUIContent(title, tip);
@@ -369,26 +281,23 @@ namespace SuperTiled2Unity.Editor
             }
         }
 
-        private void MenuCallbackSelect(object asset)
-        {
-            string assetPath = asset.ToString();
+        private void MenuCallbackSelect(object asset) {
+            var assetPath = asset.ToString();
             var assetObject = AssetDatabase.LoadMainAssetAtPath(assetPath);
             Selection.activeObject = assetObject;
             EditorUtility.FocusProjectWindow();
             EditorGUIUtility.PingObject(assetObject);
         }
 
-        private void MenuCallbackReimport(object asset)
-        {
-            string assetPath = asset.ToString();
+        private void MenuCallbackReimport(object asset) {
+            var assetPath = asset.ToString();
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
         }
 
-        private void ForceDeselectAndExit()
-        {
+        private void ForceDeselectAndExit() {
             // Force Unity to null out select and stop OnGUI calls for this editor
             // This is unfortunate but necessary under re-import edge conditions
-            Selection.objects = new UnityEngine.Object[0];
+            Selection.objects = new Object[0];
             GUIUtility.ExitGUI();
         }
 

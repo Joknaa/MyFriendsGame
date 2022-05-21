@@ -1,6 +1,3 @@
-﻿namespace SuperTiled2Unity
-{
-    public class SuperTileLayer : SuperLayer
-    {
-    }
+﻿namespace SuperTiled2Unity {
+    public class SuperTileLayer : SuperLayer { }
 }

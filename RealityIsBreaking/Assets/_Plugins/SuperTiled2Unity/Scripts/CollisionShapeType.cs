@@ -1,10 +1,8 @@
-﻿namespace SuperTiled2Unity
-{
-    public enum CollisionShapeType
-    {
+﻿namespace SuperTiled2Unity {
+    public enum CollisionShapeType {
         Rectangle,
         Ellipse,
         Polygon,
-        Polyline,
+        Polyline
     }
 }

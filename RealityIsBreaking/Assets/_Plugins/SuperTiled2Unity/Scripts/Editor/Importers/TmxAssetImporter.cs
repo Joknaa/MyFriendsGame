@@ -7,55 +7,44 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Tilemaps;
-
 #if UNITY_2020_2_OR_NEWER
 using ScriptedImporterAttribute = UnityEditor.AssetImporters.ScriptedImporterAttribute;
+
 #else
 using ScriptedImporterAttribute = UnityEditor.Experimental.AssetImporters.ScriptedImporterAttribute;
 #endif
 
-namespace SuperTiled2Unity.Editor
-{
+namespace SuperTiled2Unity.Editor {
     [ScriptedImporter(ImporterConstants.MapVersion, ImporterConstants.MapExtension, ImporterConstants.MapImportOrder)]
-    public partial class TmxAssetImporter : TiledAssetImporter
-    {
-        private SuperMap m_MapComponent;
-        private Grid m_GridComponent;
+    public partial class TmxAssetImporter : TiledAssetImporter {
+        [SerializeField] private bool m_TilesAsObjects;
+
+        [SerializeField] private SortingMode m_SortingMode = SortingMode.Stacked;
+
+        [SerializeField] private bool m_IsIsometric;
+
+        [SerializeField] private string m_CustomImporterClassName = string.Empty;
+
+        [SerializeField] private List<SuperTileset> m_InternalTilesets;
 
         private GlobalTileDatabase m_GlobalTileDatabase;
+        private Grid m_GridComponent;
+        private SuperMap m_MapComponent;
+        private int m_ObjectIdCounter;
         private Dictionary<uint, TilePolygonCollection> m_TilePolygonDatabase;
-        private int m_ObjectIdCounter = 0;
+        public bool TilesAsObjects => m_TilesAsObjects;
+        public SortingMode SortingMode => m_SortingMode;
+        public bool IsIsometric => m_IsIsometric;
 
-        [SerializeField]
-        private bool m_TilesAsObjects = false;
-        public bool TilesAsObjects { get { return m_TilesAsObjects; } }
-
-        [SerializeField]
-        private SortingMode m_SortingMode = SortingMode.Stacked;
-        public SortingMode SortingMode { get { return m_SortingMode; } }
-
-        [SerializeField]
-        private bool m_IsIsometric = false;
-        public bool IsIsometric { get { return m_IsIsometric; } }
-
-        [SerializeField]
-        private string m_CustomImporterClassName = string.Empty;
-
-        [SerializeField]
-        private List<SuperTileset> m_InternalTilesets;
-
-        protected override void InternalOnImportAsset()
-        {
+        protected override void InternalOnImportAsset() {
             base.InternalOnImportAsset();
             ImporterVersion = ImporterConstants.MapVersion;
             AddSuperAsset<SuperAssetMap>();
 
-            XDocument doc = XDocument.Load(assetPath);
-            if (doc != null)
-            {
+            var doc = XDocument.Load(assetPath);
+            if (doc != null) {
                 // Early out if Zstd compression is used. This simply isn't supported by Unity.
-                if (doc.Descendants("data").Where(x => ((string)x.Attribute("compression")) == "zstd").Count() > 0)
-                {
+                if (doc.Descendants("data").Where(x => (string) x.Attribute("compression") == "zstd").Count() > 0) {
                     ReportError("Unity does not support Zstandard compression.");
                     ReportError("Select a different 'Tile Layer Format' in your map settings in Tiled and resave.");
                     return;
@@ -69,8 +58,7 @@ namespace SuperTiled2Unity.Editor
             DoCustomImporting();
         }
 
-        private void ProcessMap(XElement xMap)
-        {
+        private void ProcessMap(XElement xMap) {
             Assert.IsNotNull(xMap);
             Assert.IsNull(m_MapComponent);
             Assert.IsNull(m_GlobalTileDatabase);
@@ -80,19 +68,17 @@ namespace SuperTiled2Unity.Editor
             RendererSorter.SortingMode = m_SortingMode;
 
             // Create our map and fill it out
-            bool success = true;
+            var success = true;
             success = success && PrepareMainObject();
             success = success && ProcessMapAttributes(xMap);
             success = success && ProcessGridObject(xMap);
             success = success && ProcessTilesetElements(xMap);
 
-            if (success)
-            {
+            if (success) {
                 // Custom properties need to be in place before we process the map layers
                 AddSuperCustomProperties(m_MapComponent.gameObject, xMap.Element("properties"));
 
-                using (SuperImportContext.BeginIsTriggerOverride(m_MapComponent.gameObject))
-                {
+                using (SuperImportContext.BeginIsTriggerOverride(m_MapComponent.gameObject)) {
                     // Add layers to our grid object
                     ProcessMapLayers(m_GridComponent.gameObject, xMap);
                     PostProccessMapLayers(m_GridComponent.gameObject);
@@ -101,8 +87,7 @@ namespace SuperTiled2Unity.Editor
         }
 
         // The map object is our Main Asset - the prefab that is created in our scene when dragged into the hierarchy
-        private bool PrepareMainObject()
-        {
+        private bool PrepareMainObject() {
             var icon = SuperIcons.GetTmxIcon();
 
             var goGrid = new GameObject("_MapMainObject");
@@ -113,9 +98,8 @@ namespace SuperTiled2Unity.Editor
             return true;
         }
 
-        private bool ProcessMapAttributes(XElement xMap)
-        {
-            m_MapComponent.name = Path.GetFileNameWithoutExtension(this.assetPath);
+        private bool ProcessMapAttributes(XElement xMap) {
+            m_MapComponent.name = Path.GetFileNameWithoutExtension(assetPath);
             m_MapComponent.m_Version = xMap.GetAttributeAs<string>("version");
             m_MapComponent.m_TiledVersion = xMap.GetAttributeAs<string>("tiledversion");
 
@@ -141,8 +125,7 @@ namespace SuperTiled2Unity.Editor
             return true;
         }
 
-        private bool ProcessGridObject(XElement xMap)
-        {
+        private bool ProcessGridObject(XElement xMap) {
             // Add the grid to the map
             var goGrid = new GameObject("Grid");
             goGrid.transform.SetParent(m_MapComponent.gameObject.transform);
@@ -150,13 +133,12 @@ namespace SuperTiled2Unity.Editor
             m_GridComponent = goGrid.AddComponent<Grid>();
 
             // Grid cell size always has a z-value of 1 so that we can use custom axis sorting
-            float sx = SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth);
-            float sy = SuperImportContext.MakeScalar(m_MapComponent.m_TileHeight);
+            var sx = SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth);
+            var sy = SuperImportContext.MakeScalar(m_MapComponent.m_TileHeight);
             m_GridComponent.cellSize = new Vector3(sx, sy, 1);
-            Vector3 tilemapOffset = new Vector3(0, 0, 0);
+            var tilemapOffset = new Vector3(0, 0, 0);
 
-            switch (m_MapComponent.m_Orientation)
-            {
+            switch (m_MapComponent.m_Orientation) {
 #if UNITY_2018_3_OR_NEWER
                 case MapOrientation.Isometric:
                     m_GridComponent.cellLayout = GridLayout.CellLayout.Isometric;
@@ -166,70 +148,52 @@ namespace SuperTiled2Unity.Editor
                 case MapOrientation.Staggered:
                     m_GridComponent.cellLayout = GridLayout.CellLayout.Isometric;
 
-                    if (m_MapComponent.m_StaggerAxis == StaggerAxis.Y)
-                    {
+                    if (m_MapComponent.m_StaggerAxis == StaggerAxis.Y) {
                         if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
-                        {
                             // Y - Odd
                             tilemapOffset = new Vector3(0, -sy, 0);
-                        }
                         else
-                        {
                             // Y-Even
                             tilemapOffset = new Vector3(sx * 0.5f, -sy, 0);
-                        }
                     }
-                    else if (m_MapComponent.m_StaggerAxis == StaggerAxis.X)
-                    {
+                    else if (m_MapComponent.m_StaggerAxis == StaggerAxis.X) {
                         // X-Ood
                         if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
-                        {
                             tilemapOffset = new Vector3(0, -sy, 0);
-                        }
                         else
-                        {
                             // X-Even
                             tilemapOffset = new Vector3(0, -sy * 1.5f, 0);
-                        }
                     }
+
                     break;
 
                 case MapOrientation.Hexagonal:
-                    if (m_MapComponent.m_StaggerAxis == StaggerAxis.Y)
-                    {
+                    if (m_MapComponent.m_StaggerAxis == StaggerAxis.Y) {
                         // Pointy-top hex maps
                         m_GridComponent.cellLayout = GridLayout.CellLayout.Hexagon;
                         m_GridComponent.cellSwizzle = GridLayout.CellSwizzle.XYZ;
 
                         if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
-                        {
                             // Y-Odd
                             tilemapOffset = new Vector3(0, -sy, 0);
-                        }
                         else
-                        {
                             // Y-Even
                             tilemapOffset = new Vector3(0, -sy * 0.25f, 0);
-                        }
                     }
-                    else if (m_MapComponent.m_StaggerAxis == StaggerAxis.X)
-                    {
+                    else if (m_MapComponent.m_StaggerAxis == StaggerAxis.X) {
                         // Flat-top hex maps. Reverse x and y on size.
                         m_GridComponent.cellLayout = GridLayout.CellLayout.Hexagon;
                         m_GridComponent.cellSwizzle = GridLayout.CellSwizzle.YXZ;
                         m_GridComponent.cellSize = new Vector3(sy, sx, 1);
 
                         if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
-                        {
                             // X-Odd
                             tilemapOffset = new Vector3(-sx * 0.75f, -sy * 1.5f, 0);
-                        }
                         else
-                        {
                             // X-Even
                             tilemapOffset = new Vector3(0, -sy * 1.5f, 0);
-                        }
                     }
+
                     break;
 #endif
                 default:
@@ -243,33 +207,25 @@ namespace SuperTiled2Unity.Editor
             return true;
         }
 
-        private bool ProcessTilesetElements(XElement xMap)
-        {
+        private bool ProcessTilesetElements(XElement xMap) {
             Assert.IsNull(m_GlobalTileDatabase);
 
-            bool success = true;
+            var success = true;
 
             // Our tile database will be fed with tiles from each referenced tileset
             m_GlobalTileDatabase = new GlobalTileDatabase();
             m_InternalTilesets = new List<SuperTileset>();
 
             foreach (var xTileset in xMap.Elements("tileset"))
-            {
                 if (xTileset.Attribute("source") != null)
-                {
                     success = success && ProcessTilesetElementExternal(xTileset);
-                }
                 else
-                {
                     success = success && ProcessTilesetElementInternal(xTileset);
-                }
-            }
 
             return success;
         }
 
-        private bool ProcessTilesetElementExternal(XElement xTileset)
-        {
+        private bool ProcessTilesetElementExternal(XElement xTileset) {
             Assert.IsNotNull(xTileset);
             Assert.IsNotNull(m_GlobalTileDatabase);
 
@@ -277,8 +233,7 @@ namespace SuperTiled2Unity.Editor
             var source = xTileset.GetAttributeAs<string>("source");
 
             // JSON customized assets are not supported as Unity has the *.json extension reserved
-            if (string.Equals(Path.GetExtension(source), ".json", StringComparison.OrdinalIgnoreCase))
-            {
+            if (string.Equals(Path.GetExtension(source), ".json", StringComparison.OrdinalIgnoreCase)) {
                 ReportError("JSON tilesets are not supported by Unity. Use TSX files instead. Tileset: {0}", source);
                 return false;
             }
@@ -286,34 +241,26 @@ namespace SuperTiled2Unity.Editor
             // Load the tileset and process the tiles inside
             var tileset = RequestAssetAtPath<SuperTileset>(source);
 
-            if (tileset == null)
-            {
+            if (tileset == null) {
                 // Tileset is either missing or is not yet ready
                 ReportError("Missing tileset asset: {0}", source);
                 return false;
             }
-            else
-            {
-                // Warn the user of mismatching pixels per units
-                if (PixelsPerUnit != tileset.m_PixelsPerUnit)
-                {
-                    ReportWarning("Pixels Per Unit mismatch between map ({0}) and tileset '{1}' ({2})", PixelsPerUnit, source, tileset.m_PixelsPerUnit);
-                }
 
-                if (tileset.m_HasErrors)
-                {
-                    ReportError("Errors detected in tileset '{0}'. Check the tileset inspector for more details. Your map may be broken until these are fixed.", source);
-                }
+            // Warn the user of mismatching pixels per units
+            if (PixelsPerUnit != tileset.m_PixelsPerUnit)
+                ReportWarning("Pixels Per Unit mismatch between map ({0}) and tileset '{1}' ({2})", PixelsPerUnit, source, tileset.m_PixelsPerUnit);
 
-                // Register all the tiles with the tile database for this map
-                m_GlobalTileDatabase.RegisterTileset(firstId, tileset);
-            }
+            if (tileset.m_HasErrors)
+                ReportError("Errors detected in tileset '{0}'. Check the tileset inspector for more details. Your map may be broken until these are fixed.", source);
+
+            // Register all the tiles with the tile database for this map
+            m_GlobalTileDatabase.RegisterTileset(firstId, tileset);
 
             return true;
         }
 
-        private bool ProcessTilesetElementInternal(XElement xTileset)
-        {
+        private bool ProcessTilesetElementInternal(XElement xTileset) {
             var firstId = xTileset.GetAttributeAs<int>("firstgid");
             var name = xTileset.GetAttributeAs<string>("name");
 
@@ -322,15 +269,14 @@ namespace SuperTiled2Unity.Editor
             tileset.name = name;
             m_InternalTilesets.Add(tileset);
 
-            string assetName = string.Format("_TilesetScriptObjectInternal_{0}", m_InternalTilesets.Count);
+            var assetName = string.Format("_TilesetScriptObjectInternal_{0}", m_InternalTilesets.Count);
             SuperImportContext.AddObjectToAsset(assetName, tileset);
 
             // In the case of internal tilesets, only use an atlas if it will help with seams
-            bool useAtlas = xTileset.Element("image") != null;
+            var useAtlas = xTileset.Element("image") != null;
             var loader = new TilesetLoader(tileset, this, useAtlas, 2048, 2048);
 
-            if (loader.LoadFromXml(xTileset))
-            {
+            if (loader.LoadFromXml(xTileset)) {
                 m_GlobalTileDatabase.RegisterTileset(firstId, tileset);
                 ReportWarning("Tileset '{0}' is an embedded tileset. Exported tilesets are preferred.", tileset.name);
                 return true;
@@ -339,69 +285,41 @@ namespace SuperTiled2Unity.Editor
             return false;
         }
 
-        private void ProcessMapLayers(GameObject goParent, XElement xMap)
-        {
+        private void ProcessMapLayers(GameObject goParent, XElement xMap) {
             // Note that this method is re-entrant due to group layers
-            foreach (XElement xNode in xMap.Elements())
-            {
-                if (!xNode.GetAttributeAs<bool>("visible", true))
-                {
-                    continue;
-                }
+            foreach (var xNode in xMap.Elements()) {
+                if (!xNode.GetAttributeAs("visible", true)) continue;
 
-                LayerIgnoreMode ignoreMode = xNode.GetPropertyAttributeAs(StringConstants.Unity_Ignore, SuperImportContext.LayerIgnoreMode);
-                if (ignoreMode == LayerIgnoreMode.True)
-                {
-                    continue;
-                }
+                var ignoreMode = xNode.GetPropertyAttributeAs(StringConstants.Unity_Ignore, SuperImportContext.LayerIgnoreMode);
+                if (ignoreMode == LayerIgnoreMode.True) continue;
 
-                using (SuperImportContext.BeginLayerIgnoreMode(ignoreMode))
-                {
+                using (SuperImportContext.BeginLayerIgnoreMode(ignoreMode)) {
                     if (xNode.Name == "layer")
-                    {
                         ProcessTileLayer(goParent, xNode);
-                    }
                     else if (xNode.Name == "group")
-                    {
                         ProcessGroupLayer(goParent, xNode);
-                    }
                     else if (xNode.Name == "objectgroup")
-                    {
                         ProcessObjectLayer(goParent, xNode);
-                    }
-                    else if (xNode.Name == "imagelayer")
-                    {
-                        ProcessImageLayer(goParent, xNode);
-                    }
+                    else if (xNode.Name == "imagelayer") ProcessImageLayer(goParent, xNode);
                 }
             }
         }
 
-        private void PostProccessMapLayers(GameObject goParent)
-        {
-            foreach (var layer in goParent.GetComponentsInChildren<SuperLayer>())
-            {
-                layer.SetWorldPosition(m_MapComponent, SuperImportContext);
-            }
+        private void PostProccessMapLayers(GameObject goParent) {
+            foreach (var layer in goParent.GetComponentsInChildren<SuperLayer>()) layer.SetWorldPosition(m_MapComponent, SuperImportContext);
 
             // Refresh all our tilemaps so that needless prefab instance changes don't appear
-            foreach (var tilemap in goParent.GetComponentsInChildren<Tilemap>())
-            {
-                tilemap.RefreshAllTiles();
-            }
+            foreach (var tilemap in goParent.GetComponentsInChildren<Tilemap>()) tilemap.RefreshAllTiles();
         }
 
-        private void DoPrefabReplacements()
-        {
+        private void DoPrefabReplacements() {
             // Should any of our objects (from Tiled) be replaced by instantiated prefabs?
             var supers = m_MapComponent.GetComponentsInChildren<SuperObject>();
-            foreach (var so in supers)
-            {
+            foreach (var so in supers) {
                 var prefab = SuperImportContext.Settings.GetPrefabReplacement(so.m_Type);
-                if (prefab != null)
-                {
+                if (prefab != null) {
                     // Replace the super object with the instantiated prefab
-                    var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+                    var instance = (GameObject) PrefabUtility.InstantiatePrefab(prefab);
                     instance.transform.SetParent(so.transform.parent);
                     instance.transform.position = so.transform.position + prefab.transform.localPosition;
                     instance.transform.rotation = so.transform.rotation;
@@ -409,35 +327,27 @@ namespace SuperTiled2Unity.Editor
                     // Apply custom properties as messages to the instanced prefab
                     var props = so.GetComponent<SuperCustomProperties>();
                     if (props != null)
-                    {
                         foreach (var p in props.m_Properties)
-                        {
                             instance.gameObject.BroadcastProperty(p);
-                        }
-                    }
 
                     // Keep the name from Tiled.
-                    string name = so.gameObject.name;
+                    var name = so.gameObject.name;
                     DestroyImmediate(so.gameObject);
                     instance.name = name;
                 }
             }
         }
 
-        private void DoCustomImporting()
-        {
+        private void DoCustomImporting() {
             ApplyUserImporter();
             ApplyAutoImporters();
         }
 
-        private void ApplyUserImporter()
-        {
-            if (!string.IsNullOrEmpty(m_CustomImporterClassName))
-            {
+        private void ApplyUserImporter() {
+            if (!string.IsNullOrEmpty(m_CustomImporterClassName)) {
                 var type = AppDomain.CurrentDomain.GetTypeFromName(m_CustomImporterClassName);
 
-                if (type == null)
-                {
+                if (type == null) {
                     ReportError("Custom Importer error. Class type '{0}' is missing.", m_CustomImporterClassName);
                     return;
                 }
@@ -446,43 +356,33 @@ namespace SuperTiled2Unity.Editor
             }
         }
 
-        private void ApplyAutoImporters()
-        {
-            foreach (var type in AutoCustomTmxImporterAttribute.GetOrderedAutoImportersTypes())
-            {
-                RunCustomImporterType(type);
-            }
+        private void ApplyAutoImporters() {
+            foreach (var type in AutoCustomTmxImporterAttribute.GetOrderedAutoImportersTypes()) RunCustomImporterType(type);
         }
 
-        private void RunCustomImporterType(Type type)
-        {
+        private void RunCustomImporterType(Type type) {
             // Instantiate a custom importer class for specialized projects to use
             CustomTmxImporter customImporter;
-            try
-            {
+            try {
                 customImporter = Activator.CreateInstance(type) as CustomTmxImporter;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 ReportError("Error creating custom importer class. Message = '{0}'", e.Message);
                 return;
             }
 
-            try
-            {
+            try {
                 var args = new TmxAssetImportedArgs();
                 args.AssetImporter = this;
                 args.ImportedSuperMap = m_MapComponent;
 
                 customImporter.TmxAssetImported(args);
             }
-            catch (CustomImporterException cie)
-            {
+            catch (CustomImporterException cie) {
                 ReportError("Custom Importer error: \n  Importer: {0}\n  Message: {1}", customImporter.GetType().Name, cie.Message);
                 Debug.LogErrorFormat("Custom Importer ({0}) exception: {1}", customImporter.GetType().Name, cie.Message);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 ReportError("Custom importer '{0}' threw an exception. Message = '{1}', Stack:\n{2}", customImporter.GetType().Name, e.Message, e.StackTrace);
                 Debug.LogErrorFormat("Custom importer general exception: {0}", e.Message);
             }

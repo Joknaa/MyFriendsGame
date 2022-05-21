@@ -1,19 +1,15 @@
 ﻿using UnityEngine;
 
-namespace SuperTiled2Unity.Editor
-{
+namespace SuperTiled2Unity.Editor {
     // Create concrete collider types based on inheritence and geometry input
-    public abstract class ColliderFactory
-    {
-        public ColliderFactory(SuperImportContext importContext)
-        {
+    public abstract class ColliderFactory {
+        public ColliderFactory(SuperImportContext importContext) {
             ImportContext = importContext;
         }
 
-        public SuperImportContext ImportContext { get; private set; }
+        public SuperImportContext ImportContext { get; }
 
-        public Vector2 TransformPoint(float x, float y)
-        {
+        public Vector2 TransformPoint(float x, float y) {
             return TransformPoint(new Vector2(x, y));
         }
 

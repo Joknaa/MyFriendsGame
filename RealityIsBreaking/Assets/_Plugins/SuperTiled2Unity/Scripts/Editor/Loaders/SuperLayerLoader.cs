@@ -1,20 +1,16 @@
 ﻿using System.Xml.Linq;
 using UnityEngine;
 
-namespace SuperTiled2Unity.Editor
-{
+namespace SuperTiled2Unity.Editor {
     // Helps us create SuperLayer objects from XML
-    public abstract class SuperLayerLoader
-    {
+    public abstract class SuperLayerLoader {
         protected XElement m_Xml;
 
-        protected SuperLayerLoader(XElement xml)
-        {
+        protected SuperLayerLoader(XElement xml) {
             m_Xml = xml;
         }
 
-        public SuperLayer CreateLayer(GameObject go)
-        {
+        public SuperLayer CreateLayer(GameObject go) {
             var layer = CreateLayerComponent(go);
 
             layer.m_TiledName = m_Xml.GetAttributeAs("name", "layer");

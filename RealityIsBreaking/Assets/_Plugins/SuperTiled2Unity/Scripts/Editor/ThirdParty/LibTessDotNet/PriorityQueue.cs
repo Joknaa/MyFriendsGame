@@ -44,20 +44,16 @@ using System.Diagnostics;
 namespace SuperTiled2Unity.Editor.LibTessDotNet
 //#endif
 {
-    internal class PriorityQueue<TValue> where TValue : class
-    {
-        private PriorityHeap<TValue>.LessOrEqual _leq;
-        private PriorityHeap<TValue> _heap;
+    internal class PriorityQueue<TValue> where TValue : class {
+        private readonly PriorityHeap<TValue> _heap;
+        private bool _initialized;
         private TValue[] _keys;
+        private readonly PriorityHeap<TValue>.LessOrEqual _leq;
         private int[] _order;
 
         private int _size, _max;
-        private bool _initialized;
 
-        public bool Empty { get { return _size == 0 && _heap.Empty; } }
-
-        public PriorityQueue(int initialSize, PriorityHeap<TValue>.LessOrEqual leq)
-        {
+        public PriorityQueue(int initialSize, PriorityHeap<TValue>.LessOrEqual leq) {
             _leq = leq;
             _heap = new PriorityHeap<TValue>(initialSize, leq);
 
@@ -68,20 +64,15 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             _initialized = false;
         }
 
-        class StackItem
-        {
-            internal int p, r;
-        };
+        public bool Empty => _size == 0 && _heap.Empty;
 
-        static void Swap(ref int a, ref int b)
-        {
-            int tmp = a;
+        private static void Swap(ref int a, ref int b) {
+            var tmp = a;
             a = b;
             b = tmp;
         }
 
-        public void Init()
-        {
+        public void Init() {
             var stack = new Stack<StackItem>();
             int p, r, i, j, piv;
             uint seed = 2016473283;
@@ -89,51 +80,48 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             p = 0;
             r = _size - 1;
             _order = new int[_size + 1];
-            for (piv = 0, i = p; i <= r; ++piv, ++i)
-            {
-                _order[i] = piv;
-            }
+            for (piv = 0, i = p; i <= r; ++piv, ++i) _order[i] = piv;
 
-            stack.Push(new StackItem { p = p, r = r });
-            while (stack.Count > 0)
-            {
+            stack.Push(new StackItem {p = p, r = r});
+            while (stack.Count > 0) {
                 var top = stack.Pop();
                 p = top.p;
                 r = top.r;
 
-                while (r > p + 10)
-                {
+                while (r > p + 10) {
                     seed = seed * 1539415821 + 1;
-                    i = p + (int)(seed % (r - p + 1));
+                    i = p + (int) (seed % (r - p + 1));
                     piv = _order[i];
                     _order[i] = _order[p];
                     _order[p] = piv;
                     i = p - 1;
                     j = r + 1;
                     do {
-                        do { ++i; } while (!_leq(_keys[_order[i]], _keys[piv]));
-                        do { --j; } while (!_leq(_keys[piv], _keys[_order[j]]));
+                        do {
+                            ++i;
+                        } while (!_leq(_keys[_order[i]], _keys[piv]));
+
+                        do {
+                            --j;
+                        } while (!_leq(_keys[piv], _keys[_order[j]]));
+
                         Swap(ref _order[i], ref _order[j]);
                     } while (i < j);
+
                     Swap(ref _order[i], ref _order[j]);
-                    if (i - p < r - j)
-                    {
-                        stack.Push(new StackItem { p = j + 1, r = r });
+                    if (i - p < r - j) {
+                        stack.Push(new StackItem {p = j + 1, r = r});
                         r = i - 1;
                     }
-                    else
-                    {
-                        stack.Push(new StackItem { p = p, r = i - 1 });
+                    else {
+                        stack.Push(new StackItem {p = p, r = i - 1});
                         p = j + 1;
                     }
                 }
-                for (i = p + 1; i <= r; ++i)
-                {
+
+                for (i = p + 1; i <= r; ++i) {
                     piv = _order[i];
-                    for (j = i; j > p && !_leq(_keys[piv], _keys[_order[j - 1]]); --j)
-                    {
-                        _order[j] = _order[j - 1];
-                    }
+                    for (j = i; j > p && !_leq(_keys[piv], _keys[_order[j - 1]]); --j) _order[j] = _order[j - 1];
                     _order[j] = piv;
                 }
             }
@@ -141,10 +129,7 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
 #if DEBUG
             p = 0;
             r = _size - 1;
-            for (i = p; i < r; ++i)
-            {
-                Debug.Assert(_leq(_keys[_order[i + 1]], _keys[_order[i]]), "Wrong sort");
-            }
+            for (i = p; i < r; ++i) Debug.Assert(_leq(_keys[_order[i + 1]], _keys[_order[i]]), "Wrong sort");
 #endif
 
             _max = _size;
@@ -152,39 +137,30 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             _heap.Init();
         }
 
-        public PQHandle Insert(TValue value)
-        {
-            if (_initialized)
-            {
-                return _heap.Insert(value);
-            }
+        public PQHandle Insert(TValue value) {
+            if (_initialized) return _heap.Insert(value);
 
-            int curr = _size;
-            if (++_size >= _max)
-            {
+            var curr = _size;
+            if (++_size >= _max) {
                 _max <<= 1;
                 Array.Resize(ref _keys, _max);
             }
 
             _keys[curr] = value;
-            return new PQHandle { _handle = -(curr + 1) };
+            return new PQHandle {_handle = -(curr + 1)};
         }
 
-        public TValue ExtractMin()
-        {
+        public TValue ExtractMin() {
             Debug.Assert(_initialized);
 
-            if (_size == 0)
-            {
-                return _heap.ExtractMin();
-            }
-            TValue sortMin = _keys[_order[_size - 1]];
-            if (!_heap.Empty)
-            {
-                TValue heapMin = _heap.Minimum();
+            if (_size == 0) return _heap.ExtractMin();
+            var sortMin = _keys[_order[_size - 1]];
+            if (!_heap.Empty) {
+                var heapMin = _heap.Minimum();
                 if (_leq(heapMin, sortMin))
                     return _heap.ExtractMin();
             }
+
             do {
                 --_size;
             } while (_size > 0 && _keys[_order[_size - 1]] == null);
@@ -192,42 +168,38 @@ namespace SuperTiled2Unity.Editor.LibTessDotNet
             return sortMin;
         }
 
-        public TValue Minimum()
-        {
+        public TValue Minimum() {
             Debug.Assert(_initialized);
 
-            if (_size == 0)
-            {
-                return _heap.Minimum();
-            }
-            TValue sortMin = _keys[_order[_size - 1]];
-            if (!_heap.Empty)
-            {
-                TValue heapMin = _heap.Minimum();
+            if (_size == 0) return _heap.Minimum();
+            var sortMin = _keys[_order[_size - 1]];
+            if (!_heap.Empty) {
+                var heapMin = _heap.Minimum();
                 if (_leq(heapMin, sortMin))
                     return heapMin;
             }
+
             return sortMin;
         }
 
-        public void Remove(PQHandle handle)
-        {
+        public void Remove(PQHandle handle) {
             Debug.Assert(_initialized);
 
-            int curr = handle._handle;
-            if (curr >= 0)
-            {
+            var curr = handle._handle;
+            if (curr >= 0) {
                 _heap.Remove(handle);
                 return;
             }
+
             curr = -(curr + 1);
             Debug.Assert(curr < _max && _keys[curr] != null);
 
             _keys[curr] = null;
-            while (_size > 0 && _keys[_order[_size - 1]] == null)
-            {
-                --_size;
-            }
+            while (_size > 0 && _keys[_order[_size - 1]] == null) --_size;
+        }
+
+        private class StackItem {
+            internal int p, r;
         }
     }
 }

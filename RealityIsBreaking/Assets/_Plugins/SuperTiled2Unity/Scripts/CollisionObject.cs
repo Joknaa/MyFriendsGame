@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace SuperTiled2Unity
-{
+namespace SuperTiled2Unity {
     [Serializable]
-    public class CollisionObject
-    {
+    public class CollisionObject {
         public int m_ObjectId;
 
         public string m_ObjectName;
@@ -26,20 +24,17 @@ namespace SuperTiled2Unity
 
         public bool m_IsTrigger;
 
-        [SerializeField]
-        private Vector2[] m_Points;
-        public Vector2[] Points { get { return m_Points; } }
+        [SerializeField] private Vector2[] m_Points;
 
-        [SerializeField]
-        private bool m_IsClosed;
-        public bool IsClosed { get { return m_IsClosed; } }
+        [SerializeField] private bool m_IsClosed;
 
-        [SerializeField]
-        private CollisionShapeType m_CollisionShapeType;
-        public CollisionShapeType CollisionShapeType { get { return m_CollisionShapeType; } }
+        [SerializeField] private CollisionShapeType m_CollisionShapeType;
 
-        public void MakePointsFromRectangle()
-        {
+        public Vector2[] Points => m_Points;
+        public bool IsClosed => m_IsClosed;
+        public CollisionShapeType CollisionShapeType => m_CollisionShapeType;
+
+        public void MakePointsFromRectangle() {
             m_CollisionShapeType = CollisionShapeType.Rectangle;
             m_IsClosed = true;
 
@@ -52,56 +47,44 @@ namespace SuperTiled2Unity
             m_Points[3] = new Vector2(m_Size.x, 0);
         }
 
-        public void MakePointsFromEllipse(int numEdges)
-        {
+        public void MakePointsFromEllipse(int numEdges) {
             m_CollisionShapeType = CollisionShapeType.Ellipse;
             m_IsClosed = true;
 
             // Estimate the ellipse with a polygon
-            float theta = ((float)Math.PI * 2.0f) / numEdges;
-            float half_x = m_Size.x * 0.5f;
-            float half_y = m_Size.y * 0.5f;
+            var theta = (float) Math.PI * 2.0f / numEdges;
+            var half_x = m_Size.x * 0.5f;
+            var half_y = m_Size.y * 0.5f;
 
             m_Points = new Vector2[numEdges];
-            for (int i = 0; i < numEdges; i++)
-            {
+            for (var i = 0; i < numEdges; i++) {
                 m_Points[i].x = half_x + half_x * Mathf.Cos(theta * i);
                 m_Points[i].y = half_y + half_y * Mathf.Sin(theta * i);
             }
         }
 
-        public void MakePointsFromPolygon(Vector2[] points)
-        {
+        public void MakePointsFromPolygon(Vector2[] points) {
             m_CollisionShapeType = CollisionShapeType.Polygon;
             m_IsClosed = true;
             m_Points = points;
         }
 
-        public void MakePointsFromPolyline(Vector2[] points)
-        {
+        public void MakePointsFromPolyline(Vector2[] points) {
             m_CollisionShapeType = CollisionShapeType.Polyline;
             m_IsClosed = false;
             m_Points = points;
         }
 
         // This must be called in order for rotation and position offset to by applied
-        public void RenderPoints(SuperTile tile, GridOrientation orientation, Vector2 gridSize)
-        {
-            if (orientation == GridOrientation.Isometric)
-            {
+        public void RenderPoints(SuperTile tile, GridOrientation orientation, Vector2 gridSize) {
+            if (orientation == GridOrientation.Isometric) {
                 m_Position = IsometricTransform(m_Position, tile, gridSize);
                 m_Position.x += gridSize.x * 0.5f;
 
-                for (int i = 0; i < m_Points.Length; i++)
-                {
-                    m_Points[i] = IsometricTransform(m_Points[i], tile, gridSize);
-                }
+                for (var i = 0; i < m_Points.Length; i++) m_Points[i] = IsometricTransform(m_Points[i], tile, gridSize);
 
                 // Also, we are forced to use polygon colliders for isometric projection
-                if (m_CollisionShapeType == CollisionShapeType.Ellipse || m_CollisionShapeType == CollisionShapeType.Rectangle)
-                {
-                    m_CollisionShapeType = CollisionShapeType.Polygon;
-                }
+                if (m_CollisionShapeType == CollisionShapeType.Ellipse || m_CollisionShapeType == CollisionShapeType.Rectangle) m_CollisionShapeType = CollisionShapeType.Polygon;
             }
 
             // Burn rotation into our points
@@ -116,35 +99,31 @@ namespace SuperTiled2Unity
             m_Position = LocalTransform(m_Position, tile);
         }
 
-        private Vector2 IsometricTransform(Vector2 pt, SuperTile tile,Vector2 gridSize)
-        {
-            float cx = pt.x / gridSize.y;
-            float cy = pt.y / gridSize.y;
+        private Vector2 IsometricTransform(Vector2 pt, SuperTile tile, Vector2 gridSize) {
+            var cx = pt.x / gridSize.y;
+            var cy = pt.y / gridSize.y;
 
-            float x = (cx - cy) * gridSize.x * 0.5f;
-            float y = (cx + cy) * gridSize.y * 0.5f;
+            var x = (cx - cy) * gridSize.x * 0.5f;
+            var y = (cx + cy) * gridSize.y * 0.5f;
 
             y += (tile.m_Height - gridSize.y) * 0.5f;
 
             return new Vector2(x, y);
         }
 
-        private Vector2 LocalTransform(Vector2 pt, SuperTile tile)
-        {
+        private Vector2 LocalTransform(Vector2 pt, SuperTile tile) {
             return new Vector2(pt.x, tile.m_Height - pt.y);
         }
 
-        private void ApplyRotationToPoints()
-        {
-            if (m_Rotation != 0)
-            {
+        private void ApplyRotationToPoints() {
+            if (m_Rotation != 0) {
                 var rads = m_Rotation * Mathf.Deg2Rad;
                 var cos = Mathf.Cos(rads);
                 var sin = Mathf.Sin(rads);
 
                 var rotate = MatrixUtils.Rotate2d(cos, -sin, sin, cos);
 
-                m_Points = m_Points.Select(p => rotate.MultiplyPoint(p)).Select(v3 => (Vector2)v3).ToArray();
+                m_Points = m_Points.Select(p => rotate.MultiplyPoint(p)).Select(v3 => (Vector2) v3).ToArray();
             }
         }
     }

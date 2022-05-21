@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace SuperTiled2Unity
-{
-    public enum ObjectAlignment
-    {
+namespace SuperTiled2Unity {
+    public enum ObjectAlignment {
         Unspecified,
         TopLeft,
         Top,
@@ -13,26 +11,20 @@ namespace SuperTiled2Unity
         Right,
         BottomLeft,
         Bottom,
-        BottomRight,
+        BottomRight
     }
 
-    public static class ObjectAlignmentToPivot
-    {
-        public static Vector3 ToVector3(float width, float height, float inversePPU, MapOrientation mapOrientation, ObjectAlignment objectAlignment)
-        {
+    public static class ObjectAlignmentToPivot {
+        public static Vector3 ToVector3(float width, float height, float inversePPU, MapOrientation mapOrientation, ObjectAlignment objectAlignment) {
             width *= inversePPU;
             height *= inversePPU;
 
             float dx = 0;
             float dy = 0;
 
-            if (objectAlignment == ObjectAlignment.Unspecified)
-            {
-                objectAlignment = mapOrientation == MapOrientation.Isometric ? ObjectAlignment.Bottom : ObjectAlignment.BottomLeft;
-            }
+            if (objectAlignment == ObjectAlignment.Unspecified) objectAlignment = mapOrientation == MapOrientation.Isometric ? ObjectAlignment.Bottom : ObjectAlignment.BottomLeft;
 
-            switch (objectAlignment)
-            {
+            switch (objectAlignment) {
                 case ObjectAlignment.BottomLeft:
                     dx = 0;
                     dy = 0;

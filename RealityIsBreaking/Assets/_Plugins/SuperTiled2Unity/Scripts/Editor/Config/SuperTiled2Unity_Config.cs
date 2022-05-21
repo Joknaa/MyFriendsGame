@@ -4,16 +4,14 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-namespace SuperTiled2Unity.Editor
-{
-    internal class SuperTiled2Unity_Config
-    {
+namespace SuperTiled2Unity.Editor {
+    internal class SuperTiled2Unity_Config {
         internal const string Version = "1.10.3";
         internal const string DefaultSettingsFileName = "ST2U Settings.asset";
 
-        public static ST2USettings CreateDefaultSettings()
-        {
+        public static ST2USettings CreateDefaultSettings() {
             var scriptPath = AssetDatabaseEx.GetFirstPathOfScriptAsset<SuperTiled2Unity_Config>();
             var settingsPath = Path.GetDirectoryName(scriptPath);
             settingsPath = Path.Combine(settingsPath, DefaultSettingsFileName).SanitizePath();
@@ -25,62 +23,44 @@ namespace SuperTiled2Unity.Editor
             return settings;
         }
 
-        public static string GetVersionError()
-        {
+        public static string GetVersionError() {
             return string.Format("SuperTiled2Unity requires Unity 2018.3 or later. You are using {0}", Application.unityVersion);
         }
 
         [MenuItem("Assets/SuperTiled2Unity/Export ST2U Asset...", true)]
-        public static bool ExportSuperAssetValidate()
-        {
+        public static bool ExportSuperAssetValidate() {
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if (!string.IsNullOrEmpty(path))
-            {
-                return AssetDatabase.LoadAssetAtPath<SuperAsset>(path) != null;
-            }
+            if (!string.IsNullOrEmpty(path)) return AssetDatabase.LoadAssetAtPath<SuperAsset>(path) != null;
 
             return false;
         }
 
         [MenuItem("Assets/SuperTiled2Unity/Export ST2U Asset...")]
-        public static void ExportSuperAsset()
-        {
+        public static void ExportSuperAsset() {
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
             var tracker = new RecursiveAssetDependencyTracker(path);
             SuperPackageExport.ShowWindow(Path.GetFileNameWithoutExtension(path), tracker.Dependencies);
         }
 
         [MenuItem("Assets/SuperTiled2Unity/Apply Default Settings to ST2U Assets")]
-        public static void ReimportWithDefaults()
-        {
-            UnityEngine.Object[] selectedAsset = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.DeepAssets);
-            HashSet<TiledAssetImporter> tiledImporters = new HashSet<TiledAssetImporter>();
+        public static void ReimportWithDefaults() {
+            var selectedAsset = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+            var tiledImporters = new HashSet<TiledAssetImporter>();
 
-            foreach (var obj in selectedAsset)
-            {
+            foreach (var obj in selectedAsset) {
                 var path = AssetDatabase.GetAssetPath(obj);
                 var importer = AssetImporter.GetAtPath(path) as TiledAssetImporter;
-                if (importer != null)
-                {
-                    tiledImporters.Add(importer);
-                }
+                if (importer != null) tiledImporters.Add(importer);
             }
 
-            foreach (var importer in tiledImporters)
-            {
-                importer.ApplyDefaultSettings();
-            }
+            foreach (var importer in tiledImporters) importer.ApplyDefaultSettings();
 
-            foreach (var importer in tiledImporters)
-            {
-                importer.SaveAndReimport();
-            }
+            foreach (var importer in tiledImporters) importer.SaveAndReimport();
         }
 
         // This is only invoked by a deployment batch file
-        public static void DeploySuperTiled2Unity()
-        {
-            var path = string.Format("{0}/../../deploy/SuperTiled2Unity.{1}.unitypackage", Application.dataPath, SuperTiled2Unity_Config.Version);
+        public static void DeploySuperTiled2Unity() {
+            var path = string.Format("{0}/../../deploy/SuperTiled2Unity.{1}.unitypackage", Application.dataPath, Version);
             Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             var files = Directory.GetFiles("Assets/SuperTiled2Unity", "*.*", SearchOption.AllDirectories).ToList();

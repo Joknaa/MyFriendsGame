@@ -1,8 +1,6 @@
-﻿namespace SuperTiled2Unity
-{
-    public enum StaggerIndex
-    {
+﻿namespace SuperTiled2Unity {
+    public enum StaggerIndex {
         Even,
-        Odd,
+        Odd
     }
 }

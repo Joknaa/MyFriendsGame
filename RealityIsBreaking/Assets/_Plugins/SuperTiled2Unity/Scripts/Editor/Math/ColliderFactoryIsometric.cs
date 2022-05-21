@@ -2,22 +2,18 @@
 using System.Linq;
 using UnityEngine;
 
-namespace SuperTiled2Unity.Editor
-{
-    public class ColliderFactoryIsometric : ColliderFactory
-    {
-        private float m_MapTileWidth;
-        private float m_MapTileHeight;
+namespace SuperTiled2Unity.Editor {
+    public class ColliderFactoryIsometric : ColliderFactory {
+        private readonly float m_MapTileHeight;
+        private readonly float m_MapTileWidth;
 
         public ColliderFactoryIsometric(float mapTileWidth, float mapTileHeight, SuperImportContext importContext)
-            : base(importContext)
-        {
+            : base(importContext) {
             m_MapTileWidth = mapTileWidth;
             m_MapTileHeight = mapTileHeight;
         }
 
-        public override Vector2 TransformPoint(Vector2 point)
-        {
+        public override Vector2 TransformPoint(Vector2 point) {
             var iso = point;
             iso.x = iso.x / m_MapTileHeight;
             iso.y = iso.y / m_MapTileHeight;
@@ -29,15 +25,13 @@ namespace SuperTiled2Unity.Editor
             return xf;
         }
 
-        public override Collider2D MakeBox(GameObject go, float width, float height)
-        {
+        public override Collider2D MakeBox(GameObject go, float width, float height) {
             // In isometric space, a box is skewed and therefore represented by a polygon 
-            var points = new Vector2[4]
-            {
+            var points = new Vector2[4] {
                 new Vector2(0, 0),
                 new Vector2(width, 0),
                 new Vector2(width, height),
-                new Vector2(0, height),
+                new Vector2(0, height)
             };
 
             // Points are transformed to isometric space and then into Unity coordinates
@@ -49,17 +43,15 @@ namespace SuperTiled2Unity.Editor
             return collider;
         }
 
-        public override Collider2D MakeEllipse(GameObject go, float width, float height)
-        {
+        public override Collider2D MakeEllipse(GameObject go, float width, float height) {
             // Ellipses are always approximated with polygons in isometric maps
-            int count = ImportContext.Settings.EdgesPerEllipse;
-            float theta = ((float)Math.PI * 2.0f) / count;
+            var count = ImportContext.Settings.EdgesPerEllipse;
+            var theta = (float) Math.PI * 2.0f / count;
 
-            Vector2[] points = new Vector2[count];
-            for (int i = 0; i < count; i++)
-            {
-                points[i].x = width * 0.5f * (float)Math.Cos(theta * i);
-                points[i].y = height * 0.5f * (float)Math.Sin(theta * i);
+            var points = new Vector2[count];
+            for (var i = 0; i < count; i++) {
+                points[i].x = width * 0.5f * (float) Math.Cos(theta * i);
+                points[i].y = height * 0.5f * (float) Math.Sin(theta * i);
                 points[i] = TransformPoint(points[i]);
             }
 
@@ -71,8 +63,7 @@ namespace SuperTiled2Unity.Editor
             return collider;
         }
 
-        public override Collider2D MakePolygon(GameObject go, Vector2[] points)
-        {
+        public override Collider2D MakePolygon(GameObject go, Vector2[] points) {
             var transformed = points.Select(p => TransformPoint(p)).ToArray();
             transformed = ImportContext.MakePoints(transformed);
 
@@ -81,8 +72,7 @@ namespace SuperTiled2Unity.Editor
             return collider;
         }
 
-        public override Collider2D MakePolyline(GameObject go, Vector2[] points)
-        {
+        public override Collider2D MakePolyline(GameObject go, Vector2[] points) {
             var transformed = points.Select(p => TransformPoint(p)).ToArray();
             transformed = ImportContext.MakePoints(transformed);
 

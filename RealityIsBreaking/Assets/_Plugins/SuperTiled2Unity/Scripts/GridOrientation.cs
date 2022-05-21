@@ -1,8 +1,6 @@
-﻿namespace SuperTiled2Unity
-{
-    public enum GridOrientation
-    {
+﻿namespace SuperTiled2Unity {
+    public enum GridOrientation {
         Orthogonal,
-        Isometric,
+        Isometric
     }
 }

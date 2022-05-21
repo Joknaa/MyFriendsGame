@@ -1,7 +1,5 @@
-﻿namespace SuperTiled2Unity.Editor
-{
-    public static class StringConstants
-    {
+﻿namespace SuperTiled2Unity.Editor {
+    public static class StringConstants {
         public const string Unity_Prefix = "unity:";
         public const string Unity_Ignore = Unity_Prefix + "ignore";
         public const string Unity_IsTrigger = Unity_Prefix + "IsTrigger";

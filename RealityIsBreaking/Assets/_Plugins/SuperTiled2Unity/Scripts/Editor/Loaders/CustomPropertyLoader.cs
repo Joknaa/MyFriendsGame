@@ -1,33 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace SuperTiled2Unity.Editor
-{
-    public static class CustomPropertyLoader
-    {
-        public static List<CustomProperty> LoadCustomPropertyList(XElement xProperties)
-        {
-            List<CustomProperty> properties = new List<CustomProperty>();
+namespace SuperTiled2Unity.Editor {
+    public static class CustomPropertyLoader {
+        public static List<CustomProperty> LoadCustomPropertyList(XElement xProperties) {
+            var properties = new List<CustomProperty>();
 
             if (xProperties != null)
-            {
-                foreach (var xProperty in xProperties.Elements("property"))
-                {
+                foreach (var xProperty in xProperties.Elements("property")) {
                     var property = LoadCustomProperty(xProperty);
 
-                    if (!property.IsEmpty)
-                    {
-                        properties.Add(property);
-                    }
+                    if (!property.IsEmpty) properties.Add(property);
                 }
-            }
 
             return properties;
         }
 
-        public static CustomProperty LoadCustomProperty(XElement xProperty)
-        {
-            CustomProperty property = new CustomProperty();
+        public static CustomProperty LoadCustomProperty(XElement xProperty) {
+            var property = new CustomProperty();
 
             property.m_Name = xProperty.GetAttributeAs("name", "");
             property.m_Type = xProperty.GetAttributeAs("type", "string");
@@ -37,15 +27,11 @@ namespace SuperTiled2Unity.Editor
 
             // A value attribute overrides a default attribute
             if (!string.IsNullOrEmpty(xProperty.Value))
-            {
                 // Using inner text
                 property.m_Value = xProperty.Value;
-            }
             else
-            {
                 // Using value attribute
-                property.m_Value = xProperty.GetAttributeAs<string>("value", property.m_Value);
-            }
+                property.m_Value = xProperty.GetAttributeAs("value", property.m_Value);
 
             return property;
         }
