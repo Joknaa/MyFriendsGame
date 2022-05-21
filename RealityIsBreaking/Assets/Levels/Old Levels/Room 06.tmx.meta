@@ -9,7 +9,7 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 1fa25d03934ea624a82bf2fcee6f0873, type: 3}
   missingFiles:
-  - Assets/Levels/Dow_TileSet.tsx
+  - Assets/Levels/Old Levels/Dow_TileSet.tsx
   errors:
   - 'Missing tileset asset: Dow_TileSet.tsx'
   warnings: []
