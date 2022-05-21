@@ -14,6 +14,7 @@ namespace Reality {
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag("Player")) {
+                print(" trigger enter");
                 CameraScript.SetCameraPosition(CameraTranslation);
                 other.transform.position += PlayerTranslation;
             }
