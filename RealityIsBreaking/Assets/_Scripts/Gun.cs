@@ -49,9 +49,10 @@ namespace Reality {
                 float angle = getShootingDirection();
 
                 GameObject bulletInstance = Instantiate(bullet, transform.parent.parent);
+                Bullet bulletScript = bulletInstance.AddComponent<Bullet>();
+                bulletScript.isPlayerBullet = true;
                 bulletInstance.transform.position = player.transform.position;
                 bulletInstance.name = "Bullet";
-                Bullet bulletScript = bulletInstance.AddComponent<Bullet>();
                 bulletScript.SetInstance(bulletInstance);
                 
                 Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();

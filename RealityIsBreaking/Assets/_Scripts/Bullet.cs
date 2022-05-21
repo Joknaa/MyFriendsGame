@@ -21,7 +21,14 @@ namespace Reality {
 
                 col.gameObject.GetComponent<Enemy_5>().takeDamage();
             }
-            
+
+            if (!isPlayerBullet && col.CompareTag("Player"))
+            {
+                print("Bullet hit Player");
+                Destroy(this.gameObject);
+
+                col.gameObject.GetComponent<PlayerController>().takeDamage();
+            }
         }
         
         public void SetInstance(GameObject instance) => this.bulletInstance = instance;

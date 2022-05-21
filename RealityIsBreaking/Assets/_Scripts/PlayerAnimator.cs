@@ -1,7 +1,8 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TarodevController {
+namespace Reality
+{
     /// <summary>
     /// This is a pretty filthy script. I was just arbitrarily adding to it as I went.
     /// You won't find any programming prowess here.

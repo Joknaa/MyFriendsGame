@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TarodevController {
+namespace Reality {
     /// <summary>
     /// Hey!
     /// Tarodev here. I built this controller as there was a severe lack of quality & free 2D controllers out there.
@@ -17,6 +18,11 @@ namespace TarodevController {
         public bool JumpingThisFrame { get; private set; }
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
+
+        public int MaxHealth = 6;
+        private int currentHealth;
+        private bool isImmune = false;
+        public float imunityTimer = 0.5f;
         public bool Grounded => _colDown;
 
         private Vector3 _lastPosition;
@@ -26,7 +32,11 @@ namespace TarodevController {
         private bool _active;
         void Awake() => Invoke(nameof(Activate), 0.5f);
         void Activate() =>  _active = true;
-        
+
+        private void Start()
+        {
+            currentHealth = MaxHealth;
+        }
         private void Update() {
             if(!_active) return;
             // Calculate velocity
@@ -44,10 +54,35 @@ namespace TarodevController {
             MoveCharacter(); // Actually perform the axis movement
         }
 
+        public void takeDamage()
+        {
+            if (!isImmune)
+            {
+                this.currentHealth--;
+                StartCoroutine(waitForImunity());
+            }
+            
+            if (currentHealth <= 0)
+            {
+                //YOU DIE
+                Debug.Log("You die");
+            }
+        }
 
-        #region Gather Input
+        private IEnumerator  waitForImunity()
+        {
+            isImmune = true;
+            yield return new WaitForSeconds(imunityTimer);
+            isImmune = false;
+        }
+        
 
-        private void GatherInput() {
+
+
+
+            #region Gather Input
+
+            private void GatherInput() {
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
