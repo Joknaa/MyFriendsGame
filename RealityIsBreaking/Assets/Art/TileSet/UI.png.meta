@@ -98,6 +98,9 @@ TextureImporter:
   - first:
       213: 3787343402263556702
     second: UI_28
+  - first:
+      213: 1360550569445208017
+    second: UI_29
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -849,7 +852,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 4, y: 5, z: 5, w: 4}
       outline: []
       physicsShape: []
@@ -870,7 +873,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 4, y: 5, z: 5, w: 4}
       outline: []
       physicsShape: []
@@ -878,6 +881,27 @@ TextureImporter:
       bones: []
       spriteID: e52b65612c85f8430800000000000000
       internalID: 3787343402263556702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_29
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 0
+        width: 236
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 168, y: 0, z: 65, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dfacbec885a1e210800000000000000
+      internalID: 1360550569445208017
       vertices: []
       indices: 
       edges: []

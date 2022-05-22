@@ -1552,7 +1552,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4120880644365715274, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
       propertyPath: m_Name
-      value: Window
+      value: Desktop
       objectReference: {fileID: 0}
     - target: {fileID: 4120880644365715275, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
       propertyPath: m_Pivot.x

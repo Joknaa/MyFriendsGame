@@ -977,6 +977,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1926706400807591323, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4120880644365715274, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
       propertyPath: m_Name
       value: Desktop
@@ -1072,6 +1076,10 @@ PrefabInstance:
     - target: {fileID: 8561121106233085116, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
       propertyPath: m_Name
       value: Wallpaper
+      objectReference: {fileID: 0}
+    - target: {fileID: 8561121106233085116, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 796a3c68969f6034ebcc772aaf5e79cd, type: 3}
