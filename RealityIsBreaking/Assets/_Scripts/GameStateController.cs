@@ -1,6 +1,8 @@
 namespace Reality {
     public class GameStateController {
         public enum GameState {
+            Desktop,
+            EmailReading,
             Playing,
             Paused,
             PhoneCall,
@@ -22,6 +24,9 @@ namespace Reality {
         public void SetState_GameOver() => currentGameState = GameState.GameOver;
         public void SetState_GameWon() => currentGameState = GameState.GameWon;
         public void SetState_PhoneCall() => currentGameState = GameState.PhoneCall;
+        public void SetState_EmailReading() => currentGameState = GameState.EmailReading;
+        
+        public void SetState_Desktop() => currentGameState = GameState.Desktop;
         
         
         public void TogglePause() => currentGameState = currentGameState == GameState.Paused ? GameState.Playing : GameState.Paused;
@@ -31,6 +36,8 @@ namespace Reality {
         public bool IsGameOver() => currentGameState == GameState.GameOver;
         public bool IsGameWon() => currentGameState == GameState.GameWon;
         public bool IsPhoneCall() => currentGameState == GameState.PhoneCall;
+        public bool IsEmailReading() => currentGameState == GameState.EmailReading;
+        public bool IsDesktop() => currentGameState == GameState.Desktop;
         
         
         public bool IsPlayable() => currentGameState == GameState.Playing || currentGameState == GameState.PhoneCall;

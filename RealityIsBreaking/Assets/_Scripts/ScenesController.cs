@@ -8,11 +8,15 @@ namespace Reality {
 
 
         public void LoadMainMenu() {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
 
         public void RestartLevel() {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public void LoadActualGame() {
+            SceneManager.LoadScene(2);
         }
     }
 }

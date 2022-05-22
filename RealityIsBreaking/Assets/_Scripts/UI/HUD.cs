@@ -6,7 +6,6 @@ namespace Reality {
         public GameObject HPBar;
         public GameObject phoneCallWindow;
 
-
         private void Update() {
             switch (GameStateController.Instance.GetState()) {
                 case GameStateController.GameState.Playing: Activate(hpBar: true);
@@ -21,9 +20,6 @@ namespace Reality {
                     break;
                 case GameStateController.GameState.GameOver: Activate(hpBar: true);
                     break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 

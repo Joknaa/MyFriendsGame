@@ -22,9 +22,7 @@ namespace Reality {
                     break;
                 case GameStateController.GameState.GameOver: Activate(gameOver: true);
                     break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
+                
             }
         }
 
