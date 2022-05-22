@@ -7,6 +7,8 @@ namespace Reality {
         public bool isPlayerBullet;
         public float damage = 1f;
 
+        
+
         private void OnTriggerEnter2D(Collider2D collidedWith) {
             if (collidedWith.CompareTag("Ground")) {
                 Destroy(bulletInstance);
@@ -14,10 +16,12 @@ namespace Reality {
 
             if (isPlayerBullet && collidedWith.CompareTag("Enemy")) {
                 collidedWith.gameObject.GetComponent<Enemy>().takeDamage(damage);
+                
                 Destroy(gameObject);
             }
 
             if (!isPlayerBullet && collidedWith.CompareTag("Player")) {
+                
                 collidedWith.gameObject.GetComponent<PlayerHealth>().takeDamage(damage);
                 Destroy(gameObject);
             }

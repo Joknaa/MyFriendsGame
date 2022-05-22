@@ -9,7 +9,10 @@ namespace Reality {
         public int currentHealth;
         private bool isImmune = false;
         public float immunityTimer = 0.5f;
-        
+
+        [SerializeField] private AudioSource _source;
+        [SerializeField] private AudioClip[] SFX;
+
         private SpriteRenderer spriteRenderer;
         
         private void Start() {
@@ -24,6 +27,7 @@ namespace Reality {
             
             if (!isImmune) {
                 currentHealth -= (int) damage;
+                _source.PlayOneShot(SFX[0]);
                 StartCoroutine(waitForImmunity());
             }
 
@@ -34,6 +38,7 @@ namespace Reality {
 
 
         private void OnPlayerDeath() {
+            _source.PlayOneShot(SFX[1]);
             GameStateController.Instance.SetState_GameOver();
         }
 

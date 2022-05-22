@@ -8,7 +8,10 @@ namespace Reality {
         [SerializeField] private Rigidbody2D gun;
         [SerializeField] private GameObject bullet;
         [SerializeField] private float bulletForce = 20f;
-        
+
+        [SerializeField] private AudioSource _source;
+        [SerializeField] private AudioClip[] SFX;
+
         private GameObject player;
 
 
@@ -59,6 +62,8 @@ namespace Reality {
             Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
             bulletRb.rotation = angle;
             bulletRb.AddForce(((Vector2)transform.position - (Vector2)player.transform.position).normalized * bulletForce, ForceMode2D.Impulse);
+
+            _source.PlayOneShot(SFX[0]);
         }
 
         private float getShootingDirection() {

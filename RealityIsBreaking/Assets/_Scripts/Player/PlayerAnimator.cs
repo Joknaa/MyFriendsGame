@@ -14,7 +14,7 @@ namespace Reality
         [SerializeField] private LayerMask _groundMask;
         [SerializeField] private ParticleSystem _jumpParticles, _launchParticles;
         [SerializeField] private ParticleSystem _moveParticles, _landParticles;
-        [SerializeField] private AudioClip[] _footsteps;
+        [SerializeField] private AudioClip[] SFX;
         [SerializeField] private float _maxTilt = .1f;
         [SerializeField] private float _tiltSpeed = 1;
         [SerializeField, Range(1f, 3f)] private float _maxIdleSpeed = 2;
@@ -45,15 +45,17 @@ namespace Reality
             _anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, Mathf.Abs(_player.Input.X)));
 
             // Splat
-            if (_player.LandingThisFrame) {
-                _anim.SetTrigger(GroundedKey);
-                _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
-            }
+            //if (_player.LandingThisFrame) {
+            //    _anim.SetTrigger(GroundedKey);
+            //    _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
+            //}
 
             // Jump effects
             if (_player.JumpingThisFrame) {
                 _anim.SetTrigger(JumpKey);
                 _anim.ResetTrigger(GroundedKey);
+                _source.PlayOneShot(SFX[0]);
+                
 
                 // Only play particles when grounded (avoid coyote)
                 if (_player.Grounded) {

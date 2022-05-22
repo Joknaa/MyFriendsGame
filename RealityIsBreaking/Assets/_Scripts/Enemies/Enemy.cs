@@ -8,11 +8,17 @@ namespace Reality {
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private float bulletForce = 40f;
 
+        [SerializeField] private AudioSource _source;
+        [SerializeField] private AudioClip[] SFX;
+
         [SerializeField] private int MaxHealth = 1;
+        private SpriteRenderer spriteRenderer;
         private int currentHealth;
         private GameObject player;
+        private bool isDead = false;
 
         void Start() {
+            spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
             player = GameObject.FindGameObjectWithTag("Player");
             currentHealth = MaxHealth;
             StartCoroutine(Shoot());
@@ -41,7 +47,24 @@ namespace Reality {
             bulletRb.AddForce(((Vector2) player.transform.position - (Vector2) transform.position).normalized * bulletForce, ForceMode2D.Impulse);
         }
 
-        private void CommitSeppuku() {
+        IEnumerator CommitSeppuku(float Timer) {
+            _source.PlayOneShot(SFX[1]);
+            isDead = true;
+            
+
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(Timer / 9);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(Timer / 9);
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(Timer / 9);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(Timer / 9);
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(Timer / 9);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(Timer / 9);
+
             Destroy(this.gameObject);
         }
 
@@ -52,8 +75,9 @@ namespace Reality {
 
         public void takeDamage(float damage) {
             this.currentHealth -= (int) damage;
-            if (currentHealth <= 0) {
-                CommitSeppuku();
+            _source.PlayOneShot(SFX[0]);
+            if (currentHealth <= 0 && isDead==false) {
+                StartCoroutine(CommitSeppuku(1f));
             }
         }
     }

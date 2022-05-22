@@ -19713,10 +19713,8 @@ MonoBehaviour:
   _launchParticles: {fileID: 1819912370}
   _moveParticles: {fileID: 1442387709}
   _landParticles: {fileID: 1548739750}
-  _footsteps:
-  - {fileID: 8300000, guid: 5d94063f45167b04ab62585e436da58c, type: 3}
-  - {fileID: 8300000, guid: b5803c17557c59c40bf3a6d69cb46cb3, type: 3}
-  - {fileID: 8300000, guid: 1876767bf7cbf284394dc3817af9593c, type: 3}
+  SFX:
+  - {fileID: 8300000, guid: e145c628411f7b44abfe778abbd1f0ad, type: 3}
   _maxTilt: 0
   _tiltSpeed: 30
   _maxIdleSpeed: 2
@@ -19730,7 +19728,7 @@ AudioSource:
   m_GameObject: {fileID: 5124300410236407460}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5717570398235199416, guid: e8f87ae146d9a8a4eb82373adc7f23eb, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.367
