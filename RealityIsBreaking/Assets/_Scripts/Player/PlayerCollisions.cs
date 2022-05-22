@@ -11,7 +11,9 @@ namespace Reality {
             if (collidedWith.CompareTag("Spike")) {
                 GetComponent<PlayerHealth>().takeDamage(1);
             }
-
+            if (collidedWith.CompareTag("PitFall")) {
+                GetComponent<PlayerHealth>().takeDamage(10);
+            }
         }
     }
 }

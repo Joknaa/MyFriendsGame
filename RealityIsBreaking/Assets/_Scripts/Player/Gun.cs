@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Reality {
     public class Gun : MonoBehaviour {
-        
         [SerializeField] private GameObject bullet;
         [SerializeField] private float bulletForce = 20f;
 
@@ -17,7 +16,6 @@ namespace Reality {
 
         private Vector3 mousePosition;
         private Camera cam;
-        
 
 
         void Start() {
@@ -27,7 +25,7 @@ namespace Reality {
 
         void Update() {
             if (!GameStateController.Instance.IsPlaying()) return;
-            
+
             MoveCursor();
             FireBullet();
             //MoveGun();
@@ -45,7 +43,8 @@ namespace Reality {
 
 
         private void FireBullet() {
-            if (!Input.GetMouseButtonDown(0)) return;
+            if (!GameStateController.Instance.IsPlaying_SecondHalf()) return;
+                if (!Input.GetMouseButtonDown(0)) return;
             float angle = getShootingDirection();
 
             GameObject bulletInstance = Instantiate(bullet, transform.parent.parent);
@@ -54,16 +53,16 @@ namespace Reality {
             bulletInstance.transform.position = player.transform.position;
             bulletInstance.name = "Bullet";
             bulletScript.SetInstance(bulletInstance);
-                
+
             Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
             bulletRb.rotation = angle;
-            bulletRb.AddForce(((Vector2)transform.position - (Vector2)player.transform.position).normalized * bulletForce, ForceMode2D.Impulse);
+            bulletRb.AddForce(((Vector2) transform.position - (Vector2) player.transform.position).normalized * bulletForce, ForceMode2D.Impulse);
 
             _source.PlayOneShot(SFX[0]);
         }
 
         private float getShootingDirection() {
-            Vector2 lookDir = (Vector2)transform.position - (Vector2)player.transform.position;
+            Vector2 lookDir = (Vector2) transform.position - (Vector2) player.transform.position;
             return Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         }
     }

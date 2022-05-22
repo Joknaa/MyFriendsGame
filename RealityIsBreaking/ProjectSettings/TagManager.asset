@@ -13,6 +13,7 @@ TagManager:
   - Chest
   - MusicController
   - RoomTransition
+  - PitFall
   layers:
   - Default
   - TransparentFX
