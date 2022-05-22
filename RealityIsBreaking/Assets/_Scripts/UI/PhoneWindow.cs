@@ -7,9 +7,11 @@ using DG.Tweening.Plugins.Options;
 using Fungus;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Reality {
     public class PhoneWindow : MonoBehaviour {
+        public GameObject phoneTaskBar;
         public GameObject phoneTalking;
         public GameObject phoneRinging;
         public float vibrationStrength = 180f;
@@ -30,6 +32,7 @@ namespace Reality {
 
         private void Start() {
             MusicManager = GameObject.Find("Controllers/MusicManager").GetComponent<AudioSource>();
+            phoneTaskBar.SetActive(true);
             ClickArrowAnimation();
         }
 
@@ -84,6 +87,8 @@ namespace Reality {
             PlaySong(secondSong);
             GameStateController.Instance.SetState_Playing_SecondHalf();
             GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelController>().StartSecondHalfLevels();
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PostProcessVolume>().enabled = true;
+            phoneTaskBar.SetActive(false);
             gameObject.SetActive(false);
         }
 

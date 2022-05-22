@@ -12,6 +12,8 @@ namespace Reality {
         private void Start() {
             GameStateController.Instance.SetState_Playing_FirstHalf();
             lastPlayingState = GameStateController.Instance.GetState();
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PostProcessVolume>().enabled = false;
+
         }
 
         private void Update() {
