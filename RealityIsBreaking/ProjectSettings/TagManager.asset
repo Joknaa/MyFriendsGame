@@ -11,6 +11,7 @@ TagManager:
   - EnemyBullet
   - Enemy
   - Chest
+  - MusicController
   layers:
   - Default
   - TransparentFX

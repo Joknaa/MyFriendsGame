@@ -16,6 +16,8 @@ namespace Reality {
             switch (GameStateController.Instance.GetState()) {
                 case GameStateController.GameState.Playing_FirstHalf: Activate(hud: true);
                     break;
+                case GameStateController.GameState.Playing_SecondHalf: Activate(hud: true);
+                    break;
                 case GameStateController.GameState.Paused: Activate(pause: true);
                     break;
                 case GameStateController.GameState.PhoneCall: Activate(hud: true);

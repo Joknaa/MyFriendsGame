@@ -30,7 +30,7 @@ namespace Reality {
         private void Start() {
             MusicManager = GameObject.Find("Controllers/MusicManager").GetComponent<AudioSource>();
             //Start Ringing
-            StartCoroutine(PlaySondg(ringingSFX));
+            //StartCoroutine(PlaySondg(ringingSFX));
 
             //gameObject.SetActive(false);
             ClickArrowAnimation();
@@ -49,6 +49,8 @@ namespace Reality {
         void PlaySong(AudioClip clippy)
         {
             Debug.Log("PHONE RING");
+            if (!GameStateController.Instance.IsPhoneCall()) return;
+
             MusicManager.Stop();
             MusicManager.clip = clippy;
             MusicManager.loop = true;
@@ -56,8 +58,10 @@ namespace Reality {
         }
 
         private void OnEnable() {
-            PlaySong(ringingSFX);
+            if (!GameStateController.Instance.IsPhoneCall()) return;
+            if (MusicManager != null) MusicManager = GameObject.FindGameObjectWithTag("MusicController").GetComponent<AudioSource>();
 
+            PlaySong(ringingSFX);
         }
 
         private void ClickArrowAnimation() {
@@ -93,8 +97,8 @@ namespace Reality {
         public void EndPhoneCall() {
             //Start second song
             PlaySong(secondSong);
-            gameObject.SetActive(false);
             GameStateController.Instance.SetState_Playing_SecondHalf();
+            gameObject.SetActive(false);
         }
 
         private IEnumerator UpdateCallCounter() {

@@ -17,10 +17,14 @@ namespace Reality {
         private int currentHealth;
         private GameObject player;
         private bool isDead = false;
+        private CircleCollider2D circleCollider;
 
         void Start() {
-            spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+            spriteRenderer = transform.GetComponent<SpriteRenderer>();
+            circleCollider = transform.GetComponent<CircleCollider2D>();
             spriteRenderer.enabled = false;
+            circleCollider.enabled = false;
+            
             player = GameObject.FindGameObjectWithTag("Player");
             currentHealth = MaxHealth;
             StartCoroutine(Shoot());
@@ -30,7 +34,8 @@ namespace Reality {
         private IEnumerator Shoot() {
             yield return new WaitUntil(GameStateController.Instance.IsPlaying_SecondHalf);
             spriteRenderer.enabled = true;
-            
+            circleCollider.enabled = true;
+
             while (true) {
                 if (!GameStateController.Instance.IsPlaying()) yield return new WaitUntil(GameStateController.Instance.IsPlaying);
                 yield return new WaitForSeconds(timeBetweenEachBullet);
