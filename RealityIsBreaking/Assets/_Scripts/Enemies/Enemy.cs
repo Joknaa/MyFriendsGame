@@ -20,6 +20,7 @@ namespace Reality {
 
         private IEnumerator Shoot() {
             while (true) {
+                if (!GameStateController.Instance.IsPlaying()) yield return new WaitUntil(GameStateController.Instance.IsPlaying);
                 yield return new WaitForSeconds(timeBetweenEachBullet);
                 FireBullet();
             }
