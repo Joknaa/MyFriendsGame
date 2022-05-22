@@ -1,23 +1,31 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Reality {
     public class CameraController : MonoBehaviour {
         [SerializeField] private float transitionSmoothing = 0.1f;
-        private float cameraNewPosition = 15;
-        private float cameraPosition = 15;
+        private float cameraNewPosition_X;
+        private float cameraPosition_X;
+        private Vector3 cameraPosition;
+        private Transform playerTransform;
+        private void Start() {
+            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            cameraNewPosition_X = playerTransform.position.x;
+        }
 
         private void LateUpdate() {
-            cameraPosition = Mathf.Lerp(cameraPosition, cameraNewPosition, transitionSmoothing);
-            MoveCamera();
+            cameraNewPosition_X = playerTransform.position.x;
+            
+            cameraPosition_X = Mathf.Lerp(cameraPosition_X, cameraNewPosition_X, transitionSmoothing);
+            
+            cameraPosition = transform.position;
+            transform.position = new Vector3(cameraPosition_X, cameraPosition.y, cameraPosition.z);
+            
         }
 
         public void SetCameraPosition(float CameraTranslation) {
-            cameraNewPosition = cameraPosition + CameraTranslation;
+            cameraNewPosition_X = cameraPosition_X + CameraTranslation;
         }
-
-        private void MoveCamera() {
-            var currentPosition = transform.position;
-            transform.position = new Vector3(cameraPosition, currentPosition.y, currentPosition.z);
-        }
+        
     }
 }

@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - Chest
   - MusicController
+  - RoomTransition
   layers:
   - Default
   - TransparentFX

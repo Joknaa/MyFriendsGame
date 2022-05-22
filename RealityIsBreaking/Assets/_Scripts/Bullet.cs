@@ -15,7 +15,7 @@ namespace Reality {
             }
 
             if (isPlayerBullet && collidedWith.CompareTag("Enemy")) {
-                collidedWith.gameObject.GetComponent<Enemy>().takeDamage(damage);
+                collidedWith.gameObject.GetComponent<IEnemy>().TakeDamage(damage);
                 
                 Destroy(gameObject);
             }

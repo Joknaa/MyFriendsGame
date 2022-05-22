@@ -9,7 +9,6 @@ using UnityEngine;
 
 namespace Reality {
     public class PhoneWindow : MonoBehaviour {
-
         public GameObject phoneTalking;
         public GameObject phoneRinging;
         public float vibrationStrength = 180f;
@@ -27,29 +26,14 @@ namespace Reality {
 
         private TweenerCore<Vector3, Vector3, VectorOptions> clickArrowAnimation;
         private Tweener phoneVibratingAnimation;
+
         private void Start() {
             MusicManager = GameObject.Find("Controllers/MusicManager").GetComponent<AudioSource>();
-            //Start Ringing
-            //StartCoroutine(PlaySondg(ringingSFX));
-
-            //gameObject.SetActive(false);
             ClickArrowAnimation();
         }
 
-        IEnumerator PlaySondg(AudioClip clippy)
-        {
-            Debug.Log("we wait : isPhoneRinging : " + GameStateController.Instance.IsPhoneCall());
-            yield return new WaitUntil(GameStateController.Instance.IsPhoneCall);
-            Debug.Log("PHONE RING");
-            MusicManager.Stop();
-            MusicManager.clip = clippy;
-            MusicManager.loop = true;
-            MusicManager.Play();
-        }
-        void PlaySong(AudioClip clippy)
-        {
-            Debug.Log("PHONE RING");
-            if (!GameStateController.Instance.IsPhoneCall()) return;
+        void PlaySong(AudioClip clippy) {
+            //if (!GameStateController.Instance.IsPhoneCall()) return;
 
             MusicManager.Stop();
             MusicManager.clip = clippy;
@@ -66,7 +50,7 @@ namespace Reality {
 
         private void ClickArrowAnimation() {
             var originalPosition = clickArrow.transform.position;
-            
+
             clickArrowAnimation = clickArrow.transform
                 .DOMoveY(originalPosition.y + arrowMoveDistance, arrowAnimationDuration)
                 .SetLoops(-1, LoopType.Yoyo);
@@ -76,7 +60,7 @@ namespace Reality {
                 .SetDelay(vibrationCooldown)
                 .SetLoops(-1, LoopType.Restart);
         }
-        
+
         public void StartPhoneCall() {
             //Stop Ringing
             MusicManager.Stop();
@@ -84,12 +68,12 @@ namespace Reality {
             GameStateController.Instance.SetState_CutScene();
             phoneVibratingAnimation.Kill();
             phoneRinging.transform.rotation = Quaternion.identity;
-            phoneRinging.SetActive(false); 
+            phoneRinging.SetActive(false);
             phoneTalking.SetActive(true);
-            
+
             callCounter.gameObject.SetActive(true);
             StartCoroutine(UpdateCallCounter());
-            
+
             clickArrowAnimation.Complete();
             clickArrow.SetActive(false);
         }
@@ -104,7 +88,7 @@ namespace Reality {
         private IEnumerator UpdateCallCounter() {
             float time = 0;
             while (GameStateController.Instance.IsCutScene()) {
-                float minutes = Mathf.FloorToInt(time / 60); 
+                float minutes = Mathf.FloorToInt(time / 60);
                 float seconds = Mathf.FloorToInt(time % 60);
                 callCounter.text = $"{minutes:00}:{seconds:00}";
                 yield return new WaitForSeconds(1f);

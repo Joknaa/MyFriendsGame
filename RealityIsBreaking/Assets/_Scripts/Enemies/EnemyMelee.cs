@@ -4,64 +4,66 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Reality {
-    public class Enemy : MonoBehaviour {
-        public float timeBetweenEachBullet;
-        [SerializeField] private GameObject bulletPrefab;
-        [SerializeField] private float bulletForce = 40f;
-
+    public class EnemyMelee : MonoBehaviour, IEnemy {
         [SerializeField] private AudioSource _source;
         [SerializeField] private AudioClip[] SFX;
+        [SerializeField] private float moveSpeed;
+        [SerializeField] private float damage;
+        
 
         [SerializeField] private int MaxHealth = 1;
         private SpriteRenderer spriteRenderer;
         private int currentHealth;
         private GameObject player;
         private bool isDead = false;
-        private CircleCollider2D circleCollider;
+        private BoxCollider2D[] boxColliders;
+        private int direction = 1;
 
         void Start() {
             spriteRenderer = transform.GetComponent<SpriteRenderer>();
-            circleCollider = transform.GetComponent<CircleCollider2D>();
+            boxColliders = transform.GetComponents<BoxCollider2D>();
             spriteRenderer.enabled = false;
-            circleCollider.enabled = false;
+            foreach (var boxCollider2D in boxColliders) {
+                boxCollider2D.enabled = false;
+            }
             
             player = GameObject.FindGameObjectWithTag("Player");
             currentHealth = MaxHealth;
-            StartCoroutine(Shoot());
+            StartCoroutine(Setup());
         }
 
+        private void Update() {
+            if (!GameStateController.Instance.IsPlaying_SecondHalf()) return;
+            
+            transform.Translate(direction * moveSpeed * Time.deltaTime, 0, 0);
+            spriteRenderer.flipX = direction == -1;
+        }
 
-        private IEnumerator Shoot() {
+        
+        private IEnumerator Setup() {
             yield return new WaitUntil(GameStateController.Instance.IsPlaying_SecondHalf);
             spriteRenderer.enabled = true;
-            circleCollider.enabled = true;
-
-            while (true) {
-                if (!GameStateController.Instance.IsPlaying()) yield return new WaitUntil(GameStateController.Instance.IsPlaying);
-                yield return new WaitForSeconds(timeBetweenEachBullet);
-                FireBullet();
+            foreach (var boxCollider2D in boxColliders) {
+                boxCollider2D.enabled = true;
             }
         }
         
-
-        private void FireBullet() {
-            float angle = getShootingDirection();
-
-            GameObject bulletInstance = Instantiate(bulletPrefab, transform);
-            bulletInstance.transform.position = transform.position;
-            bulletInstance.name = "EnemyBullet";
-            Bullet bulletScript = bulletInstance.AddComponent<Bullet>();
-            bulletScript.SetInstance(bulletInstance);
-
-            Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
-            bulletRb.rotation += + angle;
-            bulletRb.AddForce(((Vector2) player.transform.position - (Vector2) transform.position).normalized * bulletForce, ForceMode2D.Impulse);
+        private void OnTriggerEnter2D(Collider2D col) {
+            if (col.CompareTag("RoomTransition")) {
+                direction *= -1;
+            }
+            if (col.CompareTag("Ground")) {
+                direction *= -1;
+            }
+            
+            if (col.CompareTag("Player")) {
+                col.gameObject.GetComponent<PlayerHealth>().takeDamage(damage);
+            }
         }
 
         IEnumerator CommitSeppuku(float Timer) {
             _source.PlayOneShot(SFX[1]);
             isDead = true;
-            
 
             spriteRenderer.enabled = false;
             yield return new WaitForSeconds(Timer / 9);
@@ -78,18 +80,15 @@ namespace Reality {
 
             Destroy(this.gameObject);
         }
+        
 
-        private float getShootingDirection() {
-            Vector2 lookDir = (Vector2) player.transform.position - (Vector2) transform.position;
-            return Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-        }
-
-        public void takeDamage(float damage) {
+        public void TakeDamage(float damage) {
             this.currentHealth -= (int) damage;
             _source.PlayOneShot(SFX[0]);
             if (currentHealth <= 0 && isDead==false) {
                 StartCoroutine(CommitSeppuku(1f));
             }
         }
+        
     }
 }
