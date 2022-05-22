@@ -3,6 +3,15 @@ using UnityEngine;
 
 namespace Reality {
     public class PlayerCollisions : MonoBehaviour{
+        [SerializeField] private AudioSource _source;
+        [SerializeField] private AudioClip winSFX;
+        private AudioSource MusicManager;
+
+        private void Start()
+        {
+            MusicManager = GameObject.Find("Controllers/MusicManager").GetComponent<AudioSource>();
+        }
+
         private void OnTriggerEnter2D(Collider2D collidedWith) {
             if (collidedWith.CompareTag("Chest")) {
                 collidedWith.enabled = false;
@@ -16,6 +25,8 @@ namespace Reality {
             }
             
             if (collidedWith.CompareTag("FinishLine")) {
+                MusicManager.Stop();
+                _source.PlayOneShot(winSFX);
                 GameStateController.Instance.SetState_GameWon();
             }
         }
