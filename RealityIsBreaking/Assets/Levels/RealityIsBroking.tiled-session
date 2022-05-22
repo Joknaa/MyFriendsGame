@@ -157,20 +157,36 @@
                 "y": 1602.1409455842997
             }
         },
-        "NEW_Room00.tmx": {
+        "NEW_Room00.1.tmx": {
+            "scale": 1.40125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320.07136485281,
+                "y": 320.42818911686
+            }
+        },
+        "NEW_Room00.2.tmx": {
             "scale": 1.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 363.66666666666663,
-                "y": 293.3333333333333
+                "x": 436.99999999999994,
+                "y": 302
+            }
+        },
+        "NEW_Room00.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 335.16666666666663,
+                "y": 335.66666666666663
             }
         },
         "NEW_Room01.tmx": {
-            "scale": 3,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 85.16666666666666,
-                "y": 355.66666666666663
+                "x": 45.5,
+                "y": 388
             }
         },
         "NEW_Room02.tmx": {
@@ -194,7 +210,7 @@
             "selectedLayer": 4,
             "viewCenter": {
                 "x": 175.49999999999997,
-                "y": 350
+                "y": 349.66666666666663
             }
         },
         "NEW_Room05.tmx": {
@@ -205,12 +221,28 @@
                 "y": 393
             }
         },
-        "NEW_Room06.tmx": {
-            "scale": 3,
+        "NEW_Room06.1.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 272.75,
+                "y": 319.5
+            }
+        },
+        "NEW_Room06.2.tmx": {
+            "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 172.83333333333331,
-                "y": 358.33333333333337
+                "x": 310.25,
+                "y": 306.5
+            }
+        },
+        "NEW_Room06.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 214.33333333333331,
+                "y": 282
             }
         },
         "NEW_Room07.tmx": {
@@ -218,7 +250,7 @@
             "selectedLayer": 4,
             "viewCenter": {
                 "x": 343.5,
-                "y": 345
+                "y": 344
             }
         },
         "NEW_Room08.tmx": {
@@ -256,12 +288,12 @@
     "project": "RealityIsBroking.tiled-project",
     "recentFiles": [
         "NEW_Room00.tmx",
+        "NEW_Room06.tmx",
         "NEW_Room01.tmx",
         "NEW_Room02.tmx",
         "NEW_Room03.tmx",
         "NEW_Room04.tmx",
         "NEW_Room05.tmx",
-        "NEW_Room06.tmx",
         "NEW_Room07.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Dow_TileSet.tsx",
         "NEW_Room08.tmx",

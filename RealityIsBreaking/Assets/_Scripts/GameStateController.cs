@@ -31,7 +31,7 @@ namespace Reality {
         public void SetState_Desktop() => currentGameState = GameState.Desktop;
         
         
-        public void TogglePause() => currentGameState = currentGameState == GameState.Paused ? GameState.Playing_FirstHalf : GameState.Paused;
+        public void TogglePause(GameState stateBeforePause) => currentGameState = currentGameState == GameState.Paused ? stateBeforePause : GameState.Paused;
         public bool IsPlaying() => currentGameState == GameState.Playing_FirstHalf || currentGameState == GameState.Playing_SecondHalf;
         public bool IsPlaying_FirstHalf() => currentGameState == GameState.Playing_FirstHalf;
         public bool IsPlaying_SecondHalf() => currentGameState == GameState.Playing_SecondHalf;

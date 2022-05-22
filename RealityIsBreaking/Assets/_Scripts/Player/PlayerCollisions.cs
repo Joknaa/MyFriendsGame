@@ -14,6 +14,10 @@ namespace Reality {
             if (collidedWith.CompareTag("PitFall")) {
                 GetComponent<PlayerHealth>().takeDamage(10);
             }
+            
+            if (collidedWith.CompareTag("FinishLine")) {
+                GameStateController.Instance.SetState_GameWon();
+            }
         }
     }
 }

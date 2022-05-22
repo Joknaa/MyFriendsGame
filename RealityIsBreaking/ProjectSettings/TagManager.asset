@@ -14,6 +14,7 @@ TagManager:
   - MusicController
   - RoomTransition
   - PitFall
+  - FinishLine
   layers:
   - Default
   - TransparentFX

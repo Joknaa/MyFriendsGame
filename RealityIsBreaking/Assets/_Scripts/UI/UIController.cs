@@ -8,11 +8,23 @@ namespace Reality {
         public GameObject GameWonMenu;
         public GameObject PauseMenu;
 
+        private GameStateController.GameState lastPlayingState;
         private void Start() {
             GameStateController.Instance.SetState_Playing_FirstHalf();
+            lastPlayingState = GameStateController.Instance.GetState();
         }
 
         private void Update() {
+            if (GameStateController.Instance.IsPlaying_SecondHalf()) {
+                lastPlayingState = GameStateController.GameState.Playing_SecondHalf;
+            }
+            if (GameStateController.Instance.IsPlaying_FirstHalf()) {
+                lastPlayingState = GameStateController.GameState.Playing_FirstHalf;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                GameStateController.Instance.TogglePause(lastPlayingState);
+            }
+            
             switch (GameStateController.Instance.GetState()) {
                 case GameStateController.GameState.Playing_FirstHalf: Activate(hud: true);
                     break;

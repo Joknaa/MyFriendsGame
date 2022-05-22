@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DefaultNamespace;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -82,6 +83,7 @@ namespace Reality {
             //Start second song
             PlaySong(secondSong);
             GameStateController.Instance.SetState_Playing_SecondHalf();
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelController>().StartSecondHalfLevels();
             gameObject.SetActive(false);
         }
 

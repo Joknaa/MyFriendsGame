@@ -17,6 +17,9 @@ namespace Reality {
             cameraNewPosition_X = playerTransform.position.x;
             
             cameraPosition_X = Mathf.Lerp(cameraPosition_X, cameraNewPosition_X, transitionSmoothing);
+
+            if (cameraPosition_X < 15) cameraPosition_X = 15;
+            if (cameraPosition_X > 254) cameraPosition_X = 254;
             
             cameraPosition = transform.position;
             transform.position = new Vector3(cameraPosition_X, cameraPosition.y, cameraPosition.z);

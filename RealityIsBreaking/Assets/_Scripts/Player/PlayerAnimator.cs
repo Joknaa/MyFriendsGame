@@ -48,10 +48,10 @@ namespace Reality
             _anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, Mathf.Abs(_player.Input.X)));
 
             // Splat
-            //if (_player.LandingThisFrame) {
-            //    _anim.SetTrigger(GroundedKey);
-            //    _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
-            //}
+            if (_player.LandingThisFrame) {
+                _anim.SetTrigger(GroundedKey);
+                //_source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
+            }
 
             // Jump effects
             if (_player.JumpingThisFrame) {
