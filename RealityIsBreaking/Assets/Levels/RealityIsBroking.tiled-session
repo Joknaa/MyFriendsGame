@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "NEW_Room07.tmx",
+    "activeFile": "NEW_Room08.tmx",
     "expandedProjectPaths": [
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art",
-        ".",
-        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet"
+        "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -223,10 +223,10 @@
         },
         "NEW_Room08.tmx": {
             "scale": 8,
-            "selectedLayer": 3,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 232.6875,
-                "y": 402.25
+                "x": 232.4375,
+                "y": 402
             }
         },
         "NEW_StartingArea.tmx": {
@@ -262,9 +262,9 @@
         "NEW_Room04.tmx",
         "NEW_Room05.tmx",
         "NEW_Room06.tmx",
+        "NEW_Room07.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Dow_TileSet.tsx",
         "NEW_Room08.tmx",
-        "NEW_Room07.tmx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/Enemies.tsx",
         "D:/MyStuff/Files/.mySpace/Projects/games/unity/Personal/RealityIsBreaking/RealityIsBreaking/Assets/Art/TileSet/untitled.tmx"
     ],
