@@ -34,7 +34,6 @@ namespace Reality {
 
         private void Update() {
             if (!_active) return;
-            if (!GameStateController.Instance.IsPlaying()) return;
 
             // Calculate velocity
             Velocity = (transform.position - _lastPosition) / Time.deltaTime;
@@ -57,6 +56,8 @@ namespace Reality {
         #region Gather Input
 
         private void GatherInput() {
+            if (!GameStateController.Instance.IsPlaying()) return;
+
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),

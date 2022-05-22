@@ -162,36 +162,36 @@
             "selectedLayer": 3,
             "viewCenter": {
                 "x": 319.35771632471005,
-                "y": 319.71454058876003
+                "y": 319.35771632471005
             }
         },
         "NEW_Room01.tmx": {
             "scale": 1.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 239.66666666666663,
-                "y": 318
+                "x": 239.66666666666666,
+                "y": 319.66666666666663
             }
         },
         "NEW_Room02.tmx": {
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 274.75,
-                "y": 277.5
+                "x": 239.75,
+                "y": 319.75
             }
         },
         "NEW_Room03.tmx": {
             "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 271.8333333333333,
-                "y": 364.33333333333337
+                "x": 239.83333333333331,
+                "y": 319.8333333333333
             }
         },
         "NEW_Room04.tmx": {
             "scale": 2,
-            "selectedLayer": 4,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 246.75,
                 "y": 390
@@ -201,16 +201,16 @@
             "scale": 2.165208333333333,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 239.9307226017512,
-                "y": 319.59973058789575
+                "x": 239.93072260175117,
+                "y": 319.8306552487251
             }
         },
         "NEW_Room06.tmx": {
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 219.75,
-                "y": 260
+                "x": 239.75,
+                "y": 319.75
             }
         },
         "NEW_Room07.tmx": {
@@ -222,11 +222,11 @@
             }
         },
         "NEW_Room08.tmx": {
-            "scale": 2,
-            "selectedLayer": 4,
+            "scale": 8,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 217.25,
-                "y": 316.5
+                "x": 232.6875,
+                "y": 402.25
             }
         },
         "NEW_StartingArea.tmx": {

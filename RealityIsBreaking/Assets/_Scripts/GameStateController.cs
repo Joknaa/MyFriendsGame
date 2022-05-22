@@ -3,6 +3,7 @@ namespace Reality {
         public enum GameState {
             Playing,
             Paused,
+            PhoneCall,
             CutScene,
             GameOver,
             GameWon
@@ -20,6 +21,7 @@ namespace Reality {
         public void SetState_CutScene() => currentGameState = GameState.CutScene;
         public void SetState_GameOver() => currentGameState = GameState.GameOver;
         public void SetState_GameWon() => currentGameState = GameState.GameWon;
+        public void SetState_PhoneCall() => currentGameState = GameState.PhoneCall;
         
         
         public void TogglePause() => currentGameState = currentGameState == GameState.Paused ? GameState.Playing : GameState.Paused;
@@ -28,6 +30,10 @@ namespace Reality {
         public bool IsCutScene() => currentGameState == GameState.CutScene;
         public bool IsGameOver() => currentGameState == GameState.GameOver;
         public bool IsGameWon() => currentGameState == GameState.GameWon;
+        public bool IsPhoneCall() => currentGameState == GameState.PhoneCall;
+        
+        
+        public bool IsPlayable() => currentGameState == GameState.Playing || currentGameState == GameState.PhoneCall;
 
     }
 }

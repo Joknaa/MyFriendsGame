@@ -2,6 +2,7 @@ using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using Fungus;
 using TMPro;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace Reality {
         private TweenerCore<Vector3, Vector3, VectorOptions> clickArrowAnimation;
         private Tweener phoneVibratingAnimation;
         private void Start() {
+            gameObject.SetActive(false);
             ClickArrowAnimation();
         }
 

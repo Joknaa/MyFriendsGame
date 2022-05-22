@@ -14,6 +14,8 @@ namespace Reality {
                     break;
                 case GameStateController.GameState.Paused: Activate(pause: true);
                     break;
+                case GameStateController.GameState.PhoneCall: Activate(hud: true);
+                    break;
                 case GameStateController.GameState.CutScene: Activate(hud: true);
                     break;
                 case GameStateController.GameState.GameWon: Activate(gameWon: true);
