@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Reality {
     public class Gun : MonoBehaviour {
-        [SerializeField] private Rigidbody2D gun;
+        
         [SerializeField] private GameObject bullet;
         [SerializeField] private float bulletForce = 20f;
 
@@ -17,7 +17,7 @@ namespace Reality {
 
         private Vector3 mousePosition;
         private Camera cam;
-        private bool canShoot;
+        
 
 
         void Start() {
@@ -43,10 +43,6 @@ namespace Reality {
             Debug.DrawLine(player.transform.position, mousePosition, Color.red);
         }
 
-        void MoveGun() {
-            gun.rotation = getShootingDirection();
-            //gun.position = (transform.position - player.transform.position).normalized;
-        }
 
         private void FireBullet() {
             if (!Input.GetMouseButtonDown(0)) return;
