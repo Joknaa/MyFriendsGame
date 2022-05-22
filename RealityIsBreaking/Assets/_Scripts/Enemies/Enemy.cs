@@ -54,7 +54,7 @@ namespace Reality {
             bulletScript.SetInstance(bulletInstance);
 
             Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
-            bulletRb.rotation = angle;
+            bulletRb.rotation += + angle;
             bulletRb.AddForce(((Vector2) player.transform.position - (Vector2) transform.position).normalized * bulletForce, ForceMode2D.Impulse);
         }
 

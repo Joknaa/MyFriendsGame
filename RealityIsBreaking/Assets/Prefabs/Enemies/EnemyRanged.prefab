@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3185352912485240672}
   - component: {fileID: 5285721995889862988}
   m_Layer: 0
-  m_Name: Enemy_5
+  m_Name: EnemyRanged
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7433a28ffaed3c4690d991ed386a643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenEachBullet: 0.3
+  timeBetweenEachBullet: 0.5
   bulletPrefab: {fileID: 4433793071731921355, guid: dddb23689153409449cfd52b89c0edd0, type: 3}
   bulletForce: 5
   _source: {fileID: 3185352912485240672}
