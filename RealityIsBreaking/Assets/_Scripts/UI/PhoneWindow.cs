@@ -19,11 +19,31 @@ namespace Reality {
         public float arrowMoveDistance;
         public float arrowAnimationDuration = 0.5f;
 
+        public AudioClip secondSong;
+        public AudioClip ringingSFX;
+        private AudioSource MusicManager;
+
+
         private TweenerCore<Vector3, Vector3, VectorOptions> clickArrowAnimation;
         private Tweener phoneVibratingAnimation;
         private void Start() {
+            MusicManager = GameObject.Find("Controllers/MusicManager").GetComponent<AudioSource>();
+            //Start Ringing
+            StartCoroutine(PlaySong(ringingSFX));
+
             gameObject.SetActive(false);
             ClickArrowAnimation();
+        }
+
+        IEnumerator PlaySong(AudioClip clippy)
+        {
+            Debug.Log("we wait");
+            yield return new WaitUntil(GameStateController.Instance.IsPhoneCall);
+            Debug.Log("PHONE RING");
+            MusicManager.Stop();
+            MusicManager.clip = clippy;
+            MusicManager.loop = true;
+            MusicManager.Play();
         }
 
         private void ClickArrowAnimation() {
@@ -40,6 +60,9 @@ namespace Reality {
         }
         
         public void StartPhoneCall() {
+            //Stop Ringing
+            MusicManager.Stop();
+
             GameStateController.Instance.SetState_CutScene();
             phoneVibratingAnimation.Kill();
             phoneRinging.transform.rotation = Quaternion.identity;
@@ -54,6 +77,8 @@ namespace Reality {
         }
 
         public void EndPhoneCall() {
+            //Start second song
+            PlaySong(secondSong);
             gameObject.SetActive(false);
             GameStateController.Instance.SetState_Playing_FirstHalf();
         }

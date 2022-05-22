@@ -9,6 +9,7 @@ namespace Reality {
         public int currentHealth;
         private bool isImmune = false;
         public float immunityTimer = 0.5f;
+        private BoxCollider2D box2d;
 
         [SerializeField] private AudioSource _source;
         [SerializeField] private AudioClip[] SFX;
@@ -19,7 +20,15 @@ namespace Reality {
             spriteRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
             currentHealth = MaxHealth;
             print("Player Health: " + currentHealth);
-            
+            box2d = GetComponent<BoxCollider2D>();
+
+
+        }
+
+        private void Update()
+        {
+
+            box2d.enabled = GameStateController.Instance.IsPlaying();
         }
 
         public void takeDamage(float damage) {

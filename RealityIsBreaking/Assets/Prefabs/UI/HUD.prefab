@@ -258,6 +258,8 @@ MonoBehaviour:
   clickArrow: {fileID: 2603357908330411795}
   arrowMoveDistance: 20
   arrowAnimationDuration: 0.5
+  secondSong: {fileID: 8300000, guid: 479b5569ace8e494baa3ccaf8cda95a9, type: 3}
+  ringingSFX: {fileID: 8300000, guid: 550173351b0301e408228a6881b13e45, type: 3}
 --- !u!1 &1088932445166264909
 GameObject:
   m_ObjectHideFlags: 0
