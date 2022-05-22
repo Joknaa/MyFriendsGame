@@ -8,6 +8,10 @@ namespace Reality {
         public GameObject GameWonMenu;
         public GameObject PauseMenu;
 
+        private void Start() {
+            GameStateController.Instance.SetState_Playing();
+        }
+
         private void Update() {
             switch (GameStateController.Instance.GetState()) {
                 case GameStateController.GameState.Playing: Activate(hud: true);
