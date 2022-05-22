@@ -8,7 +8,7 @@ namespace Reality {
 
         private void Update() {
             switch (GameStateController.Instance.GetState()) {
-                case GameStateController.GameState.Playing: Activate(hpBar: true);
+                case GameStateController.GameState.Playing_FirstHalf: Activate(hpBar: true);
                     break;
                 case GameStateController.GameState.Paused: Activate(hpBar: true);
                     break;

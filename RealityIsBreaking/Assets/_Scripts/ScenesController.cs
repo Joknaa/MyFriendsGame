@@ -8,7 +8,7 @@ namespace Reality {
 
 
         public void LoadMainMenu() {
-            GameStateController.Instance.SetState_Playing();
+            GameStateController.Instance.SetState_Playing_FirstHalf();
             SceneManager.LoadScene(1);
         }
 

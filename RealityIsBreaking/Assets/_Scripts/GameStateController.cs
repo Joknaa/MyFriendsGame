@@ -3,12 +3,13 @@ namespace Reality {
         public enum GameState {
             Desktop,
             EmailReading,
-            Playing,
+            Playing_FirstHalf,
+            Playing_SecondHalf,
             Paused,
             PhoneCall,
             CutScene,
             GameOver,
-            GameWon
+            GameWon,
         }
 
         public static GameStateController Instance => instance ?? (instance = new GameStateController());
@@ -18,7 +19,8 @@ namespace Reality {
 
         public GameState GetState() => currentGameState;
         
-        public void SetState_Playing() => currentGameState = GameState.Playing;
+        public void SetState_Playing_FirstHalf() => currentGameState = GameState.Playing_FirstHalf;
+        public void SetState_Playing_SecondHalf() => currentGameState = GameState.Playing_SecondHalf;
         public void SetState_Paused() => currentGameState = GameState.Paused;
         public void SetState_CutScene() => currentGameState = GameState.CutScene;
         public void SetState_GameOver() => currentGameState = GameState.GameOver;
@@ -29,8 +31,8 @@ namespace Reality {
         public void SetState_Desktop() => currentGameState = GameState.Desktop;
         
         
-        public void TogglePause() => currentGameState = currentGameState == GameState.Paused ? GameState.Playing : GameState.Paused;
-        public bool IsPlaying() => currentGameState == GameState.Playing;
+        public void TogglePause() => currentGameState = currentGameState == GameState.Paused ? GameState.Playing_FirstHalf : GameState.Paused;
+        public bool IsPlaying() => currentGameState == GameState.Playing_FirstHalf || currentGameState == GameState.Playing_SecondHalf;
         public bool IsPaused() => currentGameState == GameState.Paused;
         public bool IsCutScene() => currentGameState == GameState.CutScene;
         public bool IsGameOver() => currentGameState == GameState.GameOver;
@@ -40,7 +42,7 @@ namespace Reality {
         public bool IsDesktop() => currentGameState == GameState.Desktop;
         
         
-        public bool IsPlayable() => currentGameState == GameState.Playing || currentGameState == GameState.PhoneCall;
+        public bool IsPlayable() => currentGameState == GameState.Playing_FirstHalf || currentGameState == GameState.PhoneCall;
 
     }
 }

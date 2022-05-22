@@ -9,12 +9,12 @@ namespace Reality {
         public GameObject PauseMenu;
 
         private void Start() {
-            GameStateController.Instance.SetState_Playing();
+            GameStateController.Instance.SetState_Playing_FirstHalf();
         }
 
         private void Update() {
             switch (GameStateController.Instance.GetState()) {
-                case GameStateController.GameState.Playing: Activate(hud: true);
+                case GameStateController.GameState.Playing_FirstHalf: Activate(hud: true);
                     break;
                 case GameStateController.GameState.Paused: Activate(pause: true);
                     break;

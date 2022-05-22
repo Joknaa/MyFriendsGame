@@ -1422,7 +1422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -40}
+  m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: -40, y: -120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &959219595
@@ -1446,7 +1446,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Hey there ! I finished the game i was telling you about ! \n\nCan you
-    please try it out ?\nI cant wait to hear your feedback !"
+    please try this early build out ?\nI cant wait to hear your feedback !"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c248ba191bd04c94c8768877aa198266, type: 2}
   m_sharedMaterial: {fileID: -6151029899358419921, guid: c248ba191bd04c94c8768877aa198266, type: 2}
@@ -2660,8 +2660,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeRect:
     serializedVersion: 2
-    x: -417.0324
-    y: -387.76376
+    x: -420.0324
+    y: -386.76376
     width: 108
     height: 40
   tint: {r: 0.9150943, g: 0.25467247, b: 0.25467247, a: 1}
@@ -2707,7 +2707,8 @@ MonoBehaviour:
     height: 859
   selectedBlocks:
   - {fileID: 1769760794}
-  selectedCommands: []
+  selectedCommands:
+  - {fileID: 1769760786}
   variables:
   - {fileID: 1769760783}
   description: 

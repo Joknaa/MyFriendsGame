@@ -101,6 +101,9 @@ TextureImporter:
   - first:
       213: 1360550569445208017
     second: UI_29
+  - first:
+      213: -2625263914096795121
+    second: UI_32
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -902,6 +905,27 @@ TextureImporter:
       bones: []
       spriteID: 1dfacbec885a1e210800000000000000
       internalID: 1360550569445208017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_32
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 12
+        width: 68
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f02eb9e1160319bd0800000000000000
+      internalID: -2625263914096795121
       vertices: []
       indices: 
       edges: []

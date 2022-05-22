@@ -55,7 +55,7 @@ namespace Reality {
 
         public void EndPhoneCall() {
             gameObject.SetActive(false);
-            GameStateController.Instance.SetState_Playing();
+            GameStateController.Instance.SetState_Playing_FirstHalf();
         }
 
         private IEnumerator UpdateCallCounter() {
