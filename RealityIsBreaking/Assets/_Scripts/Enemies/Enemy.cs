@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,12 +20,17 @@ namespace Reality {
 
         void Start() {
             spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+            spriteRenderer.enabled = false;
             player = GameObject.FindGameObjectWithTag("Player");
             currentHealth = MaxHealth;
             StartCoroutine(Shoot());
         }
 
+
         private IEnumerator Shoot() {
+            yield return new WaitUntil(GameStateController.Instance.IsPlaying_SecondHalf);
+            spriteRenderer.enabled = true;
+            
             while (true) {
                 if (!GameStateController.Instance.IsPlaying()) yield return new WaitUntil(GameStateController.Instance.IsPlaying);
                 yield return new WaitForSeconds(timeBetweenEachBullet);

@@ -7,6 +7,10 @@ namespace Reality {
             if (collidedWith.CompareTag("Chest")) {
                 GameStateController.Instance.SetState_PhoneCall();
             }
+            if (collidedWith.CompareTag("Spike")) {
+                GetComponent<PlayerHealth>().takeDamage(1);
+            }
+
         }
     }
 }

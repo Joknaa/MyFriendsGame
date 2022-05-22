@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -29,21 +30,34 @@ namespace Reality {
         private void Start() {
             MusicManager = GameObject.Find("Controllers/MusicManager").GetComponent<AudioSource>();
             //Start Ringing
-            StartCoroutine(PlaySong(ringingSFX));
+            StartCoroutine(PlaySondg(ringingSFX));
 
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
             ClickArrowAnimation();
         }
 
-        IEnumerator PlaySong(AudioClip clippy)
+        IEnumerator PlaySondg(AudioClip clippy)
         {
-            Debug.Log("we wait");
+            Debug.Log("we wait : isPhoneRinging : " + GameStateController.Instance.IsPhoneCall());
             yield return new WaitUntil(GameStateController.Instance.IsPhoneCall);
             Debug.Log("PHONE RING");
             MusicManager.Stop();
             MusicManager.clip = clippy;
             MusicManager.loop = true;
             MusicManager.Play();
+        }
+        void PlaySong(AudioClip clippy)
+        {
+            Debug.Log("PHONE RING");
+            MusicManager.Stop();
+            MusicManager.clip = clippy;
+            MusicManager.loop = true;
+            MusicManager.Play();
+        }
+
+        private void OnEnable() {
+            PlaySong(ringingSFX);
+
         }
 
         private void ClickArrowAnimation() {
@@ -80,7 +94,7 @@ namespace Reality {
             //Start second song
             PlaySong(secondSong);
             gameObject.SetActive(false);
-            GameStateController.Instance.SetState_Playing_FirstHalf();
+            GameStateController.Instance.SetState_Playing_SecondHalf();
         }
 
         private IEnumerator UpdateCallCounter() {

@@ -29,6 +29,9 @@ namespace Reality
 
         void Update() {
             if (_player == null) return;
+            if (GameStateController.Instance.IsGameOver()) {
+                gameObject.SetActive(false);
+            }
 
             // Flip the sprite
             if (_player.Input.X != 0) {

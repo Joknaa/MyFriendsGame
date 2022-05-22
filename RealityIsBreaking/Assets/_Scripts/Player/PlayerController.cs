@@ -56,7 +56,14 @@ namespace Reality {
         #region Gather Input
 
         private void GatherInput() {
-            if (!GameStateController.Instance.IsPlaying()) return;
+            if (!GameStateController.Instance.IsPlaying()) {
+                Input = new FrameInput {
+                    JumpDown = false,
+                    JumpUp = false,
+                    X = 0
+                };
+                return;
+            }
 
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),

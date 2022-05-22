@@ -33,22 +33,5 @@ namespace Reality {
             credits.SetActive(false);
             startMenu.SetActive(true);
         }
-
-
-        private void Update() {
-            switch (GameStateController.Instance.GetState()) {
-                case GameStateController.GameState.Desktop: Activate(startMenu: true);
-                    break;
-                case GameStateController.GameState.EmailReading: Activate(credits: true);
-                    break; 
-            }
-        }
-        
-  
-
-        private void Activate(bool startMenu = false, bool credits = false) {
-            this.startMenu.SetActive(startMenu);
-            this.credits.SetActive(credits);
-        }
     }
 }
